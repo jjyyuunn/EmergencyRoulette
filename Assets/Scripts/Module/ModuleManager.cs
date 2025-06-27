@@ -24,6 +24,26 @@ namespace EmergencyRoulette
         [SerializeField] public ModuleShopManager shopManager;
 
 
+        // shopModules 디버깅용
+        [SerializeField] private List<ModuleDataItem> debugShopModuleList = new();
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            UpdateDebugShopList();
+        }
+#endif
+
+        private void UpdateDebugShopList()
+        {
+            debugShopModuleList.Clear();
+            foreach (var kvp in shopModules)
+            {
+                debugShopModuleList.Add(kvp.Value);
+            }
+        }
+        // shopModules 디버깅용
+
 
         /// <summary>
         /// 상점에 진열할 모듈 N개를 무작위로 선택
@@ -43,6 +63,7 @@ namespace EmergencyRoulette
             }
 
             shopManager.RefreshShopUI();
+            UpdateDebugShopList();
         }
 
 
@@ -52,22 +73,18 @@ namespace EmergencyRoulette
         /// </summary>
         public bool TryPurchaseAndEquip(int moduleKey, EquipAxis axis, int index)
         {
-            // 상점에 해당 키가 없으면 실패
             if (!shopModules.TryGetValue(moduleKey, out var module))
                 return false;
 
-            // 중복 장착 방지
-            foreach (var equip in equippedModules)
-            {
-                if (equip.axis == axis && equip.index == index)
-                    return false;
-            }
+            // 기존 모듈이 있다면 제거 (덮어쓰기)
+            UnequipModule(axis, index);
 
             equippedModules.Add(new ModuleEquipSlot(module, axis, index));
             shopModules.Remove(moduleKey);
 
             return true;
         }
+
 
 
         /// <summary>
