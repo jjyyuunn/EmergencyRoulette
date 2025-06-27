@@ -1,4 +1,6 @@
+using DG.Tweening;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace EmergencyRoulette
@@ -67,10 +69,6 @@ namespace EmergencyRoulette
             selectedItemUI = ui;
             selectedItemUI.Highlight(true);
 
-            // 장착 위치 UI 활성화
-            //ModuleEquipManager.Instance.SelectModule(moduleKey);
-
-            Debug.Log($"모듈 선택됨: {moduleKey}");
         }
 
         public void ClearSelection()
@@ -82,6 +80,85 @@ namespace EmergencyRoulette
             selectedItemUI = null;
         }
 
-        public int GetSelectedModuleKey() => selectedModuleKey;
+
+        public void RemoveModuleUI(int moduleKey)
+        {
+            foreach (Transform child in shopItemContainer)
+            {
+                var ui = child.GetComponent<ModuleShopItemUI>();
+                if (ui != null && ui.GetModuleKey() == moduleKey)
+                {
+                    ui.PlayRemoveAnimation(() =>
+                    {
+                        // 1. UI를 풀로 반환
+                        ModuleShopPrefabPooler.Instance.Return(ui.gameObject);
+
+                        // 2. 딕셔너리 및 UI 재정렬
+                        ReorderShopModulesAfterRemoval(moduleKey);
+                    });
+                    break;
+                }
+            }
+        }
+
+
+        private void ReorderShopModulesAfterRemoval(int removedKey)
+        {
+            // 1. 기존 딕셔너리를 모듈 순서대로 정렬 (key 기준)
+            var sorted = ModuleManager.Instance.shopModules.OrderBy(kvp => kvp.Key).ToList();
+
+            // 2. 새 딕셔너리 만들기
+            Dictionary<int, ModuleDataItem> newDict = new();
+
+            Sequence moveSequence = DOTween.Sequence();
+
+            for (int newIndex = 0; newIndex < sorted.Count; newIndex++)
+            {
+                var module = sorted[newIndex].Value;
+                int oldKey = sorted[newIndex].Key;
+                newDict[newIndex] = module;
+
+                // UI 위치도 함께 이동
+                foreach (Transform child in shopItemContainer)
+                {
+                    var ui = child.GetComponent<ModuleShopItemUI>();
+                    if (ui != null && ui.GetModuleKey() == oldKey)
+                    {
+                        ui.SetModuleKey(newIndex); // 내부 키 업데이트
+                        RectTransform rt = ui.GetComponent<RectTransform>();
+
+                        Tween moveTween = rt.DOAnchorPosY(-150 - 200 * newIndex, 0.3f).SetEase(Ease.OutQuad);
+                        moveSequence.Join(moveTween);
+                    }
+                }
+            }
+
+            ModuleManager.Instance.shopModules = newDict;
+            moveSequence.OnComplete(() =>
+            {
+                ModuleManager.Instance.AddRandomModuleToShop();
+            });
+        }
+
+        public void AddNewModuleToShop(int index, ModuleDataItem newModule)
+        {
+            GameObject itemGO = ModuleShopPrefabPooler.Instance.Get();
+            itemGO.transform.SetParent(shopItemContainer, false);
+
+            RectTransform rt = itemGO.GetComponent<RectTransform>();
+            rt.anchorMin = new Vector2(0, 1);
+            rt.anchorMax = new Vector2(1, 1);
+            rt.pivot = new Vector2(0.5f, 0.5f);
+            rt.offsetMin = new Vector2(30, rt.offsetMin.y);   // left
+            rt.offsetMax = new Vector2(-30, rt.offsetMax.y);  // right
+            rt.sizeDelta = new Vector2(rt.sizeDelta.x, 180);
+            rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, -150 - 200 * index);
+
+            var itemUI = itemGO.GetComponent<ModuleShopItemUI>();
+            itemUI.Setup(index, newModule, OnModuleSelected);
+        }
+
+
+
     }
 }

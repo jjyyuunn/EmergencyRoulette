@@ -30,7 +30,7 @@ namespace EmergencyRoulette
 
             cancelModuleEquipBtn.onClick.AddListener(() =>
             {
-                if (ModuleShopManager.Instance.GetSelectedModuleKey() != -1)
+                if (ModuleShopManager.Instance.selectedModuleKey != -1)
                 {
                     ModuleShopManager.Instance.ClearSelection();
                 }
@@ -67,17 +67,7 @@ namespace EmergencyRoulette
             if (ModuleShopManager.Instance.selectedModuleKey == -1)
                 return;
 
-            bool success = ModuleManager.Instance.TryPurchaseAndEquip(ModuleShopManager.Instance.selectedModuleKey, axis, index);
-            if (success)
-            {
-                Debug.Log($"장착 성공: {axis} {index}");
-                ModuleShopManager.Instance.ClearSelection();
-                ModuleManager.Instance.shopManager.RefreshShopUI();
-            }
-            else
-            {
-                Debug.Log($"장착 실패: 이미 사용된 위치 {axis} {index}");
-            }
+            ModuleManager.Instance.TryPurchaseAndEquip(ModuleShopManager.Instance.selectedModuleKey, axis, index);
 
             ModuleShopManager.Instance.selectedModuleKey = -1;
 

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7364490256790101242}
   - component: {fileID: 91200218388414815}
   - component: {fileID: 8455113654007947278}
+  - component: {fileID: 4116335636292818259}
   m_Layer: 5
   m_Name: Btn_ModuleShopItem
   m_TagString: Untagged
@@ -143,6 +144,18 @@ MonoBehaviour:
   priceText: {fileID: 927532467630802151}
   background: {fileID: 7364490256790101242}
   moduleKey: 0
+--- !u!225 &4116335636292818259
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 446010056359755181}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1965638373769806753
 GameObject:
   m_ObjectHideFlags: 0

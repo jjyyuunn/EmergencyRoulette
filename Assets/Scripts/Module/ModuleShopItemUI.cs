@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 
 namespace EmergencyRoulette
 {
@@ -16,6 +17,8 @@ namespace EmergencyRoulette
         [SerializeField] private int moduleKey;
         private ModuleDataItem currentData;
         private System.Action<int, ModuleShopItemUI> onClickCallback;
+
+        public int GetModuleKey() => moduleKey;
 
         public void Setup(int key, ModuleDataItem data, System.Action<int, ModuleShopItemUI> callback)
         {
@@ -42,5 +45,30 @@ namespace EmergencyRoulette
 
             background.color = on ? Color.green : Color.white;
         }
+
+        public void PlayRemoveAnimation(System.Action onComplete)
+        {
+            CanvasGroup cg = GetComponent<CanvasGroup>();
+            if (cg == null)
+            {
+                cg = gameObject.AddComponent<CanvasGroup>();
+            }
+
+            Sequence seq = DOTween.Sequence();
+            seq.Join(cg.DOFade(0, 0.4f))
+               .Join(transform.DOLocalMoveX(transform.localPosition.x - 50f, 0.4f))
+               .OnComplete(() =>
+               {
+                   cg.alpha = 1f;
+                   onComplete?.Invoke();
+               });
+        }
+
+        public void SetModuleKey(int newKey)
+        {
+            this.moduleKey = newKey;
+        }
+
+
     }
 }

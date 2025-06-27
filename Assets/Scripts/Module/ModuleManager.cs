@@ -21,8 +21,6 @@ namespace EmergencyRoulette
         // 슬롯머신에 장착된 모듈들
         public List<ModuleEquipSlot> equippedModules = new();
 
-        [SerializeField] public ModuleShopManager shopManager;
-
 
         // shopModules 디버깅용
         [SerializeField] private List<ModuleDataItem> debugShopModuleList = new();
@@ -62,19 +60,54 @@ namespace EmergencyRoulette
                 shopModules.Add(i, shuffled[i]);
             }
 
-            shopManager.RefreshShopUI();
+            ModuleShopManager.Instance.RefreshShopUI();
             UpdateDebugShopList();
         }
+
+        /// <summary>
+        /// 상점에 없는 모듈 중 무작위 하나를 추가합니다.
+        /// </summary>
+        public void AddRandomModuleToShop()
+        {
+            // 1. 전체 모듈 목록 가져오기
+            List<ModuleDataItem> allModules = new(GameManager.Instance.ModuleDict.Values);
+
+            // 2. 현재 상점에 이미 있는 모듈 제거
+            foreach (var existing in shopModules.Values)
+            {
+                allModules.Remove(existing);
+            }
+
+            // 3. 남은 게 없다면 리턴
+            if (allModules.Count == 0)
+            {
+                Debug.LogWarning("더 이상 추가할 모듈이 없습니다.");
+                return;
+            }
+
+            // 4. 기존 Shuffle 메서드로 섞기
+            Shuffle(allModules);
+
+            // 5. 첫 번째 모듈 선택 후 추가
+            var selectedModule = allModules[0];
+            int newIndex = shopModules.Count;
+            shopModules[newIndex] = selectedModule;
+
+            ModuleShopManager.Instance.AddNewModuleToShop(newIndex, selectedModule);
+
+            UpdateDebugShopList();
+        }
+
 
 
 
         /// <summary>
         /// 모듈을 구매하고 지정 위치(Row/Column + index)에 장착함
         /// </summary>
-        public bool TryPurchaseAndEquip(int moduleKey, EquipAxis axis, int index)
+        public void TryPurchaseAndEquip(int moduleKey, EquipAxis axis, int index)
         {
             if (!shopModules.TryGetValue(moduleKey, out var module))
-                return false;
+                return;
 
             // 기존 모듈이 있다면 제거 (덮어쓰기)
             UnequipModule(axis, index);
@@ -82,7 +115,9 @@ namespace EmergencyRoulette
             equippedModules.Add(new ModuleEquipSlot(module, axis, index));
             shopModules.Remove(moduleKey);
 
-            return true;
+            ModuleShopManager.Instance.ClearSelection();
+            ModuleShopManager.Instance.RemoveModuleUI(moduleKey);
+
         }
 
 
