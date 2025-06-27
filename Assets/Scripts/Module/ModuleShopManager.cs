@@ -21,31 +21,57 @@ namespace EmergencyRoulette
             foreach (var child in children)
                 ModuleShopPrefabPooler.Instance.Return(child.gameObject);
 
-            // 모듈 매니저에서 상점 모듈 가져오기
-            List<ModuleDataItem> shopModules = ModuleManager.Instance.shopModules;
+            // 모듈 매니저에서 상점 모듈 가져오기 (딕셔너리 기준)
+            Dictionary<int, ModuleDataItem> shopModules = ModuleManager.Instance.shopModules;
 
             // 풀에서 하나씩 가져와서 세팅
-            foreach (var module in shopModules)
+            foreach (var kvp in shopModules)
             {
+                int moduleKey = kvp.Key;
+                ModuleDataItem module = kvp.Value;
+
                 GameObject itemGO = ModuleShopPrefabPooler.Instance.Get();
                 itemGO.transform.SetParent(shopItemContainer, false);
 
+                // 위치 조정
+                RectTransform rt = itemGO.GetComponent<RectTransform>();
+                rt.anchorMin = new Vector2(0, 1);
+                rt.anchorMax = new Vector2(1, 1);
+                rt.pivot = new Vector2(0.5f, 0.5f);
+
+                rt.offsetMin = new Vector2(30, rt.offsetMin.y);
+                rt.offsetMax = new Vector2(-30, rt.offsetMax.y);
+
+                rt.sizeDelta = new Vector2(rt.sizeDelta.x, 180);
+
+                rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, -150 - 200 * moduleKey);
+
                 var itemUI = itemGO.GetComponent<ModuleShopItemUI>();
-                itemUI.Setup(module, OnModuleBuyClicked);
+                itemUI.Setup(moduleKey, module, OnModuleBuyClicked);
+            }
+
+        }
+
+        public void OnModuleBuyClicked(int moduleKey)
+        {
+            var moduleDict = ModuleManager.Instance.shopModules;
+
+            if (!moduleDict.TryGetValue(moduleKey, out var module))
+                return;
+
+            // 여기서 장착 시도
+            bool success = ModuleManager.Instance.TryPurchaseAndEquip(moduleKey, EquipAxis.Row, 0); // 예: Row 0에 장착
+
+            if (success)
+            {
+                Debug.Log($"모듈 구매 및 장착 성공: {module.moduleName}");
+                RefreshShopUI(); // 다시 UI 갱신
+            }
+            else
+            {
+                Debug.Log("구매 실패: 이미 장착된 위치거나 오류");
             }
         }
 
-
-        /// <summary>
-        /// 모듈 구매 버튼 클릭 시 호출됨
-        /// </summary>
-        private void OnModuleBuyClicked(ModuleDataItem clickedModule)
-        {
-            // 예시: 구매 후 장착할 위치 선택 팝업 띄우기
-            Debug.Log($"구매 시도: {clickedModule.moduleName}");
-
-            // 실제 장착은 장착 위치 UI 만들고 나서 이어서 처리
-            // 또는 여기서 바로 테스트 장착도 가능
-        }
     }
 }

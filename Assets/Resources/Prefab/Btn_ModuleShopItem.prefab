@@ -208,8 +208,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Title
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 14c041b5650517b4abd38303870a0cfc, type: 2}
-  m_sharedMaterial: {fileID: -4762867003489992053, guid: 14c041b5650517b4abd38303870a0cfc, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 969f13e980762de44abef6723c3597db, type: 2}
+  m_sharedMaterial: {fileID: 5418974665222446380, guid: 969f13e980762de44abef6723c3597db, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -419,8 +419,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 14c041b5650517b4abd38303870a0cfc, type: 2}
-  m_sharedMaterial: {fileID: -4762867003489992053, guid: 14c041b5650517b4abd38303870a0cfc, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 969f13e980762de44abef6723c3597db, type: 2}
+  m_sharedMaterial: {fileID: 5418974665222446380, guid: 969f13e980762de44abef6723c3597db, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -555,8 +555,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Lorem Ipsum is simply dummy text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 14c041b5650517b4abd38303870a0cfc, type: 2}
-  m_sharedMaterial: {fileID: -4762867003489992053, guid: 14c041b5650517b4abd38303870a0cfc, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 969f13e980762de44abef6723c3597db, type: 2}
+  m_sharedMaterial: {fileID: 5418974665222446380, guid: 969f13e980762de44abef6723c3597db, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

@@ -16,7 +16,7 @@ namespace EmergencyRoulette
         }
 
         // 이번 상점에 진열된 모듈들
-        public List<ModuleDataItem> shopModules = new();
+        public Dictionary<int, ModuleDataItem> shopModules = new();
 
         // 슬롯머신에 장착된 모듈들
         public List<ModuleEquipSlot> equippedModules = new();
@@ -39,7 +39,7 @@ namespace EmergencyRoulette
             // N개만 상점에 진열
             for (int i = 0; i < Mathf.Min(count, shuffled.Count); i++)
             {
-                shopModules.Add(shuffled[i]);
+                shopModules.Add(i, shuffled[i]);
             }
 
             shopManager.RefreshShopUI();
@@ -50,9 +50,10 @@ namespace EmergencyRoulette
         /// <summary>
         /// 모듈을 구매하고 지정 위치(Row/Column + index)에 장착함
         /// </summary>
-        public bool TryPurchaseAndEquip(ModuleDataItem module, EquipAxis axis, int index) // 변경 예정, purchase 와 equip 분리 예정
+        public bool TryPurchaseAndEquip(int moduleKey, EquipAxis axis, int index)
         {
-            if (!shopModules.Contains(module))
+            // 상점에 해당 키가 없으면 실패
+            if (!shopModules.TryGetValue(moduleKey, out var module))
                 return false;
 
             // 중복 장착 방지
@@ -63,10 +64,11 @@ namespace EmergencyRoulette
             }
 
             equippedModules.Add(new ModuleEquipSlot(module, axis, index));
-            shopModules.Remove(module);
+            shopModules.Remove(moduleKey);
 
             return true;
         }
+
 
         /// <summary>
         /// 특정 위치에 장착된 모듈 해제
