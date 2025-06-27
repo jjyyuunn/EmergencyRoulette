@@ -5,8 +5,7 @@ namespace EmergencyRoulette
 {
     public class ModuleManager : MonoBehaviour
     {
-        // 전체 모듈 데이터 (엑셀에서 로드됨)
-        public List<ModuleDataItem> allModules = new();
+        
 
         // 이번 상점에 진열된 모듈들
         public List<ModuleDataItem> shopModules = new();
@@ -14,13 +13,7 @@ namespace EmergencyRoulette
         // 슬롯머신에 장착된 모듈들
         public List<ModuleEquipSlot> equippedModules = new();
 
-        /// <summary>
-        /// 엑셀 or ScriptableObject에서 전체 모듈 불러오기
-        /// </summary>
-        public void LoadAllModules(List<ModuleDataItem> modulesFromSource)
-        {
-            allModules = modulesFromSource;
-        }
+
 
         /// <summary>
         /// 상점에 진열할 모듈 N개를 무작위로 선택
@@ -29,14 +22,18 @@ namespace EmergencyRoulette
         {
             shopModules.Clear();
 
-            List<ModuleDataItem> shuffled = new(allModules);
+            // 딕셔너리 값들을 리스트로 변환 (모듈 전체 목록)
+            List<ModuleDataItem> shuffled = new(GameManager.Instance.ModuleDict.Values);
             Shuffle(shuffled);
 
+            // N개만 상점에 진열
             for (int i = 0; i < Mathf.Min(count, shuffled.Count); i++)
             {
                 shopModules.Add(shuffled[i]);
             }
         }
+
+
 
         /// <summary>
         /// 모듈을 구매하고 지정 위치(Row/Column + index)에 장착함

@@ -9,7 +9,9 @@ namespace EmergencyRoulette
     {
         public static ExcelManager Instance;
         public static Dictionary<int, TestItem> TestItemDict;
-        
+        public static Dictionary<string, ModuleDataItem> ModuleDict;
+
+
         private void Awake()
         {
             if (Instance == null)
@@ -35,6 +37,15 @@ namespace EmergencyRoulette
                 return;
             }
             TestItemDict = db.Sheet1.ToDictionary(item => item.id);
+            Debug.Log("아이템 딕셔너리 초기화 완료");
+
+            ModuleTestExcel db_Module = Resources.Load<ModuleTestExcel>("ScriptableObjects/ModuleTestExcel");
+            if (db_Module == null)
+            {
+                Debug.LogError("ModuleTestExcel를 찾을 수 없습니다!");
+                return;
+            }
+            ModuleDict = db_Module.Sheet1.ToDictionary(item => item.moduleName);
             Debug.Log("아이템 딕셔너리 초기화 완료");
         }
 

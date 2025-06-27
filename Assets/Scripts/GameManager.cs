@@ -18,6 +18,7 @@ namespace EmergencyRoulette
 
         // example
         public Dictionary<int, TestItem> TestItemDict => ExcelManager.TestItemDict;
+        public Dictionary<string, ModuleDataItem> ModuleDict => ExcelManager.ModuleDict;
 
         void Awake()
         {
