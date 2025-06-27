@@ -5,13 +5,23 @@ namespace EmergencyRoulette
 {
     public class ModuleManager : MonoBehaviour
     {
-        
+        public static ModuleManager Instance { get; private set; }
+
+        private void Awake()
+        {
+            if (Instance == null)
+                Instance = this;
+            else
+                Destroy(gameObject);
+        }
 
         // 이번 상점에 진열된 모듈들
         public List<ModuleDataItem> shopModules = new();
 
         // 슬롯머신에 장착된 모듈들
         public List<ModuleEquipSlot> equippedModules = new();
+
+        [SerializeField] public ModuleShopManager shopManager;
 
 
 
@@ -31,6 +41,8 @@ namespace EmergencyRoulette
             {
                 shopModules.Add(shuffled[i]);
             }
+
+            shopManager.RefreshShopUI();
         }
 
 
