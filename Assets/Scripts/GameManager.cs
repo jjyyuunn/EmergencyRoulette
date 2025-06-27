@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections.Generic;
+using System;
 
 namespace EmergencyRoulette
 {
@@ -6,6 +8,16 @@ namespace EmergencyRoulette
     public class GameManager : MonoBehaviour
     {
         public static GameManager Instance;
+        
+        private ExcelManager _excelManager;
+        public static ExcelManager ExcelManager
+        {
+            get { return Instance._excelManager; }
+            set { Instance._excelManager = value;  Debug.Log("excelManager Loaded");}
+        }
+
+        // example
+        public Dictionary<int, TestItem> TestItemDict => ExcelManager.TestItemDict;
 
         void Awake()
         {
