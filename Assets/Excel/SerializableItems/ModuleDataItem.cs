@@ -33,7 +33,6 @@ namespace EmergencyRoulette
         public string description;        // 모듈 설명
 
         public ModuleTarget targetType;   // 대상 타입 (행, 열, 전체)
-        public int targetIndex;           // 대상 인덱스 (0부터 시작)
 
         public ModuleEffectType effectType; // 효과 종류
         public string targetResource;       // 영향을 주는 자원 이름
