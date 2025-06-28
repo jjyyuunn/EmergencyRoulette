@@ -77,6 +77,12 @@ MonoBehaviour:
     useType: 1
     energyCost: 1
     effectKey: ReduceOverloadByTech
+  - moduleName: "\uBE0C\uB808\uC778 \uC2A4\uD1A0\uBC0D"
+    description: "1 \uC2DD\uB7C9 \uC0AC\uC6A9, \uB370\uC774\uD130 2 \uC99D\uAC00"
+    purchaseCost: 2
+    useType: 1
+    energyCost: 1
+    effectKey: IncreaseDataByFood
   - moduleName: "\uC704\uAE30 \uC804\uD658 \uD504\uB85C\uD1A0\uCF5C"
     description: "\uACBD\uACE0 + \uBC29\uC804 + \uB099\uD6C4 \uC2EC\uBCFC \uCF64\uBCF4
       \uCD94\uAC00"

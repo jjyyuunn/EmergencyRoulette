@@ -30,11 +30,13 @@ namespace EmergencyRoulette
 
         private SlotBoard _slotBoard;
         private Dictionary<SymbolType, int> _gainedSymbols;
+
         private bool _dismissPenaltyCombo;
-        public bool DataCombo; // 처리 후 다시 false로 바꿔주시와요..
-        public bool BreakRandomModule; // 이것도 모듈에서 사용. 쓰고 false로 변경..
         private int _nextTurnTechBonus; // 실패는 성공의 어머니
         private bool _noEnergyProduction; // 정전
+
+        public bool DataCombo { get; set; }  // 처리 후 다시 false로 바꿔주시와요..
+        public bool DoubleNextActive { get; set; } // 모듈 오버클럭
 
         public PlayerState()
         {
@@ -52,20 +54,6 @@ namespace EmergencyRoulette
             _gainedSymbols = slotBoard.GainedSymbols;
         }
 
-        public void SetPlayerState(SlotBoard slotBoard)
-        {
-            _slotBoard = slotBoard;
-            _gainedSymbols = slotBoard.GainedSymbols;
-            Technology += _nextTurnTechBonus; // 콤보 보너스 적용
-            _nextTurnTechBonus = 0;
-            
-            // 순서대로
-            SetResourceCombo();
-            SetSpecialCombo();
-            SetPenaltyCombos();
-            SetNormalState();
-        }
-        
         // 자원 콤보
         public void SetResourceCombo()
         {
@@ -203,26 +191,53 @@ namespace EmergencyRoulette
 
         private void CheckEnergyLeakage()
         {
-            int dischargeCount = _slotBoard.Grid.Values.Count(s => s == SymbolType.Discharge);
-            int outdatedCount = _slotBoard.Grid.Values.Count(s => s == SymbolType.Outdated);
+            List<int> leakRows = new();
 
-            if (dischargeCount >= 2 && outdatedCount >= 1)
+            for (int y = 0; y < _slotBoard.RowCount; y++)
             {
-                BreakRandomModule = true; // 랜덤 모듈 고장 함수
-                Debug.Log("[SpecialPenaltyCombo] Energy Leak → Random module failure");
+                if (!_slotBoard.Rows[y]) continue; // 잠긴 행 제외
+
+                int discharge = 0;
+                int outdated = 0;
+
+                for (int x = 0; x < _slotBoard.ColumnCount; x++)
+                {
+                    var symbol = _slotBoard.Get(x, y);
+                    if (symbol == SymbolType.Discharge) discharge++;
+                    if (symbol == SymbolType.Outdated) outdated++;
+                }
+
+                if (discharge >= 2 && outdated >= 1)
+                    leakRows.Add(y);
+            }
+
+            if (leakRows.Count > 0)
+            {
+                int randomIndex = UnityEngine.Random.Range(0, leakRows.Count);
+                int selectedRow = leakRows[randomIndex];
+
+                ModuleManager.Instance.SetModuleBroken(selectedRow);
+                Debug.Log($"[SpecialPenaltyCombo] Energy Leak → Row {selectedRow} module broken");
             }
         }
 
-        private bool HasGainDataOnDangerModule()
+
+        private int CountGainDataOnDangerModules()
         {
+            int count = 0;
+
             foreach (var equip in ModuleManager.Instance.equippedModules)
             {
                 if (equip.module.useType == ModuleUseType.Passive &&
                     equip.module.effectKey == "GainDataIfMultipleDanger")
-                    return true;
+                {
+                    count++;
+                }
             }
-            return false;
+
+            return count;
         }
+
 
         // FIXME: 기본 심볼 생산
         public void SetNormalState()
@@ -232,18 +247,15 @@ namespace EmergencyRoulette
             Food += _gainedSymbols[SymbolType.Food];
             Data += _gainedSymbols[SymbolType.Data];
 
-            if (HasGainDataOnDangerModule())
-            {
-                int dangerCount =
-                    _gainedSymbols[SymbolType.Warning] +
-                    _gainedSymbols[SymbolType.Discharge] +
-                    _gainedSymbols[SymbolType.Outdated];
+            int dangerCount =
+                _gainedSymbols[SymbolType.Warning] +
+                _gainedSymbols[SymbolType.Discharge] +
+                _gainedSymbols[SymbolType.Outdated];
 
-                if (dangerCount >= 2)
-                {
-                    Data += 2;
-                    Debug.Log("[PassiveEffect] 위험 심볼 2개 이상 → 데이터 +2 발동");
-                }
+            if (dangerCount >= 2)
+            {
+                Data += 2 * CountGainDataOnDangerModules();
+                Debug.Log("[PassiveEffect] 위험 심볼 2개 이상 → 데이터 +2 발동");
             }
 
             CheckWarning();
@@ -257,25 +269,37 @@ namespace EmergencyRoulette
             Debug.Log($"[PlayerResource] EmergencyLevel: {EmergencyLevel}");
         }
 
-        private bool HasIgnoreWarningModule()
+        private int CountIgnoreWarningModules()
         {
+            int count = 0;
+
             foreach (var equip in ModuleManager.Instance.equippedModules)
             {
                 if (equip.module.useType == ModuleUseType.Passive &&
                     equip.module.effectKey == "IgnoreWarningWithEnergy")
-                    return true;
+                {
+                    count++;
+                }
             }
-            return false;
+
+            return count;
         }
+
 
 
         private void CheckWarning()
         {
-            if (HasIgnoreWarningModule() && Energy >= 1)
+            int ignoreCount = CountIgnoreWarningModules();
+
+            if (ignoreCount > 0)
             {
-                Energy -= 1;
-                Debug.Log("[WarningCheck] 경고 무효화 모듈 작동 → 에너지 1 소모, 경고 무효화");
-                return;
+                if (ignoreCount <= 0 || Energy <= 0)
+                    return;
+
+                int usableCount = Mathf.Min(ignoreCount, Energy); // 에너지가 부족하면 그만큼만
+                Energy -= usableCount;
+
+                Debug.Log($"[WarningCheck] 경고 무효화 모듈 {ignoreCount}개 중 {usableCount}개 작동 → 에너지 {usableCount} 소모, 경고 {usableCount}개 무효화");
             }
 
             OverloadGauge += _gainedSymbols[SymbolType.Warning] * 5f;
@@ -392,6 +416,9 @@ namespace EmergencyRoulette
             if (OverloadGauge < 90f) return EmergencyLevel.Severe;
             return EmergencyLevel.Crisis;
         }
+
+        public SlotBoard SlotBoard => _slotBoard;
+
 
         public void PrintResources()
         {

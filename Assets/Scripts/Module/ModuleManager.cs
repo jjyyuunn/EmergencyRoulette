@@ -21,6 +21,7 @@ namespace EmergencyRoulette
         // ½½·Ô¸Ó½Å¿¡ ÀåÂøµÈ ¸ðµâµé
         public List<ModuleEquipSlot> equippedModules = new();
 
+        private HashSet<int> brokenModuleIndices = new();
 
         // shopModules µð¹ö±ë¿ë
         [SerializeField] private List<ModuleDataItem> debugShopModuleList = new();
@@ -144,6 +145,22 @@ namespace EmergencyRoulette
                 (list[i], list[randIndex]) = (list[randIndex], list[i]);
             }
         }
+
+        public void SetModuleBroken(int index)
+        {
+            brokenModuleIndices.Add(index);
+        }
+
+        public void RepairModule(int index)
+        {
+            brokenModuleIndices.Remove(index);
+        }
+
+        public bool IsModuleBroken(int index)
+        {
+            return brokenModuleIndices.Contains(index);
+        }
+
     }
 
     /// <summary>

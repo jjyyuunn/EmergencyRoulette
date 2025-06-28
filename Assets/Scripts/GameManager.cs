@@ -21,6 +21,8 @@ namespace EmergencyRoulette
         public Dictionary<string, ModuleDataItem> ModuleDict => ExcelManager.ModuleDict;
         public PlayerState PlayerState = new PlayerState();
 
+        public bool CanPlayerInteract { get; private set; }
+
         void Awake()
         {
             Init();
@@ -39,6 +41,16 @@ namespace EmergencyRoulette
                 Instance = go.GetComponent<GameManager>();
                 DontDestroyOnLoad(Instance.gameObject);
             }
+        }
+
+        public void OnTurnEnd()
+        {
+            CanPlayerInteract = true; // 이 시점에서만 사용 허용
+        }
+
+        public void OnUseActiveModule()
+        {
+            CanPlayerInteract = false; // 사용 시 비활성화
         }
     }
 }
