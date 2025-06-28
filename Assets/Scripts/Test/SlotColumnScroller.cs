@@ -64,7 +64,7 @@ public class SlotColumnScroller : MonoBehaviour
         symbolContainer.anchoredPosition = Vector2.zero;
     }
 
-    public IEnumerator StartSpin(SymbolType symbol)
+    public IEnumerator StartSpin(SymbolType symbol, Action onComplete)
     {
         SetRandomParams();
 
@@ -84,8 +84,9 @@ public class SlotColumnScroller : MonoBehaviour
                         spinCoroutine = StartCoroutine(SpinRoutine());
                     });
             });
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1f);
         StopSpin(symbol);
+        onComplete?.Invoke();
     }
 
     private void SetRandomParams()

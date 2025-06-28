@@ -63,7 +63,7 @@ namespace EmergencyRoulette
                 switch (combos[y].symbol)
                 {
                     case SymbolType.Food:
-                        _useFoodBonus++;
+                        _useFoodBonus++; // 여기 마이너스 or 플러스?
                         break;
                     case SymbolType.Energy:
                         OverloadGauge -= 10f;

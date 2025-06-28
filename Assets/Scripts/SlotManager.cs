@@ -1,11 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.EventSystems.EventTrigger;
+using System;
 
 namespace EmergencyRoulette
 {
     public class SlotManager : MonoBehaviour
     {
+        public static SlotManager Instance;
+        
         [SerializeField] private GameObject slotPrefab;
         [SerializeField] private Transform slotParent;
 
@@ -14,6 +17,22 @@ namespace EmergencyRoulette
         private SymbolLibrary _symbolLibrary;
         private SymbolPicker _symbolPicker;
         private SlotBoard _slotBoard;
+        public bool HasSpunThisTurn;
+        
+        public Action OnComplete;
+        
+        private void Awake()
+        {
+            if (Instance == null)
+            {
+                Instance = this;
+                GameManager.SlotManager = this;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
 
         public void Start()
         {
@@ -45,7 +64,17 @@ namespace EmergencyRoulette
 
         public void StartSpin()
         {
+            if (GameManager.Instance.CurrentState != GameManager.GameState.Spin)
+                return;
+
+            if (HasSpunThisTurn)
+                return;
+            
+            _slotBoard.ResetGainedSymbols(); // 심볼 리셋
             _slotBoard.Spin();
+            HasSpunThisTurn = true;
+            
+            int pendingCount = 0;
 
             for (int y = 0; y < _slotBoard.RowCount; y++)
             {
@@ -54,7 +83,17 @@ namespace EmergencyRoulette
                     for (int x = 0; x < _slotBoard.ColumnCount; x++)
                     {
                         SymbolType symbol = _slotBoard.Get(x, y);
-                        slotInstances[x, y].StartCoroutine(slotInstances[x, y].StartSpin(symbol));
+                        var instance = slotInstances[x, y];
+                        pendingCount++;
+                        
+                        instance.StartCoroutine(instance.StartSpin(symbol, () =>
+                        {
+                            pendingCount--;
+                            if (pendingCount == 0)
+                            {
+                                OnAllSpinComplete();
+                            }
+                        }));
                     }
                 }
             }
@@ -62,8 +101,12 @@ namespace EmergencyRoulette
             PrintBoard();
             AddResource();
         }
-
-
+        
+        private void OnAllSpinComplete()
+        {
+            Debug.Log("All spin animations completed");
+            GameManager.Instance.SetState(GameManager.GameState.Resolving);
+        }
 
         // 플레이어 리소스 더하기
         private void AddResource()
@@ -85,9 +128,6 @@ namespace EmergencyRoulette
 
             // 기본 심볼 생산
             playerState.SetNormalState();
-            
-            // 심볼 리셋
-            _slotBoard.ResetGainedSymbols();
         }
 
 
