@@ -56,7 +56,7 @@ public class SlotColumnScroller : MonoBehaviour
 
     private void InitSymbols()
     {
-        float y_offset = symbols.Length * symbolHeight / 2f;
+        float y_offset = (symbols.Length % 2 == 0) ? symbols.Length * symbolHeight / 2f : (symbols.Length - 1) * symbolHeight / 2f;
         for (int i = 0; i < symbols.Length; i++)
         {
             symbols[i].rectTransform.anchoredPosition = new Vector2(0, -symbolHeight * i + y_offset);

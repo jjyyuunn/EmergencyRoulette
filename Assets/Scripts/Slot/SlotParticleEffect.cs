@@ -2,25 +2,34 @@ using UnityEngine;
 using UnityEngine.UI;
 using AssetKits.ParticleImage;
 using AssetKits.ParticleImage.Enumerations;
+using System.Collections;
 
 namespace EmergencyRoulette
 {
     public class SlotParticleEffect : MonoBehaviour
     {
+        [SerializeField] private GameObject particleImageObject;
         [SerializeField] private ParticleImage particleImage;
 
-        [SerializeField] private Sprite foodSprite;
-        [SerializeField] private Sprite dataSprite;
         [SerializeField] private Sprite energySprite;
+        [SerializeField] private Sprite foodSprite;
         [SerializeField] private Sprite medicalSprite;
+        [SerializeField] private Sprite dataSprite;
 
-        [SerializeField] private Transform foodAttractor;
-        [SerializeField] private Transform dataAttractor;
         [SerializeField] private Transform energyAttractor;
+        [SerializeField] private Transform foodAttractor;
         [SerializeField] private Transform medicalAttractor;
+        [SerializeField] private Transform dataAttractor;
 
         public void Play()
         {
+            StartCoroutine(PlayRoutine());
+        }
+
+        private IEnumerator PlayRoutine()
+        {
+            particleImageObject.SetActive(true);
+
             SymbolType type = SymbolType.Food;
             int emissionRatePerSecond = 20;
 
@@ -29,34 +38,36 @@ namespace EmergencyRoulette
 
             switch (type)
             {
-                case SymbolType.Food:
-                    selectedSprite = foodSprite;
-                    selectedAttractor = foodAttractor;
-                    break;
-                case SymbolType.Data:
-                    selectedSprite = dataSprite;
-                    selectedAttractor = dataAttractor;
-                    break;
                 case SymbolType.Energy:
                     selectedSprite = energySprite;
                     selectedAttractor = energyAttractor;
+                    break;
+                case SymbolType.Food:
+                    selectedSprite = foodSprite;
+                    selectedAttractor = foodAttractor;
                     break;
                 case SymbolType.Medical:
                     selectedSprite = medicalSprite;
                     selectedAttractor = medicalAttractor;
                     break;
+                case SymbolType.Data:
+                    selectedSprite = dataSprite;
+                    selectedAttractor = dataAttractor;
+                    break;
                 default:
                     Debug.LogWarning($"[SlotParticleEffect] No effect for symbol: {type}");
-                    return;
+                    yield break;
             }
 
-            // 진짜 작동하는 필드 이름은 소문자 image / attractor / emissionRate
             particleImage.sprite = selectedSprite;
             particleImage.attractorTarget = selectedAttractor;
             particleImage.rateOverTime = emissionRatePerSecond * 2;
 
-            // 실행
             particleImage.Play();
+
+            yield return new WaitForSeconds(2f);
+
+            particleImageObject.SetActive(false);
         }
     }
 }

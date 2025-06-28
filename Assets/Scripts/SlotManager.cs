@@ -25,6 +25,8 @@ namespace EmergencyRoulette
         {
             _slotBoard.Spin();
             StartCoroutine(Slot0.StartSpin(_slotBoard.Get(0,0)));
+            
+            PrintBoard();
         }
         
         private void PrintBoard()
