@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 namespace EmergencyRoulette
 {
@@ -64,6 +65,11 @@ namespace EmergencyRoulette
         private void AddResource()
         {
             GameManager.Instance.PlayerState.SetPlayerState(_slotBoard);
+            ModuleEffectExecutor.ApplyAllPassiveModules();
+
+            Debug.Log("=== After PassiveModule ===");
+            GameManager.Instance.PlayerState.PrintResources();
+
             _slotBoard.ResetGainedSymbols(); // 다 적용 후 리셋
         }
         

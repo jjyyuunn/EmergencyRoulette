@@ -88,6 +88,10 @@ namespace EmergencyRoulette
         // 특수 콤보
         private void SetSpecialCombo()
         {
+            bool crisisOn = HasComboModule("AddCombo_WarningDischargeDecay");
+            bool chargeOn = HasComboModule("AddCombo_EnergyDischargeDischarge");
+            bool failOn = HasComboModule("AddCombo_TechDecayDecay");
+
             for (int y = 0; y < _slotBoard.RowCount; y++)
             {
                 Dictionary<SymbolType, int> rowSymbols = new();
@@ -99,13 +103,28 @@ namespace EmergencyRoulette
                     rowSymbols[symbol]++;
                 }
 
-                CheckCrisisProtocol(rowSymbols);
-                CheckEmergencyChargeUnit(rowSymbols);
-                CheckFailureToSuccess(rowSymbols);
-                Debug.Log("special combo activated.");
+                if (crisisOn)
+                    CheckCrisisProtocol(rowSymbols);
+
+                if (chargeOn)
+                    CheckEmergencyChargeUnit(rowSymbols);
+
+                if (failOn)
+                    CheckFailureToSuccess(rowSymbols);
             }
         }
-        
+
+
+        private bool HasComboModule(string effectKey)
+        {
+            foreach (var equip in ModuleManager.Instance.equippedModules)
+            {
+                if (equip.module.useType == ModuleUseType.Combo && equip.module.effectKey == effectKey)
+                    return true;
+            }
+            return false;
+        }
+
         private void CheckCrisisProtocol(Dictionary<SymbolType, int> rowSymbols)
         {
             if (rowSymbols.TryGetValue(SymbolType.Warning, out int warn) && warn == 1 &&
@@ -122,7 +141,7 @@ namespace EmergencyRoulette
                 Debug.Log("[Combo] 위기 전환 프로토콜 발동!");
             }
         }
-        
+
         private void CheckEmergencyChargeUnit(Dictionary<SymbolType, int> rowSymbols)
         {
             if (rowSymbols.TryGetValue(SymbolType.Energy, out int energy) && energy == 1 &&
@@ -189,6 +208,8 @@ namespace EmergencyRoulette
             }
         }
 
+        private bool _gainDataOnDangerThisTurn = false;
+        public void SetGainDataOnDanger() => _gainDataOnDangerThisTurn = true;
 
         // FIXME: 기본 심볼 생산
         private void SetNormalState()
@@ -197,7 +218,21 @@ namespace EmergencyRoulette
             Technology += _gainedSymbols[SymbolType.Technology];
             Food += _gainedSymbols[SymbolType.Food];
             Data += _gainedSymbols[SymbolType.Data];
-            
+
+            if (_gainDataOnDangerThisTurn)
+            {
+                int dangerCount =
+                    _gainedSymbols[SymbolType.Warning] +
+                    _gainedSymbols[SymbolType.Discharge] +
+                    _gainedSymbols[SymbolType.Outdated];
+
+                if (dangerCount >= 2)
+                {
+                    Data += 2;
+                    Debug.Log("[PassiveEffect] 위험 심볼 2개 이상 → 데이터 +2 발동");
+                }
+            }
+
             CheckWarning();
             CheckDischarge();
             CheckOutdated();
@@ -209,8 +244,27 @@ namespace EmergencyRoulette
             Debug.Log($"[PlayerResource] EmergencyLevel: {EmergencyLevel}");
         }
 
+        private bool HasIgnoreWarningModule()
+        {
+            foreach (var equip in ModuleManager.Instance.equippedModules)
+            {
+                if (equip.module.useType == ModuleUseType.Passive &&
+                    equip.module.effectKey == "IgnoreWarningWithEnergy")
+                    return true;
+            }
+            return false;
+        }
+
+
         private void CheckWarning()
         {
+            if (HasIgnoreWarningModule() && Energy >= 1)
+            {
+                Energy -= 1;
+                Debug.Log("[WarningCheck] 경고 무효화 모듈 작동 → 에너지 1 소모, 경고 무효화");
+                return;
+            }
+
             OverloadGauge += _gainedSymbols[SymbolType.Warning] * 5f;
 
             switch (EmergencyLevel)
@@ -325,5 +379,11 @@ namespace EmergencyRoulette
             if (OverloadGauge < 90f) return EmergencyLevel.Severe;
             return EmergencyLevel.Crisis;
         }
+
+        public void PrintResources()
+        {
+            Debug.Log($"[Resource] Energy: {Energy}, Tech: {Technology}, Food: {Food}, Data: {Data}, Overload: {OverloadGauge}");
+        }
+
     }
 }
