@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace EmergencyRoulette
 {
@@ -14,6 +15,8 @@ namespace EmergencyRoulette
 
         public int selectedModuleKey = -1;
         private ModuleShopItemUI selectedItemUI = null;
+
+        [SerializeField] private GameObject cancelSelectedBtn;
 
         private void Awake()
         {
@@ -69,6 +72,8 @@ namespace EmergencyRoulette
             selectedItemUI = ui;
             selectedItemUI.Highlight(true);
 
+            cancelSelectedBtn.SetActive(true);
+
         }
 
         public void ClearSelection()
@@ -78,6 +83,8 @@ namespace EmergencyRoulette
 
             selectedModuleKey = -1;
             selectedItemUI = null;
+
+            cancelSelectedBtn.SetActive(false);
         }
 
 
