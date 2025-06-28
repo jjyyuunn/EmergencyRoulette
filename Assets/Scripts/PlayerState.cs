@@ -12,7 +12,7 @@ namespace EmergencyRoulette
         Crisis = 90         // 90% ~ 100%
     }
     
-    public class PlayerResource
+    public class PlayerState
     {
         public int Energy;
         public int Food;
@@ -24,7 +24,7 @@ namespace EmergencyRoulette
 
         private Dictionary<SymbolType, int> _gainedSymbols;
 
-        public PlayerResource()
+        public PlayerState()
         {
             Energy = 0;
             Food = 0;
@@ -41,6 +41,7 @@ namespace EmergencyRoulette
             SetNormalResource();
         }
 
+        // 기본 심볼 생산
         private void SetNormalResource()
         {
             Energy += _gainedSymbols[SymbolType.Energy];

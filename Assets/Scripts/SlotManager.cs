@@ -63,7 +63,7 @@ namespace EmergencyRoulette
         // 플레이어 리소스 더하기
         private void AddResource()
         {
-            GameManager.Instance.PlayerResource.SetPlayerResource(_slotBoard.GainedSymbols);
+            GameManager.Instance.PlayerState.SetPlayerResource(_slotBoard.GainedSymbols);
             _slotBoard.ResetGainedSymbols(); // 다 적용 후 리셋
         }
         
