@@ -104,15 +104,15 @@ namespace EmergencyRoulette
         /// <summary>
         /// 모듈을 구매하고 지정 위치(Row/Column + index)에 장착함
         /// </summary>
-        public void TryPurchaseAndEquip(int moduleKey, EquipAxis axis, int index)
+        public void TryPurchaseAndEquip(int moduleKey, int index)
         {
             if (!shopModules.TryGetValue(moduleKey, out var module))
                 return;
 
             // 기존 모듈이 있다면 제거 (덮어쓰기)
-            UnequipModule(axis, index);
+            equippedModules.RemoveAll(m => m.index == index);
 
-            equippedModules.Add(new ModuleEquipSlot(module, axis, index));
+            equippedModules.Add(new ModuleEquipSlot(module, index));
             shopModules.Remove(moduleKey);
 
             ModuleShopManager.Instance.ClearSelection();
@@ -120,24 +120,14 @@ namespace EmergencyRoulette
 
         }
 
-
-
-        /// <summary>
-        /// 특정 위치에 장착된 모듈 해제
-        /// </summary>
-        public void UnequipModule(EquipAxis axis, int index)
-        {
-            equippedModules.RemoveAll(m => m.axis == axis && m.index == index);
-        }
-
         /// <summary>
         /// 특정 위치(Row/Col + index)에 장착된 모듈 반환
         /// </summary>
-        public ModuleDataItem GetEquippedModule(EquipAxis axis, int index)
+        public ModuleDataItem GetEquippedModule(int index)
         {
             foreach (var equip in equippedModules)
             {
-                if (equip.axis == axis && equip.index == index)
+                if (equip.index == index)
                     return equip.module;
             }
             return null;
@@ -163,23 +153,13 @@ namespace EmergencyRoulette
     public class ModuleEquipSlot
     {
         public ModuleDataItem module;
-        public EquipAxis axis;
         public int index;
 
-        public ModuleEquipSlot(ModuleDataItem module, EquipAxis axis, int index)
+        public ModuleEquipSlot(ModuleDataItem module, int index)
         {
             this.module = module;
-            this.axis = axis;
             this.index = index;
         }
     }
 
-    /// <summary>
-    /// 장착 위치 축: Row 또는 Column
-    /// </summary>
-    public enum EquipAxis
-    {
-        Row,
-        Column
-    }
 }

@@ -7,14 +7,11 @@ namespace EmergencyRoulette
     {
         public static ModuleEquipManager Instance { get; private set; }
 
-        [Header("행/열 수")]
         public int row = 3;
-        public int column = 3;
 
         [Header("UI 프리팹 & 부모")]
         public GameObject equipButtonPrefab;
-        public Transform rowButtonContainer;
-        public Transform columnButtonContainer;
+        public Transform equipButtonContainer;
 
         public Button cancelModuleEquipBtn;
 
@@ -41,47 +38,36 @@ namespace EmergencyRoulette
         {
             for (int i = 0; i < row; i++)
             {
-                GameObject btn = Instantiate(equipButtonPrefab, rowButtonContainer);
+                GameObject btn = Instantiate(equipButtonPrefab, equipButtonContainer);
                 var ui = btn.GetComponent<ModuleEquipPositionUI>();
-                ui.Setup(EquipAxis.Row, i, OnEquipButtonClicked);
-                ui.label.text = $"Row {i}";
+
+                ui.Setup(i, OnEquipButtonClicked); // axis 제거된 버전
+                ui.label.text = $"Slot {i}";
 
                 RectTransform rt = btn.GetComponent<RectTransform>();
-                rt.anchoredPosition = new Vector2((i - 1) * 200, 0);
-            }
-
-            for (int i = 0; i < column; i++)
-            {
-                GameObject btn = Instantiate(equipButtonPrefab, columnButtonContainer);
-                var ui = btn.GetComponent<ModuleEquipPositionUI>();
-                ui.Setup(EquipAxis.Column, i, OnEquipButtonClicked);
-                ui.label.text = $"Column {i}";
-
-                RectTransform rt = btn.GetComponent<RectTransform>();
-                rt.anchoredPosition = new Vector2(0, (i - 1) * 200);
+                rt.anchoredPosition = new Vector2(0, -(i - (row - 1) / 2f) * 200f); // 중앙 정렬
             }
         }
 
-        private void OnEquipButtonClicked(EquipAxis axis, int index)
+        private void OnEquipButtonClicked(int index)
         {
             if (ModuleShopManager.Instance.selectedModuleKey == -1)
                 return;
 
-            ModuleManager.Instance.TryPurchaseAndEquip(ModuleShopManager.Instance.selectedModuleKey, axis, index);
-
+            ModuleManager.Instance.TryPurchaseAndEquip(ModuleShopManager.Instance.selectedModuleKey, index);
             ModuleShopManager.Instance.selectedModuleKey = -1;
 
-            foreach (Transform child in (axis == EquipAxis.Row ? rowButtonContainer : columnButtonContainer))
+            // UI 업데이트
+            foreach (Transform child in equipButtonContainer)
             {
                 var ui = child.GetComponent<ModuleEquipPositionUI>();
-                if (ui.GetAxis() == axis && ui.GetIndex() == index)
+                if (ui.GetIndex() == index)
                 {
-                    var equipped = ModuleManager.Instance.GetEquippedModule(axis, index);
+                    var equipped = ModuleManager.Instance.GetEquippedModule(index);
                     ui.UpdateLabelWithModuleName(equipped);
                     break;
                 }
             }
-
         }
     }
 }

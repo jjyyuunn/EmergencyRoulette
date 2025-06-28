@@ -15,63 +15,73 @@ MonoBehaviour:
   Sheet1:
   - moduleName: "\uACF5\uACA9 \uAC15\uD654 \uBAA8\uB4C8"
     description: "\uC5D0\uB108\uC9C0 \uB4F1\uC7A5 \uD655\uB960\uC744 10% \uC99D\uAC00\uC2DC\uD0B5\uB2C8\uB2E4"
-    targetType: 0
-    effectType: 0
-    targetResource: "\uC5D0\uB108\uC9C0"
+    purchaseCost: 0
+    useType: 0
+    energyCost: 0
+    effectKey: 
     effectValue: 0.1
   - moduleName: "\uD68C\uD53C \uBAA8\uB4C8"
     description: "\uC9C8\uBCD1\uC774 \uB098\uC640\uB3C4 \uD6A8\uACFC\uB97C \uBB34\uC2DC\uD569\uB2C8\uB2E4"
-    targetType: 1
-    effectType: 2
-    targetResource: "\uC9C8\uBCD1"
+    purchaseCost: 0
+    useType: 0
+    energyCost: 0
+    effectKey: 
     effectValue: 1
   - moduleName: "\uBCF4\uB108\uC2A4 \uC9C0\uAE09 \uBAA8\uB4C8"
     description: "\uC2DD\uB7C9 \uB4F1\uC7A5 \uC2DC \uCD94\uAC00 \uC790\uC6D0 5 \uC9C0\uAE09"
-    targetType: 0
-    effectType: 3
-    targetResource: "\uC2DD\uB7C9"
+    purchaseCost: 0
+    useType: 0
+    energyCost: 0
+    effectKey: 
     effectValue: 5
   - moduleName: "\uC7AC\uB09C \uC7AC\uAD74\uB9BC \uBAA8\uB4C8"
     description: "\uC7AC\uB09C\uC774 \uB098\uC624\uBA74 \uD55C\uBC88 \uC7AC\uAD74\uB9BC\uD569\uB2C8\uB2E4"
-    targetType: 2
-    effectType: 4
-    targetResource: "\uC7AC\uB09C"
+    purchaseCost: 0
+    useType: 0
+    energyCost: 0
+    effectKey: 
     effectValue: 1
   - moduleName: "\uB370\uC774\uD130 \uD0D0\uC0C9\uAE30 \uBAA8\uB4C8"
     description: "\uB370\uC774\uD130 \uB4F1\uC7A5 \uD655\uB960 20% \uC99D\uAC00"
-    targetType: 1
-    effectType: 0
-    targetResource: "\uB370\uC774\uD130"
+    purchaseCost: 0
+    useType: 0
+    energyCost: 0
+    effectKey: 
     effectValue: 0.2
   - moduleName: "\uAE34\uAE09 \uC758\uB8CC \uD0A4\uD2B8"
     description: "\uC758\uB8CC \uB4F1\uC7A5 \uC2DC \uC790\uC6D0 3 \uCD94\uAC00 \uD68D\uB4DD"
-    targetType: 0
-    effectType: 3
-    targetResource: "\uC758\uB8CC"
+    purchaseCost: 0
+    useType: 0
+    energyCost: 0
+    effectKey: 
     effectValue: 3
   - moduleName: "\uC815\uC804 \uCC28\uB2E8\uAE30 \uBAA8\uB4C8"
     description: "\uACFC\uBD80\uD558\uAC00 \uB4F1\uC7A5\uD574\uB3C4 \uD6A8\uACFC\uB97C
       \uBB34\uC2DC\uD568"
-    targetType: 0
-    effectType: 2
-    targetResource: "\uACFC\uBD80\uD558"
+    purchaseCost: 0
+    useType: 0
+    energyCost: 0
+    effectKey: 
     effectValue: 1
   - moduleName: "\uC608\uCE21 \uC2DC\uC2A4\uD15C \uBAA8\uB4C8"
     description: "\uACBD\uACE0 \uD655\uB960\uC744 \uBBF8\uB9AC \uD655\uC778\uD560
       \uC218 \uC788\uC74C (UI\uC6A9)"
-    targetType: 1
-    effectType: 5
-    targetResource: "\uACBD\uACE0"
+    purchaseCost: 0
+    useType: 0
+    energyCost: 0
+    effectKey: 
     effectValue: 0
   - moduleName: "\uC7AC\uB09C \uC608\uCE21 \uC13C\uC11C"
     description: "\uC7AC\uB09C \uB4F1\uC7A5 \uD655\uB960 5% \uAC10\uC18C"
-    targetType: 2
-    effectType: 1
-    targetResource: "\uC7AC\uB09C"
+    purchaseCost: 0
+    useType: 0
+    energyCost: 0
+    effectKey: 
     effectValue: 0.05
   - moduleName: "\uC2DD\uB7C9 \uCD94\uC801\uAE30"
     description: "\uC2DD\uB7C9 \uB4F1\uC7A5 \uD655\uB960 15% \uC99D\uAC00"
-    targetType: 0
-    effectType: 0
-    targetResource: "\uC2DD\uB7C9"
+    purchaseCost: 0
+    useType: 0
+    energyCost: 0
+    effectKey: 
     effectValue: 0.15

@@ -39,10 +39,10 @@ namespace EmergencyRoulette
             TestItemDict = db.Sheet1.ToDictionary(item => item.id);
             Debug.Log("아이템 딕셔너리 초기화 완료");
 
-            ModuleTestExcel db_Module = Resources.Load<ModuleTestExcel>("ScriptableObjects/ModuleTestExcel");
+            ModuleExcel db_Module = Resources.Load<ModuleExcel>("ScriptableObjects/ModuleExcel");
             if (db_Module == null)
             {
-                Debug.LogError("ModuleTestExcel를 찾을 수 없습니다!");
+                Debug.LogError("ModuleExcel를 찾을 수 없습니다!");
                 return;
             }
             ModuleDict = db_Module.Sheet1.ToDictionary(item => item.moduleName);
