@@ -124,7 +124,7 @@ public class SlotColumnScroller : MonoBehaviour
         }
     }
 
-    public void StopSpin(SymbolType targetSymbol)
+    private void StopSpin(SymbolType targetSymbol)
     {
         targetSymbolName = targetSymbol;
 

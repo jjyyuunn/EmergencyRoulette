@@ -10,6 +10,7 @@ namespace EmergencyRoulette
         public Dictionary<(int x, int y), SymbolType> Grid => _grid;
         public int RowCount { get; private set; }
         public int ColumnCount { get; private set; }
+        public Dictionary<SymbolType, int> GainedSymbols { get; private set; }
         
         private SymbolPicker _picker;
 
@@ -18,6 +19,16 @@ namespace EmergencyRoulette
             _picker = picker;
             RowCount = initialRows;
             ColumnCount = columns;
+            GainedSymbols = new Dictionary<SymbolType, int>()
+            {
+                { SymbolType.Energy, 0 },
+                { SymbolType.Medical, 0 },
+                { SymbolType.Food, 0 },
+                { SymbolType.Data, 0 },
+                { SymbolType.Warning, 0 },
+                { SymbolType.Discharge, 0 },
+                { SymbolType.Outdated, 0 },
+            };
 
             for (int y = 0; y < RowCount; y++)
             {
@@ -34,6 +45,16 @@ namespace EmergencyRoulette
             foreach (var key in keys)
             {
                 _grid[key] = _picker.Pick();
+                GainedSymbols[_grid[key]]++;
+            }
+        }
+        
+        public void ResetGainedSymbols()
+        {
+            var keys = GainedSymbols.Keys.ToList();
+            foreach (var key in keys)
+            {
+                GainedSymbols[key] = 0;
             }
         }
         

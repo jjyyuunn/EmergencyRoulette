@@ -6,18 +6,15 @@ namespace EmergencyRoulette
     {
         private SymbolLibrary _symbolLibrary;
         private SymbolPicker _symbolPicker;
-        private PlayerResource _playerResource;
         private SlotBoard _slotBoard;
-
+        
         public SlotColumnScroller Slot0;
 
         public void Start()
         {
             _symbolLibrary = new SymbolLibrary();
             _symbolPicker = new SymbolPicker(_symbolLibrary);
-            _playerResource = new PlayerResource();
             _slotBoard = new SlotBoard(_symbolPicker);
-            
             PrintBoard();
         }
         
@@ -27,6 +24,15 @@ namespace EmergencyRoulette
             StartCoroutine(Slot0.StartSpin(_slotBoard.Get(0,0)));
             
             PrintBoard();
+            
+            AddResource();
+        }
+
+        // 플레이어 리소스 더하기
+        private void AddResource()
+        {
+            GameManager.Instance.PlayerResource.SetPlayerResource(_slotBoard.GainedSymbols);
+            _slotBoard.ResetGainedSymbols(); // 다 적용 후 리셋
         }
         
         private void PrintBoard()
