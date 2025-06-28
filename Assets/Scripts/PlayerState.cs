@@ -34,7 +34,7 @@ namespace EmergencyRoulette
             EmergencyLevel = EmergencyLevel.Safe;
         }
 
-        public void SetPlayerResource(Dictionary<SymbolType, int> gainedSymbols)
+        public void SetPlayerState(Dictionary<SymbolType, int> gainedSymbols)
         {
             _gainedSymbols = gainedSymbols;
             
