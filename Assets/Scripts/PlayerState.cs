@@ -21,7 +21,12 @@ namespace EmergencyRoulette
         public int Technology;
         public int Data;
 
-        public float OverloadGauge; // 0 ~ 100%
+        private float _overloadGauge;
+        public float OverloadGauge // 0 ~ 100%
+        {
+            get => _overloadGauge;
+            set => _overloadGauge = Mathf.Clamp(value, 0f, 100f);
+        }
         public EmergencyLevel EmergencyLevel;
 
         // 하루 소모 자원
@@ -126,7 +131,6 @@ namespace EmergencyRoulette
                 rowSymbols.TryGetValue(SymbolType.Outdated, out int outdated) && outdated == 1)
             {
                 OverloadGauge -= 20f;
-                if (OverloadGauge < 0) OverloadGauge = 0;
                 
                 Food += 1;
                 Technology += 1;
