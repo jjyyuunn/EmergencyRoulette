@@ -138,6 +138,10 @@ public class SlotColumnScroller : MonoBehaviour
         DOTween.Kill(symbolContainer);
         symbolContainer.anchoredPosition = Vector2.zero;
 
+        var effect = GetComponent<SlotParticleEffect>();
+        if (effect != null)
+            effect.SetPending(targetSymbol);
+
         spinCoroutine = StartCoroutine(SlowdownAndStopRoutine());
     }
 

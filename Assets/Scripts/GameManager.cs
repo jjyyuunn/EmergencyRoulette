@@ -104,6 +104,9 @@ namespace EmergencyRoulette
             // 2. 결과 처리 단계
             // 콤보, 패널티, 기본 심볼 이펙트 처리
             Debug.Log($"Curren GameState: {CurrentState}, Current Turn: {CurrentTurn}");
+            yield return new WaitForSeconds(7f);
+            SlotManager?.PlayAllSlotPendingEffects();
+            playerStateUI.RefreshUI();
             yield return new WaitForSeconds(1f); // 애니메이션 등을 고려한 대기
             
             // 3. 재난 이벤트

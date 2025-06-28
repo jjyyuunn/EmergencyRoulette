@@ -12,6 +12,12 @@ namespace EmergencyRoulette
         [SerializeField] private GameObject slotPrefab;
         [SerializeField] private Transform slotParent;
 
+        [SerializeField] private Transform energyAttractor;
+        [SerializeField] private Transform foodAttractor;
+        [SerializeField] private Transform technologyAttractor;
+        [SerializeField] private Transform dataAttractor;
+
+
         private SlotColumnScroller[,] slotInstances;
 
         private SymbolLibrary _symbolLibrary;
@@ -55,6 +61,17 @@ namespace EmergencyRoulette
                     GameObject slotObj = Instantiate(slotPrefab, slotParent);
                     var scroller = slotObj.GetComponent<SlotColumnScroller>();
                     slotInstances[x, y] = scroller;
+
+                    var effect = slotObj.GetComponent<SlotParticleEffect>();
+                    if (effect != null)
+                    {
+                        effect.SetupAttractors(
+                            energyAttractor,
+                            foodAttractor,
+                            technologyAttractor,
+                            dataAttractor
+                        );
+                    }
 
                     RectTransform rt = slotObj.GetComponent<RectTransform>();
                     rt.anchoredPosition = new Vector2(x * 250f, -y * 135f);
@@ -128,7 +145,14 @@ namespace EmergencyRoulette
 
             // 기본 심볼 생산
             playerState.SetNormalState();
-            GameManager.Instance.playerStateUI.RefreshUI();
+        }
+
+        public void PlayAllSlotPendingEffects()
+        {
+            foreach (var slot in slotInstances)
+            {
+                slot.GetComponent<SlotParticleEffect>()?.PlayPending();
+            }
         }
 
 

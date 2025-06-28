@@ -337,10 +337,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   particleImageObject: {fileID: 8483493186436392863}
   particleImage: {fileID: 8239856429878735577}
-  energySprite: {fileID: 21300000, guid: c82852227c7e54b91bad5c4bd3ed354b, type: 3}
-  foodSprite: {fileID: 21300000, guid: 2cb7d218034724ea7bed9cc65710a99d, type: 3}
-  technologySprite: {fileID: 0}
-  dataSprite: {fileID: 21300000, guid: 62caf8fa8077346f98e18477f3872a95, type: 3}
+  energySprite: {fileID: 21300000, guid: 0c9f21027b6a445498bc2659643ed24b, type: 3}
+  foodSprite: {fileID: 21300000, guid: 7e0c6d183bba0724185d51fe6255b30b, type: 3}
+  technologySprite: {fileID: 21300000, guid: e9b579ac994e207489653b690e138f57, type: 3}
+  dataSprite: {fileID: 21300000, guid: 4a5a5bff21539b14eb6304b8124f71bc, type: 3}
   energyAttractor: {fileID: 0}
   foodAttractor: {fileID: 0}
   technologyAttractor: {fileID: 0}
