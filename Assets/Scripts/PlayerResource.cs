@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace EmergencyRoulette
 {
@@ -38,14 +39,20 @@ namespace EmergencyRoulette
             Food = gainedSymbols[SymbolType.Food];
             Data = gainedSymbols[SymbolType.Data];
             
-            CheckWarning();
+            CheckWarning(gainedSymbols);
+            CheckDischarge(gainedSymbols);
+            CheckOutdated(gainedSymbols);
 
             EmergencyLevel = GetEmergencyLevel();
+            
+            Debug.Log($"[PlayerResource] Set values - Energy: {Energy}, Medical: {Medical}, Food: {Food}, Data: {Data}");
+            Debug.Log($"[PlayerResource] OverloadGauge: {OverloadGauge}");
+            Debug.Log($"[PlayerResource] EmergencyLevel: {EmergencyLevel}");
         }
 
-        private void CheckWarning()
+        private void CheckWarning(Dictionary<SymbolType, int> gainedSymbols)
         {
-            OverloadGauge += 5f;
+            OverloadGauge += gainedSymbols[SymbolType.Warning] * 5f;
 
             switch (EmergencyLevel)
             {
@@ -61,6 +68,91 @@ namespace EmergencyRoulette
                 case EmergencyLevel.Crisis:
                     OverloadGauge += 10f;
                     break;
+                default:
+                    break;
+            }
+        }
+
+        private void CheckDischarge(Dictionary<SymbolType, int> gainedSymbols)
+        {
+            int decreasingEnergy = 1;
+            
+            switch (EmergencyLevel)
+            {
+                case EmergencyLevel.Danger:
+                case EmergencyLevel.Warning:
+                case EmergencyLevel.Crisis:
+                    decreasingEnergy++;
+                    break;
+                default:
+                    break;
+            }
+            decreasingEnergy *= gainedSymbols[SymbolType.Discharge];
+            
+            if (Energy >= decreasingEnergy)
+                Energy -= decreasingEnergy;
+            else
+            {
+                OverloadGauge += gainedSymbols[SymbolType.Discharge] * 10f;
+                switch (EmergencyLevel)
+                {
+                    case EmergencyLevel.Warning:
+                        OverloadGauge += 2f;
+                        break;
+                    case EmergencyLevel.Danger:
+                        OverloadGauge += 3f;
+                        break;
+                    case EmergencyLevel.Severe:
+                        OverloadGauge += 5f;
+                        break;
+                    case EmergencyLevel.Crisis:
+                        OverloadGauge += 10f;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+        }
+        
+        private void CheckOutdated(Dictionary<SymbolType, int> gainedSymbols)
+        {
+            int decreasingMedical = 1;
+            
+            switch (EmergencyLevel)
+            {
+                case EmergencyLevel.Danger:
+                case EmergencyLevel.Warning:
+                case EmergencyLevel.Crisis:
+                    decreasingMedical++;
+                    break;
+                default:
+                    break;
+            }
+            decreasingMedical *= gainedSymbols[SymbolType.Outdated];
+            
+            if (Medical >= decreasingMedical)
+                Medical -= decreasingMedical;
+            else
+            {
+                OverloadGauge += gainedSymbols[SymbolType.Outdated] * 10f;
+                switch (EmergencyLevel)
+                {
+                    case EmergencyLevel.Warning:
+                        OverloadGauge += 2f;
+                        break;
+                    case EmergencyLevel.Danger:
+                        OverloadGauge += 3f;
+                        break;
+                    case EmergencyLevel.Severe:
+                        OverloadGauge += 5f;
+                        break;
+                    case EmergencyLevel.Crisis:
+                        OverloadGauge += 10f;
+                        break;
+                    default:
+                        break;
+                }
             }
         }
         
