@@ -38,7 +38,7 @@ namespace EmergencyRoulette
                     slotInstances[x, y] = scroller;
 
                     RectTransform rt = slotObj.GetComponent<RectTransform>();
-                    rt.anchoredPosition = new Vector2(x * 120f, -y * 120f);
+                    rt.anchoredPosition = new Vector2(x * 250f, -y * 135f);
                 }
             }
         }
