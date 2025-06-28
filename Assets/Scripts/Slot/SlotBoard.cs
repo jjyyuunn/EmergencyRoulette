@@ -70,6 +70,16 @@ namespace EmergencyRoulette
                 GainedSymbols[key] = 0;
             }
         }
+
+        public void LockRow(int y)
+        {
+            Rows[y] = false;
+        }
+
+        public void UnlockRow(int y)
+        {
+            Rows[y] = true;
+        }
         
         public SymbolType Get(int x, int y) => _grid[(x, y)];
         public void Set(int x, int y, SymbolType value) => _grid[(x, y)] = value;

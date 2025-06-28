@@ -189,12 +189,11 @@ namespace EmergencyRoulette
 
                     case SymbolType.Discharge: // 정전
                         _noEnergyProduction = true;
-                        Debug.Log($"[PenaltyCombo] Blackout on row {combo.y} → Energy symbol production negated");
+                        Debug.Log("[PenaltyCombo] NO ENERGY! ON NEXT TURN.");
                         break;
-
-                    // FIXME: 배열 수정 및 구현
+                    
                     case SymbolType.Outdated: // 붕괴 별도 구현
-                        // _slotBoard.LockRow(combo.y); // 다음 턴 슬롯 잠금 (별도 구현 필요)
+                        _slotBoard.LockRow(combo.y); // 슬롯 잠금
                         Debug.Log($"[PenaltyCombo] Collapse on row {combo.y} → Row locked next turn");
                         break;
                 }
