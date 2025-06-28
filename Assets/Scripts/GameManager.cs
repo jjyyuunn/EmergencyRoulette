@@ -110,19 +110,13 @@ namespace EmergencyRoulette
                 Debug.Log($"Curren GameState: {CurrentState}, Current Turn: {CurrentTurn}");
                 // yield return StartCoroutine(HandleDisasterEvent()); // 여기 안에서 자원 소모로 넘겨줘야 함.
             }
-            else
-            {
-                SetState(GameState.ResourceConsuming);
-                Debug.Log($"Curren GameState: {CurrentState}, Current Turn: {CurrentTurn}");
-            }
             
-            yield return new WaitForSeconds(2f);
+            // 4. 자원 소모 (식량 등)
+            SetState(GameState.ResourceConsuming);
+            Debug.Log($"Curren GameState: {CurrentState}, Current Turn: {CurrentTurn}");
+            // 완료버튼 누르면 gamestate 바뀌게. 다시 disable.
+            yield return new WaitUntil(() => CurrentState == GameState.Forecasting);
             
-            
-            // // 4. 자원 소모 (식량 등)
-            // SetState(GameState.ResourceConsuming);
-            // yield return StartCoroutine(HandleResourceConsuming());
-            //
             // // 5. 재난 예보
             // SetState(GameState.Forecasting);
             // ShowForecast();
