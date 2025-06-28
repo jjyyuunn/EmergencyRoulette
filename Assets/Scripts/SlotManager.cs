@@ -76,15 +76,15 @@ namespace EmergencyRoulette
             playerState.SetResourceCombo();
             playerState.SetSpecialCombo();
             playerState.SetPenaltyCombos();
-            playerState.SetNormalState();
 
             // 패시브 모듈 적용
             ModuleEffectExecutor.ApplyAllPassiveModules(playerState);
-
-
             // 로그
             Debug.Log("=== After PassiveModule ===");
             playerState.PrintResources();
+
+            // 기본 심볼 생산
+            playerState.SetNormalState();
             
             // 심볼 리셋
             _slotBoard.ResetGainedSymbols();
