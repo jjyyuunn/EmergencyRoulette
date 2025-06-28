@@ -42,7 +42,7 @@ namespace EmergencyRoulette
 
         public void Start()
         {
-            _symbolLibrary = new SymbolLibrary();
+            _symbolLibrary = GameManager.Instance.SymbolLibrary;
             _symbolPicker = new SymbolPicker(_symbolLibrary);
             _slotBoard = new SlotBoard(_symbolPicker);
 

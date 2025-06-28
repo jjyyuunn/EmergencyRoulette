@@ -26,7 +26,7 @@ namespace EmergencyRoulette
 
         // 하루 소모 자원
         private int _useFood => (int)Math.Ceiling(0.3f * _slotBoard.RowCount);
-        private int _useFoodBonus = 0;
+        public int UseFoodBonus = 0;
 
         private SlotBoard _slotBoard;
         private Dictionary<SymbolType, int> _gainedSymbols;
@@ -63,7 +63,7 @@ namespace EmergencyRoulette
                 switch (combos[y].symbol)
                 {
                     case SymbolType.Food:
-                        _useFoodBonus++; // 여기 마이너스 or 플러스?
+                        UseFoodBonus--; // 여기 마이너스 or 플러스?
                         break;
                     case SymbolType.Energy:
                         OverloadGauge -= 10f;

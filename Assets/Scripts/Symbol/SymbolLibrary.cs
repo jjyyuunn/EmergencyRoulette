@@ -28,5 +28,10 @@ namespace EmergencyRoulette
             //소모한 에너지 개수 만큼 가중치 추가
             _symbolLibrary[type].probability += energy*0.01f ;
         }
+
+        public void MultiplyProbability(SymbolType type, float weight)
+        {
+            _symbolLibrary[type].probability *= weight;
+        }
     }
 }
