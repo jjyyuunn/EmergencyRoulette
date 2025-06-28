@@ -14,7 +14,7 @@ namespace EmergencyRoulette
         private SymbolLibrary _symbolLibrary;
         private SymbolPicker _symbolPicker;
         private SlotBoard _slotBoard;
-        
+
         public void Start()
         {
             _symbolLibrary = new SymbolLibrary();
@@ -46,7 +46,7 @@ namespace EmergencyRoulette
         public void StartSpin()
         {
             _slotBoard.Spin();
-            
+
             for (int y = 0; y < _slotBoard.RowCount; y++)
             {
                 if (_slotBoard.Rows[y])
@@ -62,6 +62,7 @@ namespace EmergencyRoulette
             PrintBoard();
             AddResource();
         }
+
 
 
         // 플레이어 리소스 더하기

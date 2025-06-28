@@ -858,6 +858,7 @@ GameObject:
   - component: {fileID: 681550963}
   - component: {fileID: 681550964}
   - component: {fileID: 681550965}
+  - component: {fileID: 681550966}
   m_Layer: 0
   m_Name: '@Managers'
   m_TagString: Untagged
@@ -932,6 +933,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slotPrefab: {fileID: 3086910042019458139, guid: 591774abc80175342b967978309a7748, type: 3}
   slotParent: {fileID: 2040958299}
+--- !u!114 &681550966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 681550960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a69d15cf7b2ee8d479f93c37a2fca97f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <currentTurn>k__BackingField: 1
+  maxTurn: 16
 --- !u!1 &1044867587
 GameObject:
   m_ObjectHideFlags: 0

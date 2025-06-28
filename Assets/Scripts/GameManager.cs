@@ -7,8 +7,28 @@ namespace EmergencyRoulette
     [DefaultExecutionOrder(-10)]
     public class GameManager : MonoBehaviour
     {
-        public static GameManager Instance;
-        
+        public static GameManager Instance { get; private set; }
+
+        public enum GameState
+        {
+            None,
+            SpinWaiting,
+            Spinning,
+            Resolving,
+            Disaster,
+            ResourceConsuming,
+            Forecasting,
+            Ended
+        }
+
+        public GameState CurrentState { get; private set; } = GameState.None;
+
+        public void SetState(GameState newState)
+        {
+            CurrentState = newState;
+            Debug.Log($"[GameState] 상태 전환: {newState}");
+        }
+
         private ExcelManager _excelManager;
         public static ExcelManager ExcelManager
         {
@@ -21,7 +41,7 @@ namespace EmergencyRoulette
         public Dictionary<string, ModuleDataItem> ModuleDict => ExcelManager.ModuleDict;
         public PlayerState PlayerState = new PlayerState();
 
-        public bool CanPlayerInteract { get; private set; }
+        public bool CanPlayerInteract { get; set; }
 
         void Awake()
         {
@@ -43,14 +63,5 @@ namespace EmergencyRoulette
             }
         }
 
-        public void OnTurnEnd()
-        {
-            CanPlayerInteract = true; // 이 시점에서만 사용 허용
-        }
-
-        public void OnUseActiveModule()
-        {
-            CanPlayerInteract = false; // 사용 시 비활성화
-        }
     }
 }
