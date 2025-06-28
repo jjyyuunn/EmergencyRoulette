@@ -56,10 +56,16 @@ namespace EmergencyRoulette
         {
             var state = GameManager.Instance.PlayerState;
             var module = ModuleManager.Instance.GetEquippedModule(index);
+
             if (module == null || module.useType != ModuleUseType.Active)
                 return;
 
-            // 에너지 부족 등은 여기서 체크
+            // 이미 사용한 모듈이면 리턴
+            if (ModuleManager.Instance.UsedActiveModulesThisTurn.Contains(module))
+            {
+                Debug.Log($"[ActiveEffect] 이번 턴에 이미 사용한 모듈입니다: {module.moduleName}");
+                return;
+            }
 
             bool applyTwice = state.DoubleNextActive && module.effectKey != "DoubleNextActive";
             if (applyTwice) state.DoubleNextActive = false;
@@ -68,7 +74,12 @@ namespace EmergencyRoulette
 
             if (applyTwice)
                 ApplyOnce(module);
+
+            // 사용 기록에 추가
+            GameManager.Instance.playerStateUI.RefreshUI();
+            ModuleManager.Instance.UsedActiveModulesThisTurn.Add(module);
         }
+
 
         private static void ApplyOnce(ModuleDataItem module)
         {

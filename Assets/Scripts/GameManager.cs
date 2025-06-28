@@ -59,6 +59,9 @@ namespace EmergencyRoulette
         [SerializeField] private GameObject rerollBtn;
         [SerializeField] private GameObject resourceDoneBtn;
 
+        public bool IsShopActive = false;
+        public GameObject UI_Shop;
+
 
         public bool CanPlayerInteract { get; set; } // 기본 자원 사용
 
@@ -111,7 +114,7 @@ namespace EmergencyRoulette
             // 2. 결과 처리 단계
             // 콤보, 패널티, 기본 심볼 이펙트 처리
             Debug.Log($"Curren GameState: {CurrentState}, Current Turn: {CurrentTurn}");
-            yield return new WaitForSeconds(6f);
+            yield return new WaitForSeconds(4f);
             SlotManager?.PlayAllSlotPendingEffects();
             playerStateUI.RefreshUI();
             yield return new WaitForSeconds(1f); // 애니메이션 등을 고려한 대기
@@ -129,8 +132,10 @@ namespace EmergencyRoulette
             SetState(GameState.ResourceConsuming);
             Debug.Log($"Curren GameState: {CurrentState}, Current Turn: {CurrentTurn}");
             ModuleManager.Instance.SetupShop();
+            UI_Shop.SetActive(true);
             rerollBtn.SetActive(true);
             resourceDoneBtn.SetActive(true);
+            UI_Shop.SetActive(false);
 
             yield return new WaitUntil(() => CurrentState == GameState.Forecasting);
             
@@ -210,8 +215,24 @@ namespace EmergencyRoulette
             switch (option)
             {
                 case 1:
-                    // 추가 수정
-                    Debug.Log("패널티 1: 모듈 하나 파괴");
+                    var slotBoard = GameManager.Instance.PlayerState.SlotBoard;
+
+                    List<int> intactRows = new();
+                    for (int y = 0; y < slotBoard.RowCount; y++)
+                    {
+                        if (!ModuleManager.Instance.IsModuleBroken(y))
+                            intactRows.Add(y);
+                    }
+
+                    if (intactRows.Count == 0)
+                    {
+                        Debug.Log("[DisasterPenalty] 부술 수 있는 모듈 없음");
+                        return;
+                    }
+
+                    int randRow = UnityEngine.Random.Range(0, intactRows.Count);
+                    ModuleManager.Instance.SetModuleBroken(intactRows[randRow]);
+                    Debug.Log($"패널티 1: Row {intactRows[randRow]} 모듈 파괴");
                     break;
                 case 2:
                     SymbolLibrary.MultiplyProbability(SymbolType.Discharge, 2);
@@ -241,10 +262,18 @@ namespace EmergencyRoulette
             ModuleManager.Instance.ClearShop();
             rerollBtn.SetActive(false);
             resourceDoneBtn.SetActive(false);
+            UI_Shop.SetActive(false);
+
+            IsShopActive = false;
 
             SetState(GameState.Forecasting);
         }
 
+        public void ToggleShopUI()
+        {
+            GameManager.Instance.IsShopActive = !GameManager.Instance.IsShopActive;
+            UI_Shop.SetActive(GameManager.Instance.IsShopActive);
+        }
 
     }
 }

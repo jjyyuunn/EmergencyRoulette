@@ -13,6 +13,14 @@ namespace EmergencyRoulette
         // 슬롯머신에 장착된 모듈들
         public List<ModuleEquipSlot> equippedModules = new();
 
+        public HashSet<ModuleDataItem> UsedActiveModulesThisTurn { get; private set; } = new();
+
+        public void ClearUsedActiveModulesThisTurn()
+        {
+            UsedActiveModulesThisTurn.Clear();
+        }
+
+
         public List<bool> ModuleRows;
 
         private void Awake()
@@ -51,7 +59,9 @@ namespace EmergencyRoulette
         /// </summary>
         public void SetupShop()
         {
+            GameManager.Instance.UI_Shop.SetActive(true);
             GenerateShop();
+            GameManager.Instance.UI_Shop.SetActive(false);
         }
 
         public void RerollShop()

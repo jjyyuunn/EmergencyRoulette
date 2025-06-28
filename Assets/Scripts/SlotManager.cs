@@ -88,6 +88,8 @@ namespace EmergencyRoulette
                 return;
             
             _slotBoard.ResetGainedSymbols(); // 심볼 리셋
+            ModuleManager.Instance.ClearUsedActiveModulesThisTurn();
+
             _slotBoard.Spin();
             HasSpunThisTurn = true;
             

@@ -41,7 +41,12 @@ namespace EmergencyRoulette
                 GameObject btn = Instantiate(equipButtonPrefab, equipButtonContainer);
                 var ui = btn.GetComponent<ModuleEquipPositionUI>();
 
-                ui.Setup(i, OnEquipButtonClicked); // axis 제거된 버전
+                ui.Setup(
+                    i,
+                    onShopClick: OnEquipButtonClicked,
+                    onOtherClick: OnEquipSlotClickedOutsideShop
+                );
+
                 ui.label.text = $"Slot {i}";
 
                 RectTransform rt = btn.GetComponent<RectTransform>();
@@ -69,5 +74,21 @@ namespace EmergencyRoulette
                 }
             }
         }
+
+        private void OnEquipSlotClickedOutsideShop(int index)
+        {
+            // 1. 해당 index에 장착된 모듈 찾기
+            var slot = ModuleManager.Instance.equippedModules.Find(m => m.index == index);
+            if (slot == null || slot.module == null)
+                return;
+
+            // 2. 모듈이 Active 타입이 아니면 리턴
+            if (slot.module.useType != ModuleUseType.Active)
+                return;
+
+            // 3. 여기서 Active 모듈의 효과 발동 처리
+            ModuleEffectExecutor.ApplyActiveModuleAt(index);
+        }
+
     }
 }
