@@ -13,7 +13,34 @@ MonoBehaviour:
   m_Name: DisasterEvent
   m_EditorClassIdentifier: 
   Sheet1:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - disaster: "\uBC1C\uC804\uC18C \uBD88\uC548\uC815"
+    information: "\uBC1C\uC804\uC18C\uC5D0 \uBB38\uC81C\uAC00 \uC0DD\uACBC\uC2B5\uB2C8\uB2E4!
+      \uBB38\uC81C\uB97C \uD574\uACB0\uD558\uC9C0 \uC54A\uC73C\uBA74 \uD070 \uD53C\uD574\uB85C
+      \uC774\uC5B4\uC9C8 \uC218 \uC788\uC2B5\uB2C8\uB2E4!"
+    food: 0
+    energy: 2
+    data: 0
+    technology: 0
+  - disaster: "\uC131\uB09C \uAD70\uC911"
+    information: "\uBBFC\uC911\uB4E4\uC774 \uBC30\uACE0\uD504\uB2E4\uACE0 \uC2DC\uC704\uD558\uACE0
+      \uC788\uC2B5\uB2C8\uB2E4. \uC9C0\uAE08 \uC2DD\uB7C9\uC744 \uD480\uC5B4\uC11C
+      \uC2DC\uC704\uB97C \uC7A0\uC7AC\uC6CC\uC57C \uD569\uB2C8\uB2E4!"
+    food: 2
+    energy: 0
+    data: 0
+    technology: 0
+  - disaster: "\uC81C\uC5B4 \uC2DC\uC2A4\uD15C \uD574\uD0B9"
+    information: "\uB204\uAC00 \uC911\uC559 \uC81C\uC5B4 \uC2DC\uC2A4\uD15C \uD574\uD0B9\uC744
+      \uC2DC\uB3C4\uD558\uB294\uAC83 \uAC19\uC2B5\uB2C8\uB2E4. \uC5BC\uB978 \uB9C9\uC544\uC57C\uD569\uB2C8\uB2E4!"
+    food: 0
+    energy: 0
+    data: 0
+    technology: 2
+  - disaster: "\uC815\uAE30 \uC5C5\uB370\uC774\uD2B8"
+    information: "\uC815\uAE30 \uC5C5\uB370\uC774\uD2B8 \uB0A0\uC785\uB2C8\uB2E4.
+      \uBE44\uBC00\uBC88\uD638\uB97C \uBCC0\uACBD\uD558\uC5EC \uBCF4\uC548\uC744
+      \uAC15\uD654\uD574\uC57C \uD569\uB2C8\uB2E4!"
+    food: 0
+    energy: 0
+    data: 2
+    technology: 0

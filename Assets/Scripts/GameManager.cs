@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 using System.Collections;
+using System.Linq;
 
 namespace EmergencyRoulette
 {
@@ -23,6 +24,7 @@ namespace EmergencyRoulette
 
         public GameState CurrentState { get; private set; } = GameState.None;
         public int CurrentTurn { get; private set; } = 0;
+        public DisasterEventItem CurrentDisaster { get; private set; } = null;
 
         public void SetState(GameState newState)
         {
@@ -47,6 +49,7 @@ namespace EmergencyRoulette
         // example
         public Dictionary<int, TestItem> TestItemDict => ExcelManager.TestItemDict;
         public Dictionary<string, ModuleDataItem> ModuleDict => ExcelManager.ModuleDict;
+        public Dictionary<string, DisasterEventItem> DisasterEventDict => ExcelManager.DisasterEventDict;
         public PlayerState PlayerState = new PlayerState();
         public PlayerStateUI playerStateUI;
 
@@ -115,16 +118,38 @@ namespace EmergencyRoulette
             SetState(GameState.ResourceConsuming);
             Debug.Log($"Curren GameState: {CurrentState}, Current Turn: {CurrentTurn}");
             // 완료버튼 누르면 gamestate 바뀌게. 다시 disable.
-            // yield return new WaitUntil(() => CurrentState == GameState.Forecasting);
             
-            // // 5. 재난 예보
-            // SetState(GameState.Forecasting);
-            // ShowForecast();
-            // yield return new WaitForSeconds(1f);
+            SetState(GameState.Forecasting); //임시
+            yield return new WaitUntil(() => CurrentState == GameState.Forecasting);
+            
+            // 5. 재난 예보
+            if (CurrentTurn == 1 || CurrentTurn % 4 == 0) SetDisaster();
+            
+            // CurrentDisaster를 ui에 띄워줌. 일단은 디버그 로그로
+            if (CurrentTurn != 16)
+            {
+                Debug.Log($"Curren GameState: {CurrentState}, Current Turn: {CurrentTurn}");
+                Debug.Log($"Disaster: {CurrentDisaster.disaster}, Info: {CurrentDisaster.information}, {4-(CurrentTurn % 4)} days left!");
+            }
+
+            yield return new WaitForSeconds(2f); // 메시지 보여줄 시간
+            SetState(GameState.None);
 
             // 다음 턴으로
-            yield return new WaitForSeconds(1f);
+            yield return new  WaitUntil(() => CurrentState == GameState.None);
             StartTurn();
+        }
+
+        private void SetDisaster()
+        {
+            var disasters = DisasterEventDict.Values.ToList();
+            if (disasters.Count == 0)
+            {
+                Debug.LogWarning("재난 데이터가 없습니다.");
+                return;
+            }
+            int randomIndex = UnityEngine.Random.Range(0, disasters.Count);
+            CurrentDisaster = disasters[randomIndex];
         }
 
     }

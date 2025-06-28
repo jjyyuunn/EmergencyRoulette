@@ -10,7 +10,7 @@ namespace EmergencyRoulette
         public static ExcelManager Instance;
         public static Dictionary<int, TestItem> TestItemDict;
         public static Dictionary<string, ModuleDataItem> ModuleDict;
-
+        public static Dictionary<string, DisasterEventItem> DisasterEventDict;
 
         private void Awake()
         {
@@ -46,7 +46,16 @@ namespace EmergencyRoulette
                 return;
             }
             ModuleDict = db_Module.Sheet1.ToDictionary(item => item.moduleName);
-            Debug.Log("아이템 딕셔너리 초기화 완료");
+            Debug.Log("ModuleExcel 딕셔너리 초기화 완료");
+            
+            DisasterEvent db_Disaster = Resources.Load<DisasterEvent>("ScriptableObjects/DisasterEvent");
+            if (db_Disaster == null)
+            {
+                Debug.LogError("DisasterEvent 찾을 수 없습니다!");
+                return;
+            }
+            DisasterEventDict = db_Disaster.Sheet1.ToDictionary(item => item.disaster);
+            Debug.Log("DisasterEvent 딕셔너리 초기화 완료");
         }
 
         // test 예시
