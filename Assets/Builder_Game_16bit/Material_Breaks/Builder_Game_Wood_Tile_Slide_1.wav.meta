@@ -1,0 +1,30 @@
+fileFormatVersion: 2
+guid: 818bdfeabccae48d4abeba2ee59e0f7d
+AudioImporter:
+  externalObjects: {}
+  serializedVersion: 7
+  defaultSettings:
+    serializedVersion: 2
+    loadType: 1
+    sampleRateSetting: 0
+    sampleRateOverride: 0
+    compressionFormat: 0
+    quality: 1
+    conversionMode: 0
+    preloadAudioData: 0
+  platformSettingOverrides: {}
+  forceToMono: 0
+  normalize: 1
+  loadInBackground: 0
+  ambisonic: 0
+  3D: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 65446
+  packageName: Builder Game
+  packageVersion: 1.0
+  assetPath: Assets/Builder_Game_16bit/Material_Breaks/Builder_Game_Wood_Tile_Slide_1.wav
+  uploadId: 186726
