@@ -115,7 +115,7 @@ namespace EmergencyRoulette
             SetState(GameState.ResourceConsuming);
             Debug.Log($"Curren GameState: {CurrentState}, Current Turn: {CurrentTurn}");
             // 완료버튼 누르면 gamestate 바뀌게. 다시 disable.
-            yield return new WaitUntil(() => CurrentState == GameState.Forecasting);
+            // yield return new WaitUntil(() => CurrentState == GameState.Forecasting);
             
             // // 5. 재난 예보
             // SetState(GameState.Forecasting);
@@ -123,6 +123,7 @@ namespace EmergencyRoulette
             // yield return new WaitForSeconds(1f);
 
             // 다음 턴으로
+            yield return new WaitForSeconds(1f);
             StartTurn();
         }
 
