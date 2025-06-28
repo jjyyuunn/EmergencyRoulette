@@ -118,11 +118,26 @@ namespace EmergencyRoulette
         {
             foreach (var equip in ModuleManager.Instance.equippedModules)
             {
-                if (equip.module.useType == ModuleUseType.Combo && equip.module.effectKey == effectKey)
-                    return true;
+                if (equip.module.useType != ModuleUseType.Combo)
+                    continue;
+
+                if (equip.module.effectKey != effectKey)
+                    continue;
+
+                int row = equip.index;
+
+                if (ModuleManager.Instance.IsModuleBroken(row))
+                {
+                    Debug.Log($"[ComboCheck] Row {row} 고장 → 콤보 모듈 '{effectKey}' 무시됨");
+                    continue;
+                }
+
+                return true;
             }
+
             return false;
         }
+
 
         private void CheckCrisisProtocol(Dictionary<SymbolType, int> rowSymbols)
         {
@@ -232,15 +247,26 @@ namespace EmergencyRoulette
 
             foreach (var equip in ModuleManager.Instance.equippedModules)
             {
-                if (equip.module.useType == ModuleUseType.Passive &&
-                    equip.module.effectKey == "GainDataIfMultipleDanger")
+                if (equip.module.useType != ModuleUseType.Passive)
+                    continue;
+
+                if (equip.module.effectKey != "GainDataIfMultipleDanger")
+                    continue;
+
+                int row = equip.index;
+
+                if (ModuleManager.Instance.IsModuleBroken(row))
                 {
-                    count++;
+                    Debug.Log($"[PassiveEffect:GainDataIfMultipleDanger] Row {row} 고장 → 적용 안 됨");
+                    continue;
                 }
+
+                count++;
             }
 
             return count;
         }
+
 
 
         // FIXME: 기본 심볼 생산
@@ -279,15 +305,26 @@ namespace EmergencyRoulette
 
             foreach (var equip in ModuleManager.Instance.equippedModules)
             {
-                if (equip.module.useType == ModuleUseType.Passive &&
-                    equip.module.effectKey == "IgnoreWarningWithEnergy")
+                if (equip.module.useType != ModuleUseType.Passive)
+                    continue;
+
+                if (equip.module.effectKey != "IgnoreWarningWithEnergy")
+                    continue;
+
+                int row = equip.index;
+
+                if (ModuleManager.Instance.IsModuleBroken(row))
                 {
-                    count++;
+                    Debug.Log($"[PassiveEffect:IgnoreWarning] Row {row} 고장 → 무시됨");
+                    continue;
                 }
+
+                count++;
             }
 
             return count;
         }
+
 
 
 

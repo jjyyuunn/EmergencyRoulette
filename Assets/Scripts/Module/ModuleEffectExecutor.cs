@@ -1,5 +1,6 @@
 using Unity.Burst.Intrinsics;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI.Table;
 
 namespace EmergencyRoulette
 {
@@ -9,6 +10,12 @@ namespace EmergencyRoulette
         {
             foreach (var equip in ModuleManager.Instance.equippedModules)
             {
+                if (ModuleManager.Instance.IsModuleBroken(equip.index))
+                {
+                    Debug.Log($"[PassiveEffect] Row {equip.index} 고장 → {equip.module.moduleName} 적용 안 됨");
+                    continue;
+                }
+
                 var module = equip.module;
                 if (module.useType != ModuleUseType.Passive) continue;
 
@@ -60,7 +67,12 @@ namespace EmergencyRoulette
             if (module == null || module.useType != ModuleUseType.Active)
                 return;
 
-            // 이미 사용한 모듈이면 리턴
+            if (ModuleManager.Instance.IsModuleBroken(index))
+            {
+                Debug.Log($"[ActiveEffect] 고장난 모듈은 사용할 수 없습니다 (index: {index})");
+                return;
+            }
+
             if (ModuleManager.Instance.UsedActiveModulesThisTurn.Contains(module))
             {
                 Debug.Log($"[ActiveEffect] 이번 턴에 이미 사용한 모듈입니다: {module.moduleName}");
