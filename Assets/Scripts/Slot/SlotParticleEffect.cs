@@ -13,12 +13,12 @@ namespace EmergencyRoulette
 
         [SerializeField] private Sprite energySprite;
         [SerializeField] private Sprite foodSprite;
-        [SerializeField] private Sprite medicalSprite;
+        [SerializeField] private Sprite technologySprite;
         [SerializeField] private Sprite dataSprite;
 
         [SerializeField] private Transform energyAttractor;
         [SerializeField] private Transform foodAttractor;
-        [SerializeField] private Transform medicalAttractor;
+        [SerializeField] private Transform technologyAttractor;
         [SerializeField] private Transform dataAttractor;
 
         public void Play()
@@ -46,9 +46,9 @@ namespace EmergencyRoulette
                     selectedSprite = foodSprite;
                     selectedAttractor = foodAttractor;
                     break;
-                case SymbolType.Medical:
-                    selectedSprite = medicalSprite;
-                    selectedAttractor = medicalAttractor;
+                case SymbolType.Technology:
+                    selectedSprite = technologySprite;
+                    selectedAttractor = technologyAttractor;
                     break;
                 case SymbolType.Data:
                     selectedSprite = dataSprite;

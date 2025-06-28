@@ -2,18 +2,6 @@ using System;
 
 namespace EmergencyRoulette
 {
-    // 모듈이 적용되는 대상 (행, 열, 전체)
-    public enum ModuleTarget
-    {
-        Row,
-        Column,
-        Global
-        //NotRow,           // 해당 행 제외
-        //NotColumn,        // 해당 열 제외
-        //AdjacentRow,      // 상하 인접 행
-        //AdjacentColumn    // 좌우 인접 열
-    }
-
     // 모듈이 가지는 효과 타입
     public enum ModuleEffectType
     {
@@ -31,8 +19,6 @@ namespace EmergencyRoulette
     {
         public string moduleName;         // 모듈 이름
         public string description;        // 모듈 설명
-
-        public ModuleTarget targetType;   // 대상 타입 (행, 열, 전체)
 
         public ModuleEffectType effectType; // 효과 종류
         public string targetResource;       // 영향을 주는 자원 이름

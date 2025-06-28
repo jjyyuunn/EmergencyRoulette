@@ -3,7 +3,7 @@ namespace EmergencyRoulette
     public enum SymbolType
     {
         Energy,
-        Medical,
+        Technology,
         Food,
         Data,
         Warning,

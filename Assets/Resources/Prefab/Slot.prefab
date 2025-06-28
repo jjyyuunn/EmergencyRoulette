@@ -141,7 +141,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Medical
+  m_text: Technology
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -613,11 +613,11 @@ MonoBehaviour:
   particleImage: {fileID: 8239856429878735577}
   energySprite: {fileID: 21300000, guid: c82852227c7e54b91bad5c4bd3ed354b, type: 3}
   foodSprite: {fileID: 21300000, guid: 2cb7d218034724ea7bed9cc65710a99d, type: 3}
-  medicalSprite: {fileID: 21300000, guid: 333628a596102430683a966f1f7c4c0d, type: 3}
+  technologySprite: {fileID: 0}
   dataSprite: {fileID: 21300000, guid: 62caf8fa8077346f98e18477f3872a95, type: 3}
   energyAttractor: {fileID: 0}
   foodAttractor: {fileID: 0}
-  medicalAttractor: {fileID: 0}
+  technologyAttractor: {fileID: 0}
   dataAttractor: {fileID: 0}
 --- !u!1 &3585218179399910430
 GameObject:
@@ -1191,7 +1191,7 @@ GameObject:
   - component: {fileID: 8028605202112244546}
   - component: {fileID: 1956878489427208033}
   m_Layer: 5
-  m_Name: Img_Medical
+  m_Name: Img_Technology
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -22,7 +22,7 @@ namespace EmergencyRoulette
             GainedSymbols = new Dictionary<SymbolType, int>()
             {
                 { SymbolType.Energy, 0 },
-                { SymbolType.Medical, 0 },
+                { SymbolType.Technology, 0 },
                 { SymbolType.Food, 0 },
                 { SymbolType.Data, 0 },
                 { SymbolType.Warning, 0 },

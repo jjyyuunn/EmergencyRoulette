@@ -16,7 +16,7 @@ namespace EmergencyRoulette
     {
         public int Energy;
         public int Food;
-        public int Medical;
+        public int Technology;
         public int Data;
 
         public float OverloadGauge; // 0 ~ 100%
@@ -28,7 +28,7 @@ namespace EmergencyRoulette
         {
             Energy = 0;
             Food = 0;
-            Medical = 0;
+            Technology = 0;
             Data = 0;
             OverloadGauge = 0f;
             EmergencyLevel = EmergencyLevel.Safe;
@@ -45,7 +45,7 @@ namespace EmergencyRoulette
         private void SetNormalResource()
         {
             Energy += _gainedSymbols[SymbolType.Energy];
-            Medical += _gainedSymbols[SymbolType.Medical];
+            Technology += _gainedSymbols[SymbolType.Technology];
             Food += _gainedSymbols[SymbolType.Food];
             Data += _gainedSymbols[SymbolType.Data];
             
@@ -55,7 +55,7 @@ namespace EmergencyRoulette
 
             EmergencyLevel = GetEmergencyLevel();
             
-            Debug.Log($"[PlayerResource] Set values - Energy: {Energy}, Medical: {Medical}, Food: {Food}, Data: {Data}");
+            Debug.Log($"[PlayerResource] Set values - Energy: {Energy}, Technology: {Technology}, Food: {Food}, Data: {Data}");
             Debug.Log($"[PlayerResource] OverloadGauge: {OverloadGauge}");
             Debug.Log($"[PlayerResource] EmergencyLevel: {EmergencyLevel}");
         }
@@ -127,22 +127,22 @@ namespace EmergencyRoulette
         
         private void CheckOutdated()
         {
-            int decreasingMedical = 1;
+            int decreasingTechnology = 1;
             
             switch (EmergencyLevel)
             {
                 case EmergencyLevel.Danger:
                 case EmergencyLevel.Warning:
                 case EmergencyLevel.Crisis:
-                    decreasingMedical++;
+                    decreasingTechnology++;
                     break;
                 default:
                     break;
             }
-            decreasingMedical *= _gainedSymbols[SymbolType.Outdated];
+            decreasingTechnology *= _gainedSymbols[SymbolType.Outdated];
             
-            if (Medical >= decreasingMedical)
-                Medical -= decreasingMedical;
+            if (Technology >= decreasingTechnology)
+                Technology -= decreasingTechnology;
             else
             {
                 OverloadGauge += _gainedSymbols[SymbolType.Outdated] * 10f;
