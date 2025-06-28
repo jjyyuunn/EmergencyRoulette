@@ -22,6 +22,8 @@ namespace EmergencyRoulette
         public float OverloadGauge; // 0 ~ 100%
         public EmergencyLevel EmergencyLevel;
 
+        private Dictionary<SymbolType, int> _gainedSymbols;
+
         public PlayerResource()
         {
             Energy = 0;
@@ -34,14 +36,21 @@ namespace EmergencyRoulette
 
         public void SetPlayerResource(Dictionary<SymbolType, int> gainedSymbols)
         {
-            Energy = gainedSymbols[SymbolType.Energy];
-            Medical = gainedSymbols[SymbolType.Medical];
-            Food = gainedSymbols[SymbolType.Food];
-            Data = gainedSymbols[SymbolType.Data];
+            _gainedSymbols = gainedSymbols;
             
-            CheckWarning(gainedSymbols);
-            CheckDischarge(gainedSymbols);
-            CheckOutdated(gainedSymbols);
+            SetNormalResource();
+        }
+
+        private void SetNormalResource()
+        {
+            Energy += _gainedSymbols[SymbolType.Energy];
+            Medical += _gainedSymbols[SymbolType.Medical];
+            Food += _gainedSymbols[SymbolType.Food];
+            Data += _gainedSymbols[SymbolType.Data];
+            
+            CheckWarning();
+            CheckDischarge();
+            CheckOutdated();
 
             EmergencyLevel = GetEmergencyLevel();
             
@@ -50,9 +59,9 @@ namespace EmergencyRoulette
             Debug.Log($"[PlayerResource] EmergencyLevel: {EmergencyLevel}");
         }
 
-        private void CheckWarning(Dictionary<SymbolType, int> gainedSymbols)
+        private void CheckWarning()
         {
-            OverloadGauge += gainedSymbols[SymbolType.Warning] * 5f;
+            OverloadGauge += _gainedSymbols[SymbolType.Warning] * 5f;
 
             switch (EmergencyLevel)
             {
@@ -73,7 +82,7 @@ namespace EmergencyRoulette
             }
         }
 
-        private void CheckDischarge(Dictionary<SymbolType, int> gainedSymbols)
+        private void CheckDischarge()
         {
             int decreasingEnergy = 1;
             
@@ -87,13 +96,13 @@ namespace EmergencyRoulette
                 default:
                     break;
             }
-            decreasingEnergy *= gainedSymbols[SymbolType.Discharge];
+            decreasingEnergy *= _gainedSymbols[SymbolType.Discharge];
             
             if (Energy >= decreasingEnergy)
                 Energy -= decreasingEnergy;
             else
             {
-                OverloadGauge += gainedSymbols[SymbolType.Discharge] * 10f;
+                OverloadGauge += _gainedSymbols[SymbolType.Discharge] * 10f;
                 switch (EmergencyLevel)
                 {
                     case EmergencyLevel.Warning:
@@ -115,7 +124,7 @@ namespace EmergencyRoulette
 
         }
         
-        private void CheckOutdated(Dictionary<SymbolType, int> gainedSymbols)
+        private void CheckOutdated()
         {
             int decreasingMedical = 1;
             
@@ -129,13 +138,13 @@ namespace EmergencyRoulette
                 default:
                     break;
             }
-            decreasingMedical *= gainedSymbols[SymbolType.Outdated];
+            decreasingMedical *= _gainedSymbols[SymbolType.Outdated];
             
             if (Medical >= decreasingMedical)
                 Medical -= decreasingMedical;
             else
             {
-                OverloadGauge += gainedSymbols[SymbolType.Outdated] * 10f;
+                OverloadGauge += _gainedSymbols[SymbolType.Outdated] * 10f;
                 switch (EmergencyLevel)
                 {
                     case EmergencyLevel.Warning:
