@@ -48,6 +48,7 @@ namespace EmergencyRoulette
         public Dictionary<int, TestItem> TestItemDict => ExcelManager.TestItemDict;
         public Dictionary<string, ModuleDataItem> ModuleDict => ExcelManager.ModuleDict;
         public PlayerState PlayerState = new PlayerState();
+        public PlayerStateUI playerStateUI;
 
         public bool CanPlayerInteract { get; set; } // 기본 자원 사용
 

@@ -47,16 +47,31 @@ namespace EmergencyRoulette
         /// <summary>
         /// 상점에 진열할 모듈 N개를 무작위로 선택
         /// </summary>
-        public void SetupShop(int count)
+        public void SetupShop()
+        {
+            GenerateShop();
+        }
+
+        public void RerollShop()
+        {
+            var state = GameManager.Instance.PlayerState;
+
+            if (state.Data < 1)
+                return;
+
+            state.Data -= 1;
+            GameManager.Instance.playerStateUI.RefreshUI();
+            GenerateShop();
+        }
+
+        private void GenerateShop()
         {
             shopModules.Clear();
 
-            // 딕셔너리 값들을 리스트로 변환 (모듈 전체 목록)
             List<ModuleDataItem> shuffled = new(GameManager.Instance.ModuleDict.Values);
             Shuffle(shuffled);
 
-            // N개만 상점에 진열
-            for (int i = 0; i < Mathf.Min(count, shuffled.Count); i++)
+            for (int i = 0; i < Mathf.Min(4, shuffled.Count); i++)
             {
                 shopModules.Add(i, shuffled[i]);
             }
@@ -105,10 +120,18 @@ namespace EmergencyRoulette
         /// <summary>
         /// 모듈을 구매하고 지정 위치(Row/Column + index)에 장착함
         /// </summary>
+        /// 
         public void TryPurchaseAndEquip(int moduleKey, int index)
         {
             if (!shopModules.TryGetValue(moduleKey, out var module))
                 return;
+
+            var state = GameManager.Instance.PlayerState;
+
+            if (module.purchaseCost > state.Data)
+                return;
+
+            state.Data -= module.purchaseCost;
 
             // 기존 모듈이 있다면 제거 (덮어쓰기)
             equippedModules.RemoveAll(m => m.index == index);
@@ -119,6 +142,7 @@ namespace EmergencyRoulette
             ModuleShopManager.Instance.ClearSelection();
             ModuleShopManager.Instance.RemoveModuleUI(moduleKey);
 
+            GameManager.Instance.playerStateUI.RefreshUI();
         }
 
         /// <summary>
@@ -153,7 +177,14 @@ namespace EmergencyRoulette
 
         public void RepairModule(int index)
         {
+            var state = GameManager.Instance.PlayerState;
+            if (state.Technology <= 0)
+                return;
+
             brokenModuleIndices.Remove(index);
+            state.Technology -= 1;
+
+            GameManager.Instance.playerStateUI.RefreshUI();
         }
 
         public bool IsModuleBroken(int index)

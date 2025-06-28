@@ -128,6 +128,7 @@ namespace EmergencyRoulette
 
             // 기본 심볼 생산
             playerState.SetNormalState();
+            GameManager.Instance.playerStateUI.RefreshUI();
         }
 
 

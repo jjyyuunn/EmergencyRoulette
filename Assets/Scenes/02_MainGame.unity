@@ -968,6 +968,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49b007336c274d11ba2d2f2daa4b3311, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerStateUI: {fileID: 5892758939187906022}
 --- !u!114 &681550963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1288,6 +1289,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6101051907344426550, guid: 9e57b7e8c4bd8a24f839f96f50b2a8d0, type: 3}
   m_PrefabInstance: {fileID: 753083873968867136}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1152821323 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5439553401802009661, guid: 9e57b7e8c4bd8a24f839f96f50b2a8d0, type: 3}
+  m_PrefabInstance: {fileID: 3830008995347648003}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1168918975
 GameObject:
   m_ObjectHideFlags: 0
@@ -1612,6 +1624,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1268871755}
   m_CullTransparentMesh: 1
+--- !u!114 &1327588702 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5439553401802009661, guid: 9e57b7e8c4bd8a24f839f96f50b2a8d0, type: 3}
+  m_PrefabInstance: {fileID: 530430876820857390}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1358026531
 GameObject:
   m_ObjectHideFlags: 0
@@ -1883,6 +1906,17 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1640983336 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5439553401802009661, guid: 9e57b7e8c4bd8a24f839f96f50b2a8d0, type: 3}
+  m_PrefabInstance: {fileID: 7298314517174231399}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1642869695
 GameObject:
   m_ObjectHideFlags: 0
@@ -1968,8 +2002,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 681550964}
         m_TargetAssemblyTypeName: EmergencyRoulette.ModuleManager, Assembly-CSharp
-        m_MethodName: SetupShop
-        m_Mode: 3
+        m_MethodName: RerollShop
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2016,6 +2050,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1642869695}
   m_CullTransparentMesh: 1
+--- !u!114 &1776572618 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5439553401802009661, guid: 9e57b7e8c4bd8a24f839f96f50b2a8d0, type: 3}
+  m_PrefabInstance: {fileID: 753083873968867136}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1917731832
 GameObject:
   m_ObjectHideFlags: 0
@@ -3099,6 +3144,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5892758939187906021}
     m_Modifications:
+    - target: {fileID: 2723374875838745775, guid: 9e57b7e8c4bd8a24f839f96f50b2a8d0, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 0c9f21027b6a445498bc2659643ed24b, type: 3}
+    - target: {fileID: 2723374875838745775, guid: 9e57b7e8c4bd8a24f839f96f50b2a8d0, type: 3}
+      propertyPath: m_Color.b
+      value: 0.3137255
+      objectReference: {fileID: 0}
+    - target: {fileID: 2723374875838745775, guid: 9e57b7e8c4bd8a24f839f96f50b2a8d0, type: 3}
+      propertyPath: m_Color.r
+      value: 0.8745098
+      objectReference: {fileID: 0}
     - target: {fileID: 4211821777005025228, guid: 9e57b7e8c4bd8a24f839f96f50b2a8d0, type: 3}
       propertyPath: m_Name
       value: Panel_Source_Energy
@@ -3199,7 +3256,15 @@ PrefabInstance:
     - target: {fileID: 2723374875838745775, guid: 9e57b7e8c4bd8a24f839f96f50b2a8d0, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 62caf8fa8077346f98e18477f3872a95, type: 3}
+      objectReference: {fileID: 21300000, guid: 4a5a5bff21539b14eb6304b8124f71bc, type: 3}
+    - target: {fileID: 2723374875838745775, guid: 9e57b7e8c4bd8a24f839f96f50b2a8d0, type: 3}
+      propertyPath: m_Color.b
+      value: 0.14509805
+      objectReference: {fileID: 0}
+    - target: {fileID: 2723374875838745775, guid: 9e57b7e8c4bd8a24f839f96f50b2a8d0, type: 3}
+      propertyPath: m_Color.g
+      value: 0.67058825
+      objectReference: {fileID: 0}
     - target: {fileID: 4211821777005025228, guid: 9e57b7e8c4bd8a24f839f96f50b2a8d0, type: 3}
       propertyPath: m_Name
       value: Panel_Source_Data
@@ -3433,6 +3498,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5892758939187906021}
+  - component: {fileID: 5892758939187906022}
   m_Layer: 5
   m_Name: UI_PlayerResourcePanels
   m_TagString: Untagged
@@ -3451,7 +3517,19 @@ PrefabInstance:
     - target: {fileID: 2723374875838745775, guid: 9e57b7e8c4bd8a24f839f96f50b2a8d0, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 2cb7d218034724ea7bed9cc65710a99d, type: 3}
+      objectReference: {fileID: 21300000, guid: 7e0c6d183bba0724185d51fe6255b30b, type: 3}
+    - target: {fileID: 2723374875838745775, guid: 9e57b7e8c4bd8a24f839f96f50b2a8d0, type: 3}
+      propertyPath: m_Color.b
+      value: 0.11372549
+      objectReference: {fileID: 0}
+    - target: {fileID: 2723374875838745775, guid: 9e57b7e8c4bd8a24f839f96f50b2a8d0, type: 3}
+      propertyPath: m_Color.g
+      value: 0.85882354
+      objectReference: {fileID: 0}
+    - target: {fileID: 2723374875838745775, guid: 9e57b7e8c4bd8a24f839f96f50b2a8d0, type: 3}
+      propertyPath: m_Color.r
+      value: 0.3137255
+      objectReference: {fileID: 0}
     - target: {fileID: 4211821777005025228, guid: 9e57b7e8c4bd8a24f839f96f50b2a8d0, type: 3}
       propertyPath: m_Name
       value: Panel_Source_Food
@@ -3584,6 +3662,22 @@ RectTransform:
   m_AnchoredPosition: {x: -680, y: 90}
   m_SizeDelta: {x: 230, y: 380}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5892758939187906022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3683802051144420450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aaf2500c12c6d345a83c8cafadf474a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  energyText: {fileID: 1327588702}
+  foodText: {fileID: 1152821323}
+  techText: {fileID: 1640983336}
+  dataText: {fileID: 1776572618}
 --- !u!114 &6219363238850343454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3645,7 +3739,15 @@ PrefabInstance:
     - target: {fileID: 2723374875838745775, guid: 9e57b7e8c4bd8a24f839f96f50b2a8d0, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 333628a596102430683a966f1f7c4c0d, type: 3}
+      objectReference: {fileID: 21300000, guid: e9b579ac994e207489653b690e138f57, type: 3}
+    - target: {fileID: 2723374875838745775, guid: 9e57b7e8c4bd8a24f839f96f50b2a8d0, type: 3}
+      propertyPath: m_Color.g
+      value: 0.92941177
+      objectReference: {fileID: 0}
+    - target: {fileID: 2723374875838745775, guid: 9e57b7e8c4bd8a24f839f96f50b2a8d0, type: 3}
+      propertyPath: m_Color.r
+      value: 0.58431375
+      objectReference: {fileID: 0}
     - target: {fileID: 4211821777005025228, guid: 9e57b7e8c4bd8a24f839f96f50b2a8d0, type: 3}
       propertyPath: m_Name
       value: Panel_Source_Technology
