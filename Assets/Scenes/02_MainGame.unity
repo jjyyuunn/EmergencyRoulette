@@ -980,6 +980,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ead4adee01a4d5a9adb96db5dcfeb32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Slot0: {fileID: 719057711}
 --- !u!1 &695642281
 GameObject:
   m_ObjectHideFlags: 0
@@ -1117,7 +1118,7 @@ GameObject:
   - component: {fileID: 719057710}
   - component: {fileID: 719057711}
   m_Layer: 5
-  m_Name: SlotTestColumn
+  m_Name: Slot (0,0)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1140,7 +1141,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -107.5, y: 53.5}
+  m_AnchoredPosition: {x: -537, y: 187}
   m_SizeDelta: {x: 120, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &719057711
@@ -1169,17 +1170,19 @@ MonoBehaviour:
   bounceStrengthDecay: 0.5
   bounceDurationGrow: 1.1
   symbols:
-  - symbolName: symbol1
+  - symbolName: 0
     rectTransform: {fileID: 1070315580}
-  - symbolName: symbol2
+  - symbolName: 1
     rectTransform: {fileID: 602173199}
-  - symbolName: symbol3
+  - symbolName: 2
     rectTransform: {fileID: 506009968}
-  - symbolName: symbol4
+  - symbolName: 3
     rectTransform: {fileID: 2027382172}
-  - symbolName: symbol5
+  - symbolName: 4
     rectTransform: {fileID: 695642282}
-  - symbolName: symbol6
+  - symbolName: 5
+    rectTransform: {fileID: 1905888546}
+  - symbolName: 6
     rectTransform: {fileID: 1905888546}
   symbolContainer: {fileID: 498760054}
 --- !u!1 &1044867587
@@ -1627,8 +1630,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 107.5, y: -53.5}
-  m_SizeDelta: {x: 335, y: 227}
+  m_AnchoredPosition: {x: -6.2263, y: -15.9016}
+  m_SizeDelta: {x: 1327.9509, y: 687.2102}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1240907339
 GameObject:
@@ -2313,7 +2316,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 92.5, y: 53.5}
+  m_AnchoredPosition: {x: 101.5, y: 231}
   m_SizeDelta: {x: 150, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1917731834
@@ -2360,8 +2363,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 719057711}
-        m_TargetAssemblyTypeName: SlotColumnScroller, Assembly-CSharp
+      - m_Target: {fileID: 681550965}
+        m_TargetAssemblyTypeName: EmergencyRoulette.SlotManager, Assembly-CSharp
         m_MethodName: StartSpin
         m_Mode: 1
         m_Arguments:

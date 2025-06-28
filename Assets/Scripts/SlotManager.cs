@@ -9,6 +9,8 @@ namespace EmergencyRoulette
         private PlayerResource _playerResource;
         private SlotBoard _slotBoard;
 
+        public SlotColumnScroller Slot0;
+
         public void Start()
         {
             _symbolLibrary = new SymbolLibrary();
@@ -17,6 +19,12 @@ namespace EmergencyRoulette
             _slotBoard = new SlotBoard(_symbolPicker);
             
             PrintBoard();
+        }
+        
+        public void StartSpin()
+        {
+            _slotBoard.Spin();
+            StartCoroutine(Slot0.StartSpin(_slotBoard.Get(0,0)));
         }
         
         private void PrintBoard()

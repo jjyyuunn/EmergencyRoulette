@@ -2,6 +2,7 @@ using UnityEngine;
 using DG.Tweening;
 using System.Collections;
 using System;
+using EmergencyRoulette;
 
 public class SlotColumnScroller : MonoBehaviour
 {
@@ -33,7 +34,7 @@ public class SlotColumnScroller : MonoBehaviour
     [System.Serializable]
     public class SymbolView
     {
-        public string symbolName;
+        public SymbolType symbolName;
         public RectTransform rectTransform;
     }
 
@@ -46,7 +47,7 @@ public class SlotColumnScroller : MonoBehaviour
     private int bounceCount;
 
     private Coroutine spinCoroutine;
-    private string targetSymbolName;
+    private SymbolType targetSymbolName;
 
     private void Start()
     {
@@ -63,7 +64,7 @@ public class SlotColumnScroller : MonoBehaviour
         symbolContainer.anchoredPosition = Vector2.zero;
     }
 
-    public void StartSpin()
+    public IEnumerator StartSpin(SymbolType symbol)
     {
         SetRandomParams();
 
@@ -83,6 +84,8 @@ public class SlotColumnScroller : MonoBehaviour
                         spinCoroutine = StartCoroutine(SpinRoutine());
                     });
             });
+        yield return new WaitForSeconds(3f);
+        StopSpin(symbol);
     }
 
     private void SetRandomParams()
@@ -121,7 +124,7 @@ public class SlotColumnScroller : MonoBehaviour
         }
     }
 
-    public void StopSpin(string targetSymbol)
+    public void StopSpin(SymbolType targetSymbol)
     {
         targetSymbolName = targetSymbol;
 
@@ -148,7 +151,7 @@ public class SlotColumnScroller : MonoBehaviour
 
         while (true)
         {
-            // ¸Å ÇÁ·¹ÀÓ¸¶´Ù ÇöÀç target ÀÎµ¦½º¸¦ ´Ù½Ã °è»ê
+            // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ó¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ target ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½
             int currentIndex = Array.FindIndex(symbols, s => s.symbolName == targetSymbolName);
             if (currentIndex == -1)
             {
@@ -158,7 +161,7 @@ public class SlotColumnScroller : MonoBehaviour
 
             int diff = (centerIndex - currentIndex + symbols.Length) % symbols.Length;
 
-            // Áß¾Ó¿¡¼­ °ÅÀÇ ¸Â¾ÒÀ¸¸é Á¾·á
+            // ï¿½ß¾Ó¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Â¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (diff == 0 && stepsTaken >= slowdownSteps)
                 break;
 
@@ -215,7 +218,7 @@ public class SlotColumnScroller : MonoBehaviour
         }
         symbols[0] = last;
 
-        float y_offset = symbols.Length * symbolHeight / 2f;
+        float y_offset = (symbols.Length%2 == 0) ? symbols.Length * symbolHeight / 2f : (symbols.Length-1) * symbolHeight / 2f;
         for (int i = 0; i < symbols.Length; i++)
         {
             symbols[i].rectTransform.anchoredPosition = new Vector2(0, -symbolHeight * i + y_offset);
