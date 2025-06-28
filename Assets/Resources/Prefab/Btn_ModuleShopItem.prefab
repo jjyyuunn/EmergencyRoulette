@@ -223,8 +223,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Title
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 969f13e980762de44abef6723c3597db, type: 2}
-  m_sharedMaterial: {fileID: 5418974665222446380, guid: 969f13e980762de44abef6723c3597db, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f4b9a371ea2b5844c9ad777ea83842f0, type: 2}
+  m_sharedMaterial: {fileID: 5418974665222446380, guid: f4b9a371ea2b5844c9ad777ea83842f0, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -570,8 +570,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Lorem Ipsum is simply dummy text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 969f13e980762de44abef6723c3597db, type: 2}
-  m_sharedMaterial: {fileID: 5418974665222446380, guid: 969f13e980762de44abef6723c3597db, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: dc0ddc912d51e754eb6097b02190f389, type: 2}
+  m_sharedMaterial: {fileID: 5418974665222446380, guid: dc0ddc912d51e754eb6097b02190f389, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
