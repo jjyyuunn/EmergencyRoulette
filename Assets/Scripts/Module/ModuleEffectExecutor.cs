@@ -4,10 +4,8 @@ namespace EmergencyRoulette
 {
     public static class ModuleEffectExecutor
     {
-        public static void ApplyAllPassiveModules()
+        public static void ApplyAllPassiveModules(PlayerState player)
         {
-            var player = GameManager.Instance.PlayerState;
-
             foreach (var equip in ModuleManager.Instance.equippedModules)
             {
                 var module = equip.module;
@@ -41,8 +39,8 @@ namespace EmergencyRoulette
                         break;
 
                     case "GainDataIfMultipleDanger":
-                        GameManager.Instance.PlayerState.SetGainDataOnDanger();
-                        Debug.Log("[PassiveEffect] 위험 2개 이상 시 데이터 +2 (미구현)");
+                        // playerState 내 존재
+                        Debug.Log("[PassiveEffect] 위험 2개 이상 시 데이터 +2");
                         break;
 
                     default:

@@ -64,15 +64,29 @@ namespace EmergencyRoulette
         // 플레이어 리소스 더하기
         private void AddResource()
         {
-            GameManager.Instance.PlayerState.SetPlayerState(_slotBoard);
-            ModuleEffectExecutor.ApplyAllPassiveModules();
+            var playerState = GameManager.Instance.PlayerState;
 
+            playerState.SetInternalData(_slotBoard);
+
+            // 콤보 모듈 → 심볼 조합 처리
+            playerState.SetResourceCombo();
+            playerState.SetSpecialCombo();
+            playerState.SetPenaltyCombos();
+            playerState.SetNormalState();
+
+            // 패시브 모듈 적용
+            ModuleEffectExecutor.ApplyAllPassiveModules(playerState);
+
+
+            // 로그
             Debug.Log("=== After PassiveModule ===");
-            GameManager.Instance.PlayerState.PrintResources();
-
-            _slotBoard.ResetGainedSymbols(); // 다 적용 후 리셋
+            playerState.PrintResources();
+            
+            // 심볼 리셋
+            _slotBoard.ResetGainedSymbols();
         }
-        
+
+
         private void PrintBoard()
         {
             Debug.Log("=== Slot Board ===");

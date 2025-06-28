@@ -46,6 +46,12 @@ namespace EmergencyRoulette
             EmergencyLevel = EmergencyLevel.Safe;
         }
 
+        public void SetInternalData(SlotBoard slotBoard)
+        {
+            _slotBoard = slotBoard;
+            _gainedSymbols = slotBoard.GainedSymbols;
+        }
+
         public void SetPlayerState(SlotBoard slotBoard)
         {
             _slotBoard = slotBoard;
@@ -61,7 +67,7 @@ namespace EmergencyRoulette
         }
         
         // 자원 콤보
-        private void SetResourceCombo()
+        public void SetResourceCombo()
         {
             List<(int y, SymbolType symbol)> combos = _slotBoard.CheckCombos();
             for (int y = 0; y < combos.Count; y++)
@@ -86,7 +92,7 @@ namespace EmergencyRoulette
         }
 
         // 특수 콤보
-        private void SetSpecialCombo()
+        public void SetSpecialCombo()
         {
             bool crisisOn = HasComboModule("AddCombo_WarningDischargeDecay");
             bool chargeOn = HasComboModule("AddCombo_EnergyDischargeDischarge");
@@ -167,7 +173,7 @@ namespace EmergencyRoulette
         }
         
         // 패널티 콤보
-        private void SetPenaltyCombos()
+        public void SetPenaltyCombos()
         {
             var penaltyCombos = _slotBoard.GetPenaltyCombos();
 
@@ -208,18 +214,26 @@ namespace EmergencyRoulette
             }
         }
 
-        private bool _gainDataOnDangerThisTurn = false;
-        public void SetGainDataOnDanger() => _gainDataOnDangerThisTurn = true;
+        private bool HasGainDataOnDangerModule()
+        {
+            foreach (var equip in ModuleManager.Instance.equippedModules)
+            {
+                if (equip.module.useType == ModuleUseType.Passive &&
+                    equip.module.effectKey == "GainDataIfMultipleDanger")
+                    return true;
+            }
+            return false;
+        }
 
         // FIXME: 기본 심볼 생산
-        private void SetNormalState()
+        public void SetNormalState()
         {
             Energy += _gainedSymbols[SymbolType.Energy];
             Technology += _gainedSymbols[SymbolType.Technology];
             Food += _gainedSymbols[SymbolType.Food];
             Data += _gainedSymbols[SymbolType.Data];
 
-            if (_gainDataOnDangerThisTurn)
+            if (HasGainDataOnDangerModule())
             {
                 int dangerCount =
                     _gainedSymbols[SymbolType.Warning] +
