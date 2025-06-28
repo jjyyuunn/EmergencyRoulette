@@ -79,6 +79,26 @@ namespace EmergencyRoulette
             ModuleShopManager.Instance.RefreshShopUI();
             UpdateDebugShopList();
         }
+        public void ClearShop()
+        {
+            // 1. 현재 상점 프리팹 안전하게 반환
+            List<Transform> children = new();
+            foreach (Transform child in ModuleShopManager.Instance.shopItemContainer)
+                children.Add(child);
+
+            foreach (var child in children)
+                ModuleShopPrefabPooler.Instance.Return(child.gameObject);
+
+            // 2. 데이터 초기화
+            shopModules.Clear();
+
+            // 3. UI 선택 초기화
+            ModuleShopManager.Instance.ClearSelection();
+
+            // 4. 디버그 리스트 업데이트
+            UpdateDebugShopList();
+        }
+
 
         /// <summary>
         /// 상점에 없는 모듈 중 무작위 하나를 추가합니다.

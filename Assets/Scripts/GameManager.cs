@@ -55,6 +55,11 @@ namespace EmergencyRoulette
         public PlayerState PlayerState = new PlayerState();
         public PlayerStateUI playerStateUI;
 
+        // 연결할 버튼
+        [SerializeField] private GameObject rerollBtn;
+        [SerializeField] private GameObject resourceDoneBtn;
+
+
         public bool CanPlayerInteract { get; set; } // 기본 자원 사용
 
         void Awake()
@@ -119,13 +124,14 @@ namespace EmergencyRoulette
                 
                 yield return StartCoroutine(HandleDisasterEvent());
             }
-            
+
             // 4. 자원 소모 (식량 등)
             SetState(GameState.ResourceConsuming);
             Debug.Log($"Curren GameState: {CurrentState}, Current Turn: {CurrentTurn}");
-            // 완료버튼 누르면 gamestate 바뀌게. 다시 disable.
-            
-            SetState(GameState.Forecasting); //임시
+            ModuleManager.Instance.SetupShop();
+            rerollBtn.SetActive(true);
+            resourceDoneBtn.SetActive(true);
+
             yield return new WaitUntil(() => CurrentState == GameState.Forecasting);
             
             // 5. 재난 예보
@@ -225,6 +231,18 @@ namespace EmergencyRoulette
                     Debug.Log("패널티 5: 과부하 게이지 +20%");
                     break;
             }
+        }
+
+        public void CompleteResourceConsuming()
+        {
+            if (CurrentState != GameState.ResourceConsuming) return;
+
+            // 모듈 상점 닫기
+            ModuleManager.Instance.ClearShop();
+            rerollBtn.SetActive(false);
+            resourceDoneBtn.SetActive(false);
+
+            SetState(GameState.Forecasting);
         }
 
 
