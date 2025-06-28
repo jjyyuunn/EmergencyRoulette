@@ -297,16 +297,16 @@ MonoBehaviour:
   symbolHeight: 160
   startLoopInterval: 0.3
   endLoopInterval: 0.05
-  accelerateDurationRange: {x: 0.4, y: 0.6}
+  accelerateDurationRange: {x: 0.4, y: 0.2}
   startBounceHeightRange: {x: 15, y: 25}
   startBounceDurationRange: {x: 0.08, y: 0.13}
-  slowdownStepsRange: {x: 12, y: 18}
+  slowdownStepsRange: {x: 3, y: 4}
   slowdownFinalInterval: 0.3
-  bounceShakeStrengthRange: {x: 15, y: 25}
-  bounceShakeDurationRange: {x: 0.25, y: 0.35}
+  bounceShakeStrengthRange: {x: 15, y: 20}
+  bounceShakeDurationRange: {x: 0.1, y: 0.2}
   bounceCountRange: {x: 3, y: 5}
   bounceStrengthDecay: 0.5
-  bounceDurationGrow: 1.1
+  bounceDurationGrow: 0.3
   symbols:
   - symbolName: 0
     rectTransform: {fileID: 7053120181759459170}

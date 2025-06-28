@@ -7,21 +7,23 @@ namespace EmergencyRoulette
     {
         public static ModuleManager Instance { get; private set; }
 
-        private void Awake()
-        {
-            if (Instance == null)
-                Instance = this;
-            else
-                Destroy(gameObject);
-        }
-
         // 이번 상점에 진열된 모듈들
         public Dictionary<int, ModuleDataItem> shopModules = new();
 
         // 슬롯머신에 장착된 모듈들
         public List<ModuleEquipSlot> equippedModules = new();
 
-        private HashSet<int> brokenModuleIndices = new();
+        public List<bool> ModuleRows;
+
+        private void Awake()
+        {
+            if (Instance == null)
+                Instance = this;
+            else
+                Destroy(gameObject);
+
+            ModuleRows = new List<bool> { true, true, true, false, false };
+        }
 
         // shopModules 디버깅용
         [SerializeField] private List<ModuleDataItem> debugShopModuleList = new();
@@ -190,26 +192,30 @@ namespace EmergencyRoulette
             }
         }
 
-        public void SetModuleBroken(int index)
+        public void SetModuleBroken(int y)
         {
-            brokenModuleIndices.Add(index);
+            if (y >= 0 && y < ModuleRows.Count)
+                ModuleRows[y] = false;
         }
 
-        public void RepairModule(int index)
+        public void RepairModule(int y)
         {
             var state = GameManager.Instance.PlayerState;
             if (state.Technology <= 0)
                 return;
 
-            brokenModuleIndices.Remove(index);
-            state.Technology -= 1;
+            if (y >= 0 && y < ModuleRows.Count)
+                ModuleRows[y] = true;
 
+            state.Technology -= 1;
             GameManager.Instance.playerStateUI.RefreshUI();
         }
 
-        public bool IsModuleBroken(int index)
+        public bool IsModuleBroken(int y)
         {
-            return brokenModuleIndices.Contains(index);
+            if (y >= 0 && y < ModuleRows.Count)
+                return !ModuleRows[y];
+            return false;
         }
 
     }

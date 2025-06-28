@@ -84,7 +84,7 @@ public class SlotColumnScroller : MonoBehaviour
                         spinCoroutine = StartCoroutine(SpinRoutine());
                     });
             });
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.2f);
         StopSpin(symbol);
         onComplete?.Invoke();
     }
@@ -151,7 +151,7 @@ public class SlotColumnScroller : MonoBehaviour
 
         int centerIndex = symbols.Length / 2;
         int stepsTaken = 0;
-        float totalDuration = 1.5f;
+        float totalDuration = 0.5f;
         float accumulated = 0f;
 
         while (true)
