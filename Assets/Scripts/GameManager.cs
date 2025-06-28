@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using System.Collections;
 using System.Linq;
+using TMPro;
 
 namespace EmergencyRoulette
 {
@@ -25,7 +26,6 @@ namespace EmergencyRoulette
         public GameState CurrentState { get; private set; } = GameState.None;
         public int CurrentTurn { get; private set; } = 0;
         public DisasterEventItem CurrentDisaster { get; private set; } = null;
-        
         public SymbolLibrary SymbolLibrary = new SymbolLibrary();
 
         public void SetState(GameState newState)
@@ -61,8 +61,9 @@ namespace EmergencyRoulette
 
         public bool IsShopActive = false;
         public GameObject UI_Shop;
-
-
+        
+        public TextMeshProUGUI dayText;
+        
         public bool CanPlayerInteract { get; set; } // 기본 자원 사용
 
         void Awake()
@@ -98,6 +99,7 @@ namespace EmergencyRoulette
                 SetState(GameState.Ended);
                 return;
             }
+            dayText.text = $"Day {CurrentTurn}";
             
             Debug.Log($"[Turn] 턴 {CurrentTurn} 시작");
             StartCoroutine(RunTurnSequence());
