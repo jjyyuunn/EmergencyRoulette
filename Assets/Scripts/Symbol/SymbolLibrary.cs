@@ -17,5 +17,15 @@ namespace EmergencyRoulette
             _symbolLibrary[SymbolType.Discharge] = new SymbolInfo(SymbolType.Discharge, SymbolCategory.Danger, 0.5f);
             _symbolLibrary[SymbolType.Outdated] = new SymbolInfo(SymbolType.Discharge, SymbolCategory.Danger, 0.5f);
         }
+        
+        public Dictionary<SymbolType, SymbolInfo> GetAll()
+        {
+            return _symbolLibrary;
+        }
+
+        public void SetProbability(SymbolType type, float prob)
+        {
+            _symbolLibrary[type].probability = prob;
+        }
     }
 }

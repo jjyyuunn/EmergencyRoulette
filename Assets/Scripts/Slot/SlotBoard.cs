@@ -1,49 +1,54 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-namespace EmergencyRoulette.Slot
+namespace EmergencyRoulette
 {
     public class SlotBoard
     {
-        public List<List<SymbolType>> Grid { get; private set; } = new List<List<SymbolType>>();
+        private Dictionary<(int x, int y), SymbolType> _grid = new();
+        public Dictionary<(int x, int y), SymbolType> Grid => _grid;
+        public int RowCount { get; private set; }
+        public int ColumnCount { get; private set; }
+        
         private SymbolPicker _picker;
 
         public SlotBoard(SymbolPicker picker, int initialRows = 3, int columns = 3)
         {
             _picker = picker;
-            for (int i = 0; i < initialRows; i++)
+            RowCount = initialRows;
+            ColumnCount = columns;
+
+            for (int y = 0; y < RowCount; y++)
             {
-                Grid.Add(GenerateRow(columns));
+                for (int x = 0; x < ColumnCount; x++)
+                {
+                    _grid[(x, y)] = _picker.Pick();
+                }
             }
         }
         
         public void Spin()
         {
-            for (int row = 0; row < Grid.Count; row++)
+            var keys = _grid.Keys.ToList();
+            foreach (var key in keys)
             {
-                for (int col = 0; col < Grid[row].Count; col++)
-                {
-                    Grid[row][col] = _picker.Pick();
-                }
+                _grid[key] = _picker.Pick();
             }
         }
         
+        // 수정해야할지도
         public void AddRow(int columnCount)
         {
-            Grid.Add(GenerateRow(columnCount));
-        }
-
-        private List<SymbolType> GenerateRow(int columnCount)
-        {
-            var row = new List<SymbolType>();
-            for (int i = 0; i < columnCount; i++)
+            int newY = RowCount;
+            for (int x = 0; x < ColumnCount; x++)
             {
-                row.Add(_picker.Pick());
+                _grid[(x, newY)] = _picker.Pick();
             }
-            return row;
+            RowCount++;
         }
-
-        public int RowCount => Grid.Count;
-        public int ColumnCount => Grid[0].Count;
+        
+        public SymbolType Get(int x, int y) => _grid[(x, y)];
+        public void Set(int x, int y, SymbolType value) => _grid[(x, y)] = value;
     }
 }

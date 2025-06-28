@@ -1,5 +1,4 @@
 using System;
-using EmergencyRoulette.Slot;
 using UnityEngine;
 
 namespace EmergencyRoulette.Test
@@ -27,16 +26,13 @@ namespace EmergencyRoulette.Test
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                foreach (var row in SlotBoard.Grid)
-                {
-                    foreach (var slot in row)
-                    {
-                        Debug.Log($"slot {slot} ");
-                    }
-                }
-            }
+            // if (Input.GetKeyDown(KeyCode.DownArrow))
+            // {
+            //     foreach (var pair in SlotBoard.Grid)
+            //     {
+            //         Debug.Log($"Grid:{pair.Key}, Symbol:{pair.Value}");
+            //     }
+            // }
         }
     }
 }
