@@ -8,17 +8,17 @@ namespace EmergencyRoulette
     {
         private Dictionary<(int x, int y), SymbolType> _grid = new();
         public Dictionary<(int x, int y), SymbolType> Grid => _grid;
-        public int RowCount { get; private set; }
-        public int ColumnCount { get; private set; }
+        public List<bool> Rows;
+        
+        public readonly int RowCount = 5;
+        public readonly int ColumnCount = 3;
         public Dictionary<SymbolType, int> GainedSymbols { get; private set; }
         
         private SymbolPicker _picker;
 
-        public SlotBoard(SymbolPicker picker, int initialRows = 3, int columns = 3)
+        public SlotBoard(SymbolPicker picker)
         {
             _picker = picker;
-            RowCount = initialRows;
-            ColumnCount = columns;
             GainedSymbols = new Dictionary<SymbolType, int>()
             {
                 { SymbolType.Energy, 0 },
@@ -29,12 +29,22 @@ namespace EmergencyRoulette
                 { SymbolType.Discharge, 0 },
                 { SymbolType.Outdated, 0 },
             };
+            Rows = new(RowCount);
 
             for (int y = 0; y < RowCount; y++)
             {
                 for (int x = 0; x < ColumnCount; x++)
                 {
                     _grid[(x, y)] = _picker.Pick();
+                }
+
+                if (y < 3)
+                {
+                    Rows.Add(true);
+                }
+                else
+                {
+                    Rows.Add(false);
                 }
             }
         }
@@ -44,8 +54,11 @@ namespace EmergencyRoulette
             var keys = _grid.Keys.ToList();
             foreach (var key in keys)
             {
-                _grid[key] = _picker.Pick();
-                GainedSymbols[_grid[key]]++;
+                if (Rows[key.y])
+                {
+                    _grid[key] = _picker.Pick();
+                    GainedSymbols[_grid[key]]++;
+                }
             }
         }
         
@@ -58,17 +71,6 @@ namespace EmergencyRoulette
             }
         }
         
-        // 수정해야할지도
-        public void AddRow(int columnCount)
-        {
-            int newY = RowCount;
-            for (int x = 0; x < ColumnCount; x++)
-            {
-                _grid[(x, newY)] = _picker.Pick();
-            }
-            RowCount++;
-        }
-        
         public SymbolType Get(int x, int y) => _grid[(x, y)];
         public void Set(int x, int y, SymbolType value) => _grid[(x, y)] = value;
         
@@ -78,16 +80,19 @@ namespace EmergencyRoulette
 
             for (int y = 0; y < RowCount; y++)
             {
-                var rowSymbols = new List<SymbolType>();
-                for (int x = 0; x < ColumnCount; x++)
+                if (Rows[y])
                 {
-                    rowSymbols.Add(_grid[(x, y)]);
-                }
+                    var rowSymbols = new List<SymbolType>();
+                    for (int x = 0; x < ColumnCount; x++)
+                    {
+                        rowSymbols.Add(_grid[(x, y)]);
+                    }
 
-                // 모든 SymbolType이 같다면 콤보
-                if (rowSymbols.All(s => s == rowSymbols[0]))
-                {
-                    combos.Add((y, rowSymbols[0]));
+                    // 모든 SymbolType이 같다면 콤보
+                    if (rowSymbols.All(s => s == rowSymbols[0]))
+                    {
+                        combos.Add((y, rowSymbols[0]));
+                    }
                 }
             }
 
@@ -99,20 +104,23 @@ namespace EmergencyRoulette
             var penaltyCombos = new List<(int y, SymbolType symbol)>();
             for (int y = 0; y < RowCount; y++)
             {
-                var rowSymbols = new List<SymbolType>();
-                for (int x = 0; x < ColumnCount; x++)
+                if (Rows[y])
                 {
-                    rowSymbols.Add(Get(x, y));
-                }
+                    var rowSymbols = new List<SymbolType>();
+                    for (int x = 0; x < ColumnCount; x++)
+                    {
+                        rowSymbols.Add(Get(x, y));
+                    }
 
-                // 위험 심볼만 추림
-                var dangerSymbols = rowSymbols
-                    .Where(s => s == SymbolType.Warning || s == SymbolType.Discharge || s == SymbolType.Outdated)
-                    .ToList();
+                    // 위험 심볼만
+                    var dangerSymbols = rowSymbols
+                        .Where(s => s == SymbolType.Warning || s == SymbolType.Discharge || s == SymbolType.Outdated)
+                        .ToList();
 
-                if (dangerSymbols.Count >= 3 && dangerSymbols.Distinct().Count() == 1) // 정확히 같은 심볼로 3개
-                {
-                    penaltyCombos.Add((y, dangerSymbols.First()));
+                    if (dangerSymbols.Count >= 3 && dangerSymbols.Distinct().Count() == 1) // 정확히 같은 심볼로 3개
+                    {
+                        penaltyCombos.Add((y, dangerSymbols.First()));
+                    }
                 }
             }
 

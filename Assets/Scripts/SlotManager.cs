@@ -46,13 +46,16 @@ namespace EmergencyRoulette
         public void StartSpin()
         {
             _slotBoard.Spin();
-
-            for (int x = 0; x < _slotBoard.ColumnCount; x++)
+            
+            for (int y = 0; y < _slotBoard.RowCount; y++)
             {
-                for (int y = 0; y < _slotBoard.RowCount; y++)
+                if (_slotBoard.Rows[y])
                 {
-                    SymbolType symbol = _slotBoard.Get(x, y);
-                    slotInstances[x, y].StartCoroutine(slotInstances[x, y].StartSpin(symbol));
+                    for (int x = 0; x < _slotBoard.ColumnCount; x++)
+                    {
+                        SymbolType symbol = _slotBoard.Get(x, y);
+                        slotInstances[x, y].StartCoroutine(slotInstances[x, y].StartSpin(symbol));
+                    }
                 }
             }
 
@@ -92,13 +95,16 @@ namespace EmergencyRoulette
             Debug.Log("=== Slot Board ===");
             for (int y = 0; y < _slotBoard.RowCount; y++)
             {
-                string rowStr = "";
-                for (int x = 0; x < _slotBoard.ColumnCount; x++)
+                if (_slotBoard.Rows[y])
                 {
-                    var symbol = _slotBoard.Get(x, y);
-                    rowStr += symbol+ " ";
+                    string rowStr = "";
+                    for (int x = 0; x < _slotBoard.ColumnCount; x++)
+                    {
+                        var symbol = _slotBoard.Get(x, y);
+                        rowStr += symbol+ " ";
+                    }
+                    Debug.Log(rowStr);
                 }
-                Debug.Log(rowStr);
             }
         }
     }
