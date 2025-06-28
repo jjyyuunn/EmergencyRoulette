@@ -84,7 +84,7 @@ public class SlotColumnScroller : MonoBehaviour
                         spinCoroutine = StartCoroutine(SpinRoutine());
                     });
             });
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1.5f);
         StopSpin(symbol);
     }
 

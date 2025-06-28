@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
 
 namespace EmergencyRoulette
 {
@@ -23,6 +24,7 @@ namespace EmergencyRoulette
         public float OverloadGauge; // 0 ~ 100%
         public EmergencyLevel EmergencyLevel;
 
+        // 하루 소모 자원
         private int _useFood => (int)Math.Ceiling(0.3f * _slotBoard.RowCount);
         private int _useFoodBonus = 0;
 
@@ -30,7 +32,9 @@ namespace EmergencyRoulette
         private Dictionary<SymbolType, int> _gainedSymbols;
         private bool _dismissPenaltyCombo;
         public bool DataCombo; // 처리 후 다시 false로 바꿔주시와요..
-        private int _nextTurnTechBonus;
+        public bool BreakRandomModule; // 이것도 모듈에서 사용. 쓰고 false로 변경..
+        private int _nextTurnTechBonus; // 실패는 성공의 어머니
+        private bool _noEnergyProduction; // 정전
 
         public PlayerState()
         {
@@ -52,6 +56,7 @@ namespace EmergencyRoulette
             // 순서대로
             SetResourceCombo();
             SetSpecialCombo();
+            SetPenaltyCombos();
             SetNormalState();
         }
         
@@ -76,6 +81,7 @@ namespace EmergencyRoulette
                         DataCombo = true;
                         break;
                 }
+                Debug.Log("Resource combo activated.");
             }
         }
 
@@ -96,6 +102,7 @@ namespace EmergencyRoulette
                 CheckCrisisProtocol(rowSymbols);
                 CheckEmergencyChargeUnit(rowSymbols);
                 CheckFailureToSuccess(rowSymbols);
+                Debug.Log("special combo activated.");
             }
         }
         
@@ -105,7 +112,9 @@ namespace EmergencyRoulette
                 rowSymbols.TryGetValue(SymbolType.Discharge, out int discharge) && discharge == 1 &&
                 rowSymbols.TryGetValue(SymbolType.Outdated, out int outdated) && outdated == 1)
             {
-                OverloadGauge = Mathf.Max(0, OverloadGauge - 10f); // 얼만큼 감소?
+                OverloadGauge -= 20f;
+                if (OverloadGauge < 0) OverloadGauge = 0;
+                
                 Food += 1;
                 Technology += 1;
                 Energy += 1;
@@ -137,10 +146,51 @@ namespace EmergencyRoulette
                 Debug.Log("[Combo] 실패는 성공의 어머니 발동! 다음 턴 기술 +4");
             }
         }
+        
+        // 패널티 콤보
+        private void SetPenaltyCombos()
+        {
+            var penaltyCombos = _slotBoard.GetPenaltyCombos();
+
+            foreach (var combo in penaltyCombos)
+            {
+                switch (combo.symbol)
+                {
+                    case SymbolType.Warning: // 경고 연쇄
+                        OverloadGauge += 5f;
+                        EmergencyLevel = GetEmergencyLevel();
+                        Debug.Log($"[PenaltyCombo] Warning Chain on row {combo.y} → +5% OverloadGauge");
+                        break;
+
+                    case SymbolType.Discharge: // 정전
+                        _noEnergyProduction = true;
+                        Debug.Log($"[PenaltyCombo] Blackout on row {combo.y} → Energy symbol production negated");
+                        break;
+
+                    // FIXME: 배열 수정 및 구현
+                    case SymbolType.Outdated: // 붕괴 별도 구현
+                        // _slotBoard.LockRow(combo.y); // 다음 턴 슬롯 잠금 (별도 구현 필요)
+                        Debug.Log($"[PenaltyCombo] Collapse on row {combo.y} → Row locked next turn");
+                        break;
+                }
+            }
+            CheckEnergyLeakage();
+        }
+
+        private void CheckEnergyLeakage()
+        {
+            int dischargeCount = _slotBoard.Grid.Values.Count(s => s == SymbolType.Discharge);
+            int outdatedCount = _slotBoard.Grid.Values.Count(s => s == SymbolType.Outdated);
+
+            if (dischargeCount >= 2 && outdatedCount >= 1)
+            {
+                BreakRandomModule = true; // 랜덤 모듈 고장 함수
+                Debug.Log("[SpecialPenaltyCombo] Energy Leak → Random module failure");
+            }
+        }
 
 
-
-        // 기본 심볼 생산
+        // FIXME: 기본 심볼 생산
         private void SetNormalState()
         {
             Energy += _gainedSymbols[SymbolType.Energy];
@@ -197,6 +247,7 @@ namespace EmergencyRoulette
                     break;
             }
             decreasingEnergy *= _gainedSymbols[SymbolType.Discharge];
+            Debug.Log($"[PlayerResource] Discharge value: {decreasingEnergy}");
             
             if (Energy >= decreasingEnergy)
                 Energy -= decreasingEnergy;
@@ -239,6 +290,7 @@ namespace EmergencyRoulette
                     break;
             }
             decreasingTechnology *= _gainedSymbols[SymbolType.Outdated];
+            Debug.Log($"[PlayerResource] Outdated value: {decreasingTechnology}");
             
             if (Technology >= decreasingTechnology)
                 Technology -= decreasingTechnology;
