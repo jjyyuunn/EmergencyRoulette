@@ -291,6 +291,16 @@ namespace EmergencyRoulette
 
             IsShopActive = !IsShopActive;
         }
+        
+        public void TriggerGameOver()
+        {
+            if (CurrentState != GameState.Ended)
+            {
+                SetState(GameState.Ended);
+                Debug.Log("게임 오버! 과부하 게이지가 100%에 도달했습니다.");
+                // TODO: 게임오버 UI, 리셋 버튼, 씬 전환 등 필요한 연출 넣기
+            }
+        }
 
     }
 }
