@@ -47,10 +47,10 @@ namespace EmergencyRoulette
 
         public PlayerState()
         {
-            Energy = 0;
-            Food = 0;
-            Technology = 0;
-            Data = 0;
+            Energy = 2;
+            Food = 3;
+            Technology = 2;
+            Data = 2;
             OverloadGauge = 0f;
             EmergencyLevel = EmergencyLevel.Safe;
         }
