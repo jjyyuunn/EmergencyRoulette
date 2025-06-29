@@ -312,5 +312,24 @@ namespace EmergencyRoulette
             }
         }
 
+
+        public void UseTechToReduceOverload()
+        {
+            var player = PlayerState;
+
+            if (player.Technology <= 0)
+            {
+                Debug.Log("[GameManager] 기술 자원이 부족합니다.");
+                return;
+            }
+
+            player.Technology -= 1;
+            player.OverloadGauge -= 5f;
+
+            Debug.Log("[GameManager] 기술 1 소모 → 과부하 게이지 5% 감소");
+
+            playerStateUI.RefreshUI();
+        }
+
     }
 }

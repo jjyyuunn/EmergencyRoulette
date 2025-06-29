@@ -1,19 +1,10 @@
 fileFormatVersion: 2
-guid: 7d60c5312de39454da4efb8adcab62f1
+guid: a8a7f438926cbca48bea911bb2109d51
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2602710953792005512
-    second: NextDay_Button_0
-  - first:
-      213: 6307989638977124486
-    second: NextDay_Button_1
-  - first:
-      213: -6258566565629246231
-    second: NextDay_Button_2
-  - first:
-      213: 1836126797291748373
-    second: NextDay_Button_3
+      213: 1208040086343421634
+    second: image_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -55,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -118,30 +109,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: iPhone
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: NextDay_Button_0
+      name: image_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 25
-        width: 92
-        height: 85
+        x: 9
+        y: 10
+        width: 95
+        height: 100
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -149,71 +127,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 87a95326d2051ebd0800000000000000
-      internalID: -2602710953792005512
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: NextDay_Button_1
-      rect:
-        serializedVersion: 2
-        x: 16
-        y: 0
-        width: 29
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 688731ec72b7a8750800000000000000
-      internalID: 6307989638977124486
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: NextDay_Button_2
-      rect:
-        serializedVersion: 2
-        x: 48
-        y: 0
-        width: 15
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 9e4488c2eda1529a0800000000000000
-      internalID: -6258566565629246231
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: NextDay_Button_3
-      rect:
-        serializedVersion: 2
-        x: 61
-        y: 2
-        width: 16
-        height: 15
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 51c762b089b3b7910800000000000000
-      internalID: 1836126797291748373
+      spriteID: 2ce8eecde02d3c010800000000000000
+      internalID: 1208040086343421634
       vertices: []
       indices: 
       edges: []
@@ -221,18 +136,14 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      NextDay_Button_0: -2602710953792005512
-      NextDay_Button_1: 6307989638977124486
-      NextDay_Button_2: -6258566565629246231
-      NextDay_Button_3: 1836126797291748373
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

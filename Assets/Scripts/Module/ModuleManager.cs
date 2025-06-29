@@ -7,10 +7,10 @@ namespace EmergencyRoulette
     {
         public static ModuleManager Instance { get; private set; }
 
-        // �̹� ������ ������ ����
+        //  ̹                    
         public Dictionary<int, ModuleDataItem> shopModules = new();
 
-        // ���Ըӽſ� ������ ����
+        //    Ըӽſ             
         public List<ModuleEquipSlot> equippedModules = new();
 
         public HashSet<ModuleDataItem> UsedActiveModulesThisTurn { get; private set; } = new();
@@ -35,7 +35,7 @@ namespace EmergencyRoulette
             ModuleRows = new List<bool> { true, true, true, false, false };
         }
 
-        // shopModules ������
+        // shopModules       
         [SerializeField] private List<ModuleDataItem> debugShopModuleList = new();
 
 #if UNITY_EDITOR
@@ -53,11 +53,11 @@ namespace EmergencyRoulette
                 debugShopModuleList.Add(kvp.Value);
             }
         }
-        // shopModules ������
+        // shopModules       
 
 
         /// <summary>
-        /// ������ ������ ��� N���� �������� ����
+        ///                   N                  
         /// </summary>
         public void SetupShop()
         {
@@ -109,7 +109,7 @@ namespace EmergencyRoulette
         }
         public void ClearShop()
         {
-            // 1. ���� ���� ������ �����ϰ� ��ȯ
+            // 1.                       ϰ    ȯ
             List<Transform> children = new();
             foreach (Transform child in ModuleShopManager.Instance.shopItemContainer)
                 children.Add(child);
@@ -117,42 +117,42 @@ namespace EmergencyRoulette
             foreach (var child in children)
                 ModuleShopPrefabPooler.Instance.Return(child.gameObject);
 
-            // 2. ������ �ʱ�ȭ
+            // 2.         ʱ ȭ
             shopModules.Clear();
 
-            // 3. UI ���� �ʱ�ȭ
+            // 3. UI       ʱ ȭ
             ModuleShopManager.Instance.ClearSelection();
 
-            // 4. ����� ����Ʈ ������Ʈ
+            // 4.           Ʈ       Ʈ
             UpdateDebugShopList();
         }
 
 
         /// <summary>
-        /// ������ ���� ��� �� ������ �ϳ��� �߰��մϴ�.
+        ///                            ϳ     ߰  մϴ .
         /// </summary>
         public void AddRandomModuleToShop()
         {
-            // 1. ��ü ��� ��� ��������
+            // 1.   ü                 
             List<ModuleDataItem> allModules = new(GameManager.Instance.ModuleDict.Values);
 
-            // 2. ���� ������ �̹� �ִ� ��� ����
+            // 2.              ̹   ִ          
             foreach (var existing in shopModules.Values)
             {
                 allModules.Remove(existing);
             }
 
-            // 3. ���� �� ���ٸ� ����
+            // 3.            ٸ      
             if (allModules.Count == 0)
             {
-                Debug.LogWarning("�� �̻� �߰��� ����� �����ϴ�.");
+                Debug.LogWarning("    ̻   ߰               ϴ .");
                 return;
             }
 
-            // 4. ���� Shuffle �޼���� ����
+            // 4.      Shuffle  ޼         
             Shuffle(allModules);
 
-            // 5. ù ��° ��� ���� �� �߰�
+            // 5. ù   °              ߰ 
             var selectedModule = allModules[0];
             int newIndex = shopModules.Count;
             shopModules[newIndex] = selectedModule;
@@ -166,7 +166,7 @@ namespace EmergencyRoulette
 
 
         /// <summary>
-        /// ����� �����ϰ� ���� ��ġ(Row/Column + index)�� ������
+        ///            ϰ         ġ(Row/Column + index)         
         /// </summary>
         /// 
         public void TryPurchaseAndEquip(int moduleKey, int index)
@@ -181,7 +181,7 @@ namespace EmergencyRoulette
 
             state.Data -= module.purchaseCost;
 
-            // ���� ����� �ִٸ� ���� (�����)
+            //             ִٸ       (     )
             equippedModules.RemoveAll(m => m.index == index);
 
             equippedModules.Add(new ModuleEquipSlot(module, index));
@@ -194,7 +194,7 @@ namespace EmergencyRoulette
         }
 
         /// <summary>
-        /// Ư�� ��ġ(Row/Col + index)�� ������ ��� ��ȯ
+        /// Ư     ġ(Row/Col + index)                ȯ
         /// </summary>
         public ModuleDataItem GetEquippedModule(int index)
         {
@@ -207,7 +207,7 @@ namespace EmergencyRoulette
         }
 
         /// <summary>
-        /// ����Ʈ ������ ����
+        ///     Ʈ            
         /// </summary>
         private void Shuffle<T>(List<T> list)
         {
@@ -221,7 +221,7 @@ namespace EmergencyRoulette
         public void SetModuleBroken(int y)
         {
             if (y >= 0 && y < ModuleRows.Count)
-                ModuleRows[y] = false;
+                SetModuleRow(y, false);
         }
 
         public void RepairModule(int y)
@@ -231,7 +231,7 @@ namespace EmergencyRoulette
                 return;
 
             if (y >= 0 && y < ModuleRows.Count)
-                ModuleRows[y] = true;
+                SetModuleRow(y, true);
 
             state.Technology -= 1;
             GameManager.Instance.playerStateUI.RefreshUI();
@@ -244,12 +244,32 @@ namespace EmergencyRoulette
             return false;
         }
 
+        public void SetModuleRow(int index, bool value)
+        {
+            if (index < 0 || index >= ModuleRows.Count) return;
+
+            ModuleRows[index] = value;
+            RefreshBrokenImages();
+        }
+
+
+
+        public void RefreshBrokenImages()
+        {
+            if (ModuleEquipManager.Instance == null) return;
+
+            List<GameObject> brokenImages = ModuleEquipManager.Instance.GetBrokenImages();
+
+            for (int i = 0; i < ModuleRows.Count && i < brokenImages.Count; i++)
+            {
+                bool isWorking = ModuleRows[i];
+                brokenImages[i].SetActive(!isWorking); // 작동하면 false, 고장나면 true
+            }
+        }
+
 
     }
 
-    /// <summary>
-    /// ���� ������ ��� ����: � �����, ���(Row/Col), �� ��° ���Կ� �پ��°�
-    /// </summary>
     [System.Serializable]
     public class ModuleEquipSlot
     {

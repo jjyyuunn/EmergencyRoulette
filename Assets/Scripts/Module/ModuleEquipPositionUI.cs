@@ -7,7 +7,7 @@ namespace EmergencyRoulette
 {
     public class ModuleEquipPositionUI : MonoBehaviour
     {
-        //public TextMeshProUGUI label;
+        public TextMeshProUGUI label;
 
         private int index;
         private System.Action<int> onShopClick;
@@ -39,11 +39,10 @@ namespace EmergencyRoulette
 
         public void UpdateLabelWithModuleName(ModuleDataItem module)
         {
-            /*
             if (module != null)
-                label.text = $"{index}\n{module.moduleName}";
+                label.text = $"{module.moduleName}";
             else
-                label.text = $"{index}";*/
+                label.text = $"{index}";
         }
 
         public int GetIndex() => index;
