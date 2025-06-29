@@ -61,9 +61,7 @@ namespace EmergencyRoulette
         /// </summary>
         public void SetupShop()
         {
-            GameManager.Instance.UI_Shop.SetActive(true);
             GenerateShop();
-            GameManager.Instance.UI_Shop.SetActive(false);
         }
 
         // 수정 가능성 있음

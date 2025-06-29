@@ -47,10 +47,11 @@ namespace EmergencyRoulette
                     onOtherClick: OnEquipSlotClickedOutsideShop
                 );
 
-                ui.label.text = $"Slot {i}";
+                //ui.label.text = $"Slot {i}";
 
                 RectTransform rt = btn.GetComponent<RectTransform>();
-                rt.anchoredPosition = new Vector2(0, -(i - (row - 1) / 2f) * 200f); // Áß¾Ó Á¤·Ä
+                rt.anchoredPosition = new Vector2(79f, 222f - i * 143f);
+
             }
         }
 

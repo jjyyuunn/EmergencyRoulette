@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using TMPro;
+using DG.Tweening;
 
 namespace EmergencyRoulette
 {
@@ -54,10 +55,6 @@ namespace EmergencyRoulette
         public Dictionary<string, DisasterEventItem> DisasterEventDict => ExcelManager.DisasterEventDict;
         public PlayerState PlayerState = new PlayerState();
         public PlayerStateUI playerStateUI;
-
-        // 연결할 버튼
-        [SerializeField] private GameObject rerollBtn;
-        [SerializeField] private GameObject resourceDoneBtn;
 
         public bool IsShopActive = false;
         public GameObject UI_Shop;
@@ -143,10 +140,6 @@ namespace EmergencyRoulette
             SetState(GameState.ResourceConsuming);
             Debug.Log($"Curren GameState: {CurrentState}, Current Turn: {CurrentTurn}");
             ModuleManager.Instance.SetupShop();
-            UI_Shop.SetActive(true);
-            rerollBtn.SetActive(true);
-            resourceDoneBtn.SetActive(true);
-            UI_Shop.SetActive(false);
 
             yield return new WaitUntil(() => CurrentState == GameState.None);
 
@@ -256,12 +249,8 @@ namespace EmergencyRoulette
             if (CurrentState != GameState.ResourceConsuming) return;
 
             // 모듈 상점 닫기
-            ModuleManager.Instance.ClearShop();
-            rerollBtn.SetActive(false);
-            resourceDoneBtn.SetActive(false);
-            UI_Shop.SetActive(false);
-
-            IsShopActive = false;
+            if(IsShopActive)
+                ToggleShopUI();
 
             // Food 자원 처리
             var remainFood = PlayerState.Food - PlayerState.UseFood - PlayerState.UseFoodBonus;
@@ -279,8 +268,24 @@ namespace EmergencyRoulette
 
         public void ToggleShopUI()
         {
-            GameManager.Instance.IsShopActive = !GameManager.Instance.IsShopActive;
-            UI_Shop.SetActive(GameManager.Instance.IsShopActive);
+            if (CurrentState != GameState.ResourceConsuming)
+                return;
+
+            RectTransform rt = UI_Shop.GetComponent<RectTransform>();
+
+            rt.DOKill(); // 중복 방지
+
+            if (IsShopActive)
+            {
+                // 닫기
+                rt.DOAnchorPos(rt.anchoredPosition + new Vector2(500f, 0), 0.4f).SetEase(Ease.OutCubic);
+            }
+            else
+            {
+                rt.DOAnchorPos(rt.anchoredPosition - new Vector2(500f, 0), 0.4f).SetEase(Ease.OutCubic);
+            }
+
+            IsShopActive = !IsShopActive;
         }
 
     }
