@@ -31,16 +31,18 @@ namespace EmergencyRoulette
 
         // 하루 소모 자원
         private int _useFood => (int)Math.Ceiling(0.3f * _slotBoard.RowCount);
+        public int UseFood => _useFood;
         public int UseFoodBonus = 0;
 
         private SlotBoard _slotBoard;
         private Dictionary<SymbolType, int> _gainedSymbols;
 
-        private bool _dismissPenaltyCombo;
-        private int _nextTurnTechBonus; // 실패는 성공의 어머니
+        private bool _dismissPenaltyCombo; // 기술 혁명
+        public int NextTurnTechBonus; // 실패는 성공의 어머니
         private bool _noEnergyProduction; // 정전
+        private const int ENERGY_BONUS = 4; // 실패는 성공의 어머니를 위한 변수
 
-        public bool DataCombo { get; set; }  // 처리 후 다시 false로 바꿔주시와요..
+        public bool DataCombo { get; set; }  // 데이터구조화
         public bool DoubleNextActive { get; set; } // 모듈 오버클럭
 
         public PlayerState()
@@ -68,7 +70,7 @@ namespace EmergencyRoulette
                 switch (combos[y].symbol)
                 {
                     case SymbolType.Food:
-                        UseFoodBonus--; // 여기 마이너스 or 플러스?
+                        UseFoodBonus--;
                         break;
                     case SymbolType.Energy:
                         OverloadGauge -= 10f;
@@ -174,7 +176,7 @@ namespace EmergencyRoulette
             if (rowSymbols.TryGetValue(SymbolType.Technology, out int tech) && tech == 1 &&
                 rowSymbols.TryGetValue(SymbolType.Outdated, out int outdated) && outdated == 2)
             {
-                _nextTurnTechBonus = 4;
+                NextTurnTechBonus = 4;
                 Debug.Log("[Combo] 실패는 성공의 어머니 발동! 다음 턴 기술 +4");
             }
         }
@@ -183,6 +185,14 @@ namespace EmergencyRoulette
         public void SetPenaltyCombos()
         {
             var penaltyCombos = _slotBoard.GetPenaltyCombos();
+            if (_dismissPenaltyCombo)
+            {
+                if (penaltyCombos != null && penaltyCombos.Count > 0)
+                {
+                    penaltyCombos.RemoveAt(0);
+                }
+                _dismissPenaltyCombo = false;
+            }
 
             foreach (var combo in penaltyCombos)
             {
@@ -272,7 +282,9 @@ namespace EmergencyRoulette
         // FIXME: 기본 심볼 생산
         public void SetNormalState()
         {
-            Energy += _gainedSymbols[SymbolType.Energy];
+            if (!_noEnergyProduction) Energy += _gainedSymbols[SymbolType.Energy];
+            else _noEnergyProduction = false;
+       
             Technology += _gainedSymbols[SymbolType.Technology];
             Food += _gainedSymbols[SymbolType.Food];
             Data += _gainedSymbols[SymbolType.Data];

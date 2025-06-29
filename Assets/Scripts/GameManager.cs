@@ -107,6 +107,15 @@ namespace EmergencyRoulette
         
         private IEnumerator RunTurnSequence()
         {
+            // 0. 재난 예보
+            if (CurrentTurn % 4 == 1)
+            {
+                SetDisaster();
+                Debug.Log($"Curren GameState: {CurrentState}, Current Turn: {CurrentTurn}");
+                Debug.Log($"Disaster: {CurrentDisaster.disaster}, Info: {CurrentDisaster.information}, {4-(CurrentTurn % 4)} days left!");
+                yield return new WaitForSeconds(3f); // 메시지 보여줄 시간
+            }
+            
             // 1. 스핀 단계
             SetState(GameState.Spin);
             Debug.Log($"Curren GameState: {CurrentState}, Current Turn: {CurrentTurn}");
@@ -139,23 +148,9 @@ namespace EmergencyRoulette
             resourceDoneBtn.SetActive(true);
             UI_Shop.SetActive(false);
 
-            yield return new WaitUntil(() => CurrentState == GameState.Forecasting);
-            
-            // 5. 재난 예보
-            if (CurrentTurn == 1 || CurrentTurn % 4 == 0) SetDisaster();
-            
-            // CurrentDisaster를 ui에 띄워줌. 일단은 디버그 로그로
-            if (CurrentTurn != 16)
-            {
-                Debug.Log($"Curren GameState: {CurrentState}, Current Turn: {CurrentTurn}");
-                Debug.Log($"Disaster: {CurrentDisaster.disaster}, Info: {CurrentDisaster.information}, {4-(CurrentTurn % 4)} days left!");
-            }
-
-            yield return new WaitForSeconds(2f); // 메시지 보여줄 시간
-            SetState(GameState.None);
+            yield return new WaitUntil(() => CurrentState == GameState.None);
 
             // 다음 턴으로
-            yield return new  WaitUntil(() => CurrentState == GameState.None);
             StartTurn();
         }
 
@@ -268,7 +263,18 @@ namespace EmergencyRoulette
 
             IsShopActive = false;
 
-            SetState(GameState.Forecasting);
+            // Food 자원 처리
+            var remainFood = PlayerState.Food - PlayerState.UseFood - PlayerState.UseFoodBonus;
+            if (remainFood > 0)
+                PlayerState.Food = remainFood;
+            else
+                PlayerState.OverloadGauge += 10f;
+
+            // 다음턴 기술 보너스
+            PlayerState.Technology += PlayerState.NextTurnTechBonus;
+            PlayerState.NextTurnTechBonus = 0;
+
+            SetState(GameState.None);
         }
 
         public void ToggleShopUI()

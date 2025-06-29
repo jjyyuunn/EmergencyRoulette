@@ -7,13 +7,15 @@ namespace EmergencyRoulette
     {
         public static ModuleManager Instance { get; private set; }
 
-        // ÀÌ¹ø »óÁ¡¿¡ Áø¿­µÈ ¸ğµâµé
+        // ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         public Dictionary<int, ModuleDataItem> shopModules = new();
 
-        // ½½·Ô¸Ó½Å¿¡ ÀåÂøµÈ ¸ğµâµé
+        // ï¿½ï¿½ï¿½Ô¸Ó½Å¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         public List<ModuleEquipSlot> equippedModules = new();
 
         public HashSet<ModuleDataItem> UsedActiveModulesThisTurn { get; private set; } = new();
+
+        private int _freeReRoll = 2;
 
         public void ClearUsedActiveModulesThisTurn()
         {
@@ -33,7 +35,7 @@ namespace EmergencyRoulette
             ModuleRows = new List<bool> { true, true, true, false, false };
         }
 
-        // shopModules µğ¹ö±ë¿ë
+        // shopModules ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         [SerializeField] private List<ModuleDataItem> debugShopModuleList = new();
 
 #if UNITY_EDITOR
@@ -51,11 +53,11 @@ namespace EmergencyRoulette
                 debugShopModuleList.Add(kvp.Value);
             }
         }
-        // shopModules µğ¹ö±ë¿ë
+        // shopModules ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 
         /// <summary>
-        /// »óÁ¡¿¡ Áø¿­ÇÒ ¸ğµâ N°³¸¦ ¹«ÀÛÀ§·Î ¼±ÅÃ
+        /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ Nï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         /// </summary>
         public void SetupShop()
         {
@@ -64,9 +66,25 @@ namespace EmergencyRoulette
             GameManager.Instance.UI_Shop.SetActive(false);
         }
 
+        // ìˆ˜ì • ê°€ëŠ¥ì„± ìˆìŒ
         public void RerollShop()
         {
             var state = GameManager.Instance.PlayerState;
+
+            if (state.DataCombo)
+            {
+                if (_freeReRoll < 1)
+                {
+                    state.DataCombo = false;
+                }
+                else
+                {
+                    _freeReRoll -= 1;
+                    GameManager.Instance.playerStateUI.RefreshUI();
+                    GenerateShop();
+                    return;
+                }
+            }
 
             if (state.Data < 1)
                 return;
@@ -93,7 +111,7 @@ namespace EmergencyRoulette
         }
         public void ClearShop()
         {
-            // 1. ÇöÀç »óÁ¡ ÇÁ¸®ÆÕ ¾ÈÀüÇÏ°Ô ¹İÈ¯
+            // 1. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½È¯
             List<Transform> children = new();
             foreach (Transform child in ModuleShopManager.Instance.shopItemContainer)
                 children.Add(child);
@@ -101,42 +119,42 @@ namespace EmergencyRoulette
             foreach (var child in children)
                 ModuleShopPrefabPooler.Instance.Return(child.gameObject);
 
-            // 2. µ¥ÀÌÅÍ ÃÊ±âÈ­
+            // 2. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
             shopModules.Clear();
 
-            // 3. UI ¼±ÅÃ ÃÊ±âÈ­
+            // 3. UI ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
             ModuleShopManager.Instance.ClearSelection();
 
-            // 4. µğ¹ö±× ¸®½ºÆ® ¾÷µ¥ÀÌÆ®
+            // 4. ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
             UpdateDebugShopList();
         }
 
 
         /// <summary>
-        /// »óÁ¡¿¡ ¾ø´Â ¸ğµâ Áß ¹«ÀÛÀ§ ÇÏ³ª¸¦ Ãß°¡ÇÕ´Ï´Ù.
+        /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï³ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½Õ´Ï´ï¿½.
         /// </summary>
         public void AddRandomModuleToShop()
         {
-            // 1. ÀüÃ¼ ¸ğµâ ¸ñ·Ï °¡Á®¿À±â
+            // 1. ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             List<ModuleDataItem> allModules = new(GameManager.Instance.ModuleDict.Values);
 
-            // 2. ÇöÀç »óÁ¡¿¡ ÀÌ¹Ì ÀÖ´Â ¸ğµâ Á¦°Å
+            // 2. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             foreach (var existing in shopModules.Values)
             {
                 allModules.Remove(existing);
             }
 
-            // 3. ³²Àº °Ô ¾ø´Ù¸é ¸®ÅÏ
+            // 3. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (allModules.Count == 0)
             {
-                Debug.LogWarning("´õ ÀÌ»ó Ãß°¡ÇÒ ¸ğµâÀÌ ¾ø½À´Ï´Ù.");
+                Debug.LogWarning("ï¿½ï¿½ ï¿½Ì»ï¿½ ï¿½ß°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
                 return;
             }
 
-            // 4. ±âÁ¸ Shuffle ¸Ş¼­µå·Î ¼¯±â
+            // 4. ï¿½ï¿½ï¿½ï¿½ Shuffle ï¿½Ş¼ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             Shuffle(allModules);
 
-            // 5. Ã¹ ¹øÂ° ¸ğµâ ¼±ÅÃ ÈÄ Ãß°¡
+            // 5. Ã¹ ï¿½ï¿½Â° ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ß°ï¿½
             var selectedModule = allModules[0];
             int newIndex = shopModules.Count;
             shopModules[newIndex] = selectedModule;
@@ -150,7 +168,7 @@ namespace EmergencyRoulette
 
 
         /// <summary>
-        /// ¸ğµâÀ» ±¸¸ÅÇÏ°í ÁöÁ¤ À§Ä¡(Row/Column + index)¿¡ ÀåÂøÇÔ
+        /// ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡(Row/Column + index)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         /// </summary>
         /// 
         public void TryPurchaseAndEquip(int moduleKey, int index)
@@ -165,7 +183,7 @@ namespace EmergencyRoulette
 
             state.Data -= module.purchaseCost;
 
-            // ±âÁ¸ ¸ğµâÀÌ ÀÖ´Ù¸é Á¦°Å (µ¤¾î¾²±â)
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½î¾²ï¿½ï¿½)
             equippedModules.RemoveAll(m => m.index == index);
 
             equippedModules.Add(new ModuleEquipSlot(module, index));
@@ -178,7 +196,7 @@ namespace EmergencyRoulette
         }
 
         /// <summary>
-        /// Æ¯Á¤ À§Ä¡(Row/Col + index)¿¡ ÀåÂøµÈ ¸ğµâ ¹İÈ¯
+        /// Æ¯ï¿½ï¿½ ï¿½ï¿½Ä¡(Row/Col + index)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
         /// </summary>
         public ModuleDataItem GetEquippedModule(int index)
         {
@@ -191,7 +209,7 @@ namespace EmergencyRoulette
         }
 
         /// <summary>
-        /// ¸®½ºÆ® ¹«ÀÛÀ§ ¼ÅÇÃ
+        /// ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         /// </summary>
         private void Shuffle<T>(List<T> list)
         {
@@ -232,7 +250,7 @@ namespace EmergencyRoulette
     }
 
     /// <summary>
-    /// ½ÇÁ¦ ÀåÂøµÈ ¸ğµâ Á¤º¸: ¾î¶² ¸ğµâÀÌ, ¾îµğ(Row/Col), ¸î ¹øÂ° ½½·Ô¿¡ ºÙ¾ú´Â°¡
+    /// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: ï¿½î¶² ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½(Row/Col), ï¿½ï¿½ ï¿½ï¿½Â° ï¿½ï¿½ï¿½Ô¿ï¿½ ï¿½Ù¾ï¿½ï¿½Â°ï¿½
     /// </summary>
     [System.Serializable]
     public class ModuleEquipSlot
