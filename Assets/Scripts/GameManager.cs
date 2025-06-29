@@ -5,6 +5,7 @@ using System.Collections;
 using System.Linq;
 using TMPro;
 using DG.Tweening;
+using UnityEngine.UI;
 
 namespace EmergencyRoulette
 {
@@ -61,6 +62,8 @@ namespace EmergencyRoulette
         
         public TextMeshProUGUI dayText;
         public TextMeshProUGUI announcementText;
+        public Image notice;
+        public TextMeshProUGUI noticeText;
 
         public SlotBackGroundUIController slotBackGroundUIController;
 
@@ -73,6 +76,7 @@ namespace EmergencyRoulette
 
         private void Start()
         {
+            notice.gameObject.SetActive(false);
             StartTurn();
         }
 
@@ -137,7 +141,12 @@ namespace EmergencyRoulette
                 SetState(GameState.Disaster);
                 Debug.Log($"Curren GameState: {CurrentState}, Current Turn: {CurrentTurn}");
                 
+                notice.gameObject.SetActive(true);
+                noticeText.text = $"{CurrentDisaster.disaster}: {CurrentDisaster.information}";
+
+                yield return new WaitForSeconds(2.5f);
                 yield return StartCoroutine(HandleDisasterEvent());
+                notice.gameObject.SetActive(false);
             }
 
             // 4. 자원 소모 (식량 등)
