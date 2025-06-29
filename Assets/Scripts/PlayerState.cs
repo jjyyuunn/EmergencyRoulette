@@ -25,7 +25,17 @@ namespace EmergencyRoulette
         public float OverloadGauge // 0 ~ 100%
         {
             get => _overloadGauge;
-            set => _overloadGauge = Mathf.Clamp(value, 0f, 100f);
+            set
+            {
+                _overloadGauge = Mathf.Clamp(value, 0f, 100f);
+                EmergencyLevel = GetEmergencyLevel();
+
+                if (_overloadGauge >= 100f)
+                {
+                    Debug.Log("[GameOver] 과부하 게이지 100% 도달");
+                    GameManager.Instance.TriggerGameOver();
+                }
+            }
         }
         public EmergencyLevel EmergencyLevel;
 
@@ -51,7 +61,7 @@ namespace EmergencyRoulette
             Food = 3;
             Technology = 2;
             Data = 2;
-            OverloadGauge = 0f;
+            OverloadGauge = 90f;
             EmergencyLevel = EmergencyLevel.Safe;
         }
 
