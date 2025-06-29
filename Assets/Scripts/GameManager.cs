@@ -60,7 +60,9 @@ namespace EmergencyRoulette
         public GameObject UI_Shop;
         
         public TextMeshProUGUI dayText;
-        
+
+        public SlotBackGroundUIController slotBackGroundUIController;
+
         public bool CanPlayerInteract { get; set; } // 기본 자원 사용
 
         void Awake()
@@ -112,6 +114,7 @@ namespace EmergencyRoulette
                 Debug.Log($"Disaster: {CurrentDisaster.disaster}, Info: {CurrentDisaster.information}, {4-(CurrentTurn % 4)} days left!");
                 yield return new WaitForSeconds(3f); // 메시지 보여줄 시간
             }
+
             
             // 1. 스핀 단계
             SetState(GameState.Spin);
@@ -140,6 +143,7 @@ namespace EmergencyRoulette
             SetState(GameState.ResourceConsuming);
             Debug.Log($"Curren GameState: {CurrentState}, Current Turn: {CurrentTurn}");
             ModuleManager.Instance.SetupShop();
+            slotBackGroundUIController.UpdateRowUI();
 
             yield return new WaitUntil(() => CurrentState == GameState.None);
 

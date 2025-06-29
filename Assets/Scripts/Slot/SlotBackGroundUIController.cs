@@ -1,29 +1,45 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using System.Linq;
 
 namespace EmergencyRoulette
 {
     public class SlotBackGroundUIController : MonoBehaviour
     {
-        [SerializeField] private List<GameObject> rowIndicators; // 0~4번 row에 해당하는 UI 오브젝트들
-        private SlotBoard slotBoard;
+        [SerializeField] private List<Image> rowIndicators; // 0~4행의 Image 컴포넌트
 
-        public void Init(SlotBoard board)
+        private void Start()
         {
-            slotBoard = board;
-            UpdateRowUI();
+            // 자동 할당
+            if (rowIndicators == null || rowIndicators.Count == 0)
+            {
+                rowIndicators = GetComponentsInChildren<RectTransform>(true)
+                    .Where(rt => rt != this.transform) // 자기 자신 제외
+                    .Select(rt => rt.GetComponent<Image>())
+                    .Where(img => img != null)
+                    .OrderByDescending(img => img.rectTransform.anchoredPosition.y)
+                    .Take(5)
+                    .ToList();
+
+                Debug.Log($"[SlotBackGroundUIController] rowIndicators auto-assigned: {rowIndicators.Count}");
+            }
         }
 
         public void UpdateRowUI()
         {
-            if (slotBoard == null) return;
+            var slotBoard = GameManager.Instance.PlayerState.SlotBoard;
+            if (slotBoard == null || rowIndicators == null || rowIndicators.Count < 5) return;
 
             for (int y = 0; y < slotBoard.RowCount; y++)
             {
-                bool isActive = slotBoard.Rows[y];
+                bool isUnlocked = slotBoard.Rows[y];
+                var img = rowIndicators[y];
 
-                // 예: 잠긴 row는 비활성화된 이미지 표시
-                rowIndicators[y].SetActive(isActive);
+                if (img != null)
+                {
+                    img.color = isUnlocked ? Color.white : new Color32(0xFF, 0x5A, 0x5A, 0xFF);
+                }
             }
         }
     }
