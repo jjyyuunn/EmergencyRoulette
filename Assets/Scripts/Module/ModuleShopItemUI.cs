@@ -28,7 +28,24 @@ namespace EmergencyRoulette
 
             titleText.text = data.moduleName;
             descriptionText.text = data.description;
-            priceText.text = "무료"; // 가격 시스템 연동 가능
+            priceText.text = data.purchaseCost.ToString();
+
+            // 타입에 따라 아이콘 색상 변경
+            switch (data.useType)
+            {
+                case ModuleUseType.Active:
+                    iconImage.color = Color.red;
+                    break;
+                case ModuleUseType.Passive:
+                    iconImage.color = Color.blue;
+                    break;
+                case ModuleUseType.Combo:
+                    iconImage.color = new Color(0.6f, 0f, 1f); // 보라색 (RGB 153,0,255)
+                    break;
+                default:
+                    iconImage.color = Color.white;
+                    break;
+            }
 
             Highlight(false);
 
