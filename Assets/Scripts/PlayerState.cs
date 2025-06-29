@@ -61,7 +61,7 @@ namespace EmergencyRoulette
             Food = 3;
             Technology = 2;
             Data = 2;
-            OverloadGauge = 90f;
+            OverloadGauge = 0f;
             EmergencyLevel = EmergencyLevel.Safe;
         }
 
