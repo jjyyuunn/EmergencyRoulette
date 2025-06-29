@@ -21,6 +21,7 @@ namespace EmergencyRoulette
             UnityEditor.EditorApplication.isPlaying = false;
 #endif
             Application.Quit();
+
         }
     }
 }

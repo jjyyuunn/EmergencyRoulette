@@ -6,6 +6,7 @@ using System.Linq;
 using TMPro;
 using DG.Tweening;
 using UnityEngine.UI;
+using UnityEditor;
 
 namespace EmergencyRoulette
 {
@@ -79,6 +80,19 @@ namespace EmergencyRoulette
             notice.gameObject.SetActive(false);
             StartTurn();
         }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+#if UNITY_EDITOR
+                EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+            }
+
+        }    
 
         private static void Init()
         {
