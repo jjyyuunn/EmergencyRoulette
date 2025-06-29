@@ -9,7 +9,7 @@ namespace EmergencyRoulette
     {
         //public TextMeshProUGUI label;
 
-        private int index;
+        public int index;
         private System.Action<int> onShopClick;
         private System.Action<int> onOtherClick;
 

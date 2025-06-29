@@ -2383,6 +2383,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 5
   equipButtonPrefab: {fileID: 5308399020982869798, guid: a6afa388517b43a4e8d6debdd965aef2, type: 3}
+  equipBrokenImagePrefab: {fileID: 5308399020982869798, guid: 905772b1704d19c44856fa3d4d66b29f, type: 3}
   equipButtonContainer: {fileID: 588526592}
   cancelModuleEquipBtn: {fileID: 3357789516010084440}
 --- !u!1 &1472276084

@@ -221,7 +221,7 @@ namespace EmergencyRoulette
         public void SetModuleBroken(int y)
         {
             if (y >= 0 && y < ModuleRows.Count)
-                ModuleRows[y] = false;
+                SetModuleRow(y, false);
         }
 
         public void RepairModule(int y)
@@ -231,7 +231,7 @@ namespace EmergencyRoulette
                 return;
 
             if (y >= 0 && y < ModuleRows.Count)
-                ModuleRows[y] = true;
+                SetModuleRow(y, true);
 
             state.Technology -= 1;
             GameManager.Instance.playerStateUI.RefreshUI();
@@ -242,6 +242,29 @@ namespace EmergencyRoulette
             if (y >= 0 && y < ModuleRows.Count)
                 return !ModuleRows[y];
             return false;
+        }
+
+        public void SetModuleRow(int index, bool value)
+        {
+            if (index < 0 || index >= ModuleRows.Count) return;
+
+            ModuleRows[index] = value;
+            RefreshBrokenImages();
+        }
+
+
+
+        public void RefreshBrokenImages()
+        {
+            if (ModuleEquipManager.Instance == null) return;
+
+            List<GameObject> brokenImages = ModuleEquipManager.Instance.GetBrokenImages();
+
+            for (int i = 0; i < ModuleRows.Count && i < brokenImages.Count; i++)
+            {
+                bool isWorking = ModuleRows[i];
+                brokenImages[i].SetActive(!isWorking); // 작동하면 false, 고장나면 true
+            }
         }
 
 
