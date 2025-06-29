@@ -75,6 +75,8 @@ namespace EmergencyRoulette
 
                     RectTransform rt = slotObj.GetComponent<RectTransform>();
                     rt.anchoredPosition = new Vector2(x * 250f, -y * 135f);
+                    
+                    if (!_slotBoard.Rows[y]) slotObj.SetActive(false);
                 }
             }
         }
@@ -154,6 +156,24 @@ namespace EmergencyRoulette
             foreach (var slot in slotInstances)
             {
                 slot.GetComponent<SlotParticleEffect>()?.PlayPending();
+            }
+        }
+
+        public void LockRow(int y)
+        {
+            _slotBoard.LockRow(y);
+            for (int x = 0; x < _slotBoard.ColumnCount; x++)
+            {
+                slotInstances[x, y].gameObject.SetActive(false);
+            }
+        }
+        
+        public void UnlockRow(int y)
+        {
+            _slotBoard.UnlockRow(y);
+            for (int x = 0; x < _slotBoard.ColumnCount; x++)
+            {
+                slotInstances[x, y].gameObject.SetActive(true);
             }
         }
 

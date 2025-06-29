@@ -12,7 +12,7 @@ namespace EmergencyRoulette
             {
                 if (ModuleManager.Instance.IsModuleBroken(equip.index))
                 {
-                    Debug.Log($"[PassiveEffect] Row {equip.index} °íÀå ¡æ {equip.module.moduleName} Àû¿ë ¾È µÊ");
+                    Debug.Log($"[PassiveEffect] Row {equip.index} ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ {equip.module.moduleName} ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½");
                     continue;
                 }
 
@@ -23,32 +23,32 @@ namespace EmergencyRoulette
                 {
                     case "AddDataPerTurn":
                         player.Data += 1;
-                        Debug.Log($"[PassiveEffect] µ¥ÀÌÅÍ +1");
+                        Debug.Log($"[PassiveEffect] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ +1");
                         break;
 
                     case "AddFoodPerTurn":
                         player.Food += 1;
-                        Debug.Log($"[PassiveEffect] ½Ä·® +1");
+                        Debug.Log($"[PassiveEffect] ï¿½Ä·ï¿½ +1");
                         break;
 
                     case "AddTechPerTurn":
                         player.Technology += 1;
-                        Debug.Log($"[PassiveEffect] ±â¼ú +1");
+                        Debug.Log($"[PassiveEffect] ï¿½ï¿½ï¿½ +1");
                         break;
 
                     case "AddEnergyPerTurn":
                         player.Energy += 1;
-                        Debug.Log($"[PassiveEffect] ¿¡³ÊÁö +1");
+                        Debug.Log($"[PassiveEffect] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ +1");
                         break;
 
                     case "IgnoreWarningWithEnergy":
-                        // playerState ³» Á¸Àç
-                        Debug.Log("[PassiveEffect] °æ°í ¹«È¿È­");
+                        // playerState ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+                        Debug.Log("[PassiveEffect] ï¿½ï¿½ï¿½ ï¿½ï¿½È¿È­");
                         break;
 
                     case "GainDataIfMultipleDanger":
-                        // playerState ³» Á¸Àç
-                        Debug.Log("[PassiveEffect] À§Çè 2°³ ÀÌ»ó ½Ã µ¥ÀÌÅÍ +2");
+                        // playerState ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+                        Debug.Log("[PassiveEffect] ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ ï¿½Ì»ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ +2");
                         break;
 
                     default:
@@ -69,13 +69,13 @@ namespace EmergencyRoulette
 
             if (ModuleManager.Instance.IsModuleBroken(index))
             {
-                Debug.Log($"[ActiveEffect] °íÀå³­ ¸ðµâÀº »ç¿ëÇÒ ¼ö ¾ø½À´Ï´Ù (index: {index})");
+                Debug.Log($"[ActiveEffect] ï¿½ï¿½ï¿½å³­ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ (index: {index})");
                 return;
             }
 
             if (ModuleManager.Instance.UsedActiveModulesThisTurn.Contains(module))
             {
-                Debug.Log($"[ActiveEffect] ÀÌ¹ø ÅÏ¿¡ ÀÌ¹Ì »ç¿ëÇÑ ¸ðµâÀÔ´Ï´Ù: {module.moduleName}");
+                Debug.Log($"[ActiveEffect] ï¿½Ì¹ï¿½ ï¿½Ï¿ï¿½ ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ô´Ï´ï¿½: {module.moduleName}");
                 return;
             }
 
@@ -87,7 +87,7 @@ namespace EmergencyRoulette
             if (applyTwice)
                 ApplyOnce(module);
 
-            // »ç¿ë ±â·Ï¿¡ Ãß°¡
+            // ï¿½ï¿½ï¿½ ï¿½ï¿½Ï¿ï¿½ ï¿½ß°ï¿½
             GameManager.Instance.playerStateUI.RefreshUI();
             ModuleManager.Instance.UsedActiveModulesThisTurn.Add(module);
         }
@@ -104,7 +104,7 @@ namespace EmergencyRoulette
                     TryConvertFoodToEnergy();
                     break;
                 case "DoubleNextActiveModule":
-                    TryDoubleNextActiveModule(); // ÀÚ±â ÀÚ½ÅÀº 2¹ø ¾È ÇÔ
+                    TryDoubleNextActiveModule(); // ï¿½Ú±ï¿½ ï¿½Ú½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½
                     break;
                 case "ReduceOverloadByTech":
                     TryReduceOverloadByTech();
@@ -127,7 +127,7 @@ namespace EmergencyRoulette
 
             if (brokenIndex == -1)
             {
-                Debug.Log("[ActiveEffect] °íÀå³­ ½½·Ô ¾øÀ½");
+                Debug.Log("[ActiveEffect] ï¿½ï¿½ï¿½å³­ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
                 return;
             }
 
@@ -135,12 +135,12 @@ namespace EmergencyRoulette
             {
                 state.Technology -= 2;
                 state.Energy -= 1;
-                board.UnlockRow(brokenIndex);
-                Debug.Log($"[ActiveEffect] ±â¼ú 2 ¼Ò¸ð ¡æ {brokenIndex}¹øÂ° ½½·Ô Çà º¹±¸ ¿Ï·á");
+                GameManager.SlotManager.UnlockRow(brokenIndex);
+                Debug.Log($"[ActiveEffect] ï¿½ï¿½ï¿½ 2 ï¿½Ò¸ï¿½ ï¿½ï¿½ {brokenIndex}ï¿½ï¿½Â° ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½");
             }
             else
             {
-                Debug.Log("[ActiveEffect] ±â¼ú ºÎÁ·: º¹±¸ ½ÇÆÐ");
+                Debug.Log("[ActiveEffect] ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
             }
         }
 
@@ -153,11 +153,11 @@ namespace EmergencyRoulette
                 state.Food -= 1;
                 state.Energy += 2;
                 state.Energy -= 1;
-                Debug.Log("[ActiveEffect] ½Ä·® 1 ¡æ ¿¡³ÊÁö 2 Àû¿ëµÊ");
+                Debug.Log("[ActiveEffect] ï¿½Ä·ï¿½ 1 ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 2 ï¿½ï¿½ï¿½ï¿½ï¿½");
             }
             else
             {
-                Debug.Log("[ActiveEffect] ½Ä·® ºÎÁ·: º¯È¯ ½ÇÆÐ");
+                Debug.Log("[ActiveEffect] ï¿½Ä·ï¿½ ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½È¯ ï¿½ï¿½ï¿½ï¿½");
             }
         }
 
@@ -166,7 +166,7 @@ namespace EmergencyRoulette
             var state = GameManager.Instance.PlayerState;
             state.DoubleNextActive = true;
             state.Energy -= 1;
-            Debug.Log("[ActiveEffect] ´ÙÀ½ ¾×Æ¼ºê ¸ðµâ 2È¸ ¹ßµ¿ ÇÃ·¡±× ¼³Á¤µÊ");
+            Debug.Log("[ActiveEffect] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ¼ï¿½ï¿½ ï¿½ï¿½ï¿½ 2È¸ ï¿½ßµï¿½ ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
         }
 
 
@@ -179,11 +179,11 @@ namespace EmergencyRoulette
                 state.Technology -= 1;
                 state.OverloadGauge -= 10f;
                 state.Energy -= 1;
-                Debug.Log("[ActiveEffect] ±â¼ú 1 ¡æ °úºÎÇÏ °ÔÀÌÁö 10%p °¨¼Ò Àû¿ëµÊ");
+                Debug.Log("[ActiveEffect] ï¿½ï¿½ï¿½ 1 ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 10%p ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½");
             }
             else
             {
-                Debug.Log("[ActiveEffect] ±â¼ú ºÎÁ·: º¯È¯ ½ÇÆÐ");
+                Debug.Log("[ActiveEffect] ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½È¯ ï¿½ï¿½ï¿½ï¿½");
             }
         }
 
@@ -196,11 +196,11 @@ namespace EmergencyRoulette
                 state.Food -= 1;
                 state.Data += 2;
                 state.Energy -= 1;
-                Debug.Log("[ActiveEffect] ½Ä·® 1 ¡æ µ¥ÀÌÅÍ 2 Àû¿ëµÊ");
+                Debug.Log("[ActiveEffect] ï¿½Ä·ï¿½ 1 ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 2 ï¿½ï¿½ï¿½ï¿½ï¿½");
             }
             else
             {
-                Debug.Log("[ActiveEffect] ½Ä·® ºÎÁ·: º¯È¯ ½ÇÆÐ");
+                Debug.Log("[ActiveEffect] ï¿½Ä·ï¿½ ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½È¯ ï¿½ï¿½ï¿½ï¿½");
             }
         }
     }

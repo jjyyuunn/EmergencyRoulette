@@ -200,7 +200,7 @@ namespace EmergencyRoulette
                         break;
                     
                     case SymbolType.Outdated: // 붕괴 별도 구현
-                        _slotBoard.LockRow(combo.y); // 슬롯 잠금
+                        GameManager.SlotManager.LockRow(combo.y); // 슬롯 잠금
                         Debug.Log($"[PenaltyCombo] Collapse on row {combo.y} → Row locked next turn");
                         break;
                 }
