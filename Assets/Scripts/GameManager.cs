@@ -60,6 +60,7 @@ namespace EmergencyRoulette
         public GameObject UI_Shop;
         
         public TextMeshProUGUI dayText;
+        public TextMeshProUGUI announcementText;
 
         public SlotBackGroundUIController slotBackGroundUIController;
 
@@ -114,7 +115,7 @@ namespace EmergencyRoulette
                 Debug.Log($"Disaster: {CurrentDisaster.disaster}, Info: {CurrentDisaster.information}, {4-(CurrentTurn % 4)} days left!");
                 yield return new WaitForSeconds(3f); // 메시지 보여줄 시간
             }
-
+            announcementText.text = $"{4-(CurrentTurn % 4)}일 후 재난 발생 예정입니다.";
             
             // 1. 스핀 단계
             SetState(GameState.Spin);
