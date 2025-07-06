@@ -88,7 +88,8 @@ namespace EmergencyRoulette
 
             if (HasSpunThisTurn)
                 return;
-            
+
+            SoundManager.Instance.PlaySlotButtonClickSound();
             _slotBoard.ResetGainedSymbols(); // 심볼 리셋
             ModuleManager.Instance.ClearUsedActiveModulesThisTurn();
 
@@ -153,6 +154,7 @@ namespace EmergencyRoulette
 
         public void PlayAllSlotPendingEffects()
         {
+            SoundManager.Instance.PlaySlotResourceGainSound();
             foreach (var slot in slotInstances)
             {
                 slot.GetComponent<SlotParticleEffect>()?.PlayPending();

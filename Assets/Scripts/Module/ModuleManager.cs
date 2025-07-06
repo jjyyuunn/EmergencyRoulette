@@ -190,6 +190,8 @@ namespace EmergencyRoulette
             ModuleShopManager.Instance.ClearSelection();
             ModuleShopManager.Instance.RemoveModuleUI(moduleKey);
 
+            SoundManager.Instance.PlayShopPurchaseSound();
+
             GameManager.Instance.playerStateUI.RefreshUI();
         }
 
