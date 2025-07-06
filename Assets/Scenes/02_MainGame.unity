@@ -1466,7 +1466,7 @@ MonoBehaviour:
   notice: {fileID: 917589430}
   noticeText: {fileID: 157912253}
   gameOver: {fileID: 1010655885}
-  slotBackGroundUIController: {fileID: 1191521726}
+  slotBackGroundUIController: {fileID: 0}
 --- !u!114 &681550963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2322,7 +2322,6 @@ GameObject:
   - component: {fileID: 1191521723}
   - component: {fileID: 1191521725}
   - component: {fileID: 1191521724}
-  - component: {fileID: 1191521726}
   m_Layer: 5
   m_Name: UI_SlotBackGround
   m_TagString: Untagged
@@ -2392,24 +2391,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1191521722}
   m_CullTransparentMesh: 1
---- !u!114 &1191521726
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1191521722}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bab68a5a0f00b1439ef4cb0112451d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rowIndicators:
-  - {fileID: 1566583571}
-  - {fileID: 1119802054}
-  - {fileID: 784073877}
-  - {fileID: 1744551578}
-  - {fileID: 985964722}
 --- !u!1 &1193426019
 GameObject:
   m_ObjectHideFlags: 0

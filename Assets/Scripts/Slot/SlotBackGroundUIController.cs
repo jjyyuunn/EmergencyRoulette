@@ -9,9 +9,13 @@ namespace EmergencyRoulette
     {
         [SerializeField] private List<Image> rowIndicators; // 0~4행의 Image 컴포넌트
 
-        private void Start()
+        private void Awake()
         {
-            // 자동 할당
+            AutoAssignRowIndicators();
+        }
+
+        private void AutoAssignRowIndicators()
+        {
             if (rowIndicators == null || rowIndicators.Count == 0)
             {
                 rowIndicators = GetComponentsInChildren<RectTransform>(true)
@@ -25,6 +29,7 @@ namespace EmergencyRoulette
                 Debug.Log($"[SlotBackGroundUIController] rowIndicators auto-assigned: {rowIndicators.Count}");
             }
         }
+
 
         public void UpdateRowUI()
         {

@@ -83,7 +83,7 @@ namespace EmergencyRoulette
 
         public void StartSpin()
         {
-            if (GameManager.Instance.CurrentState != GameManager.GameState.Spin)
+            if (GameManager.Instance.CurrentState != GameState.Spin)
                 return;
 
             if (HasSpunThisTurn)
@@ -126,7 +126,7 @@ namespace EmergencyRoulette
         private void OnAllSpinComplete()
         {
             Debug.Log("All spin animations completed");
-            GameManager.Instance.SetState(GameManager.GameState.Resolving);
+            GameManager.Instance.SetState(GameState.Resolving);
         }
 
         // 플레이어 리소스 더하기

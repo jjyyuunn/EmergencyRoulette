@@ -6,35 +6,55 @@ using System.Linq;
 using TMPro;
 using DG.Tweening;
 using UnityEngine.UI;
-using UnityEditor;
+//using UnityEditor;
+using UnityEngine.Analytics;
 
 namespace EmergencyRoulette
 {
+    public enum GameState
+    {
+        None,
+        StartTurn,
+        Spin,
+        Resolving,
+        Disaster,
+        ResourceConsuming,
+        Forecasting,
+        Ended
+    }
+
     [DefaultExecutionOrder(-10)]
     public class GameManager : MonoBehaviour
     {
         public static GameManager Instance { get; private set; }
-
-        public enum GameState
-        {
-            None,
-            Spin,
-            Resolving,
-            Disaster,
-            ResourceConsuming,
-            Forecasting,
-            Ended
-        }
 
         public GameState CurrentState { get; private set; } = GameState.None;
         public int CurrentTurn { get; private set; } = 0;
         public DisasterEventItem CurrentDisaster { get; private set; } = null;
         public SymbolLibrary SymbolLibrary = new SymbolLibrary();
 
+        /*
         public void SetState(GameState newState)
         {
             CurrentState = newState;
             Debug.Log($"[GameState] ���� ��ȯ: {newState}");
+        }*/
+
+        public void SetState(GameState newState)
+        {
+            Debug.Log($"GameManager: 상태 전환 {CurrentState} → {newState}");
+            CurrentState = newState;
+
+            switch (newState)
+            {
+                case GameState.StartTurn: StartCoroutine(EnterStartTurn()); break;
+                case GameState.Spin: EnterSpin(); break;
+                case GameState.Resolving: StartCoroutine(EnterResolving()); break;
+                case GameState.Disaster: StartCoroutine(EnterDisaster()); break;
+                case GameState.ResourceConsuming: StartCoroutine(EnterResourceConsuming()); break;
+                case GameState.Forecasting: EnterForecasting(); break;
+                case GameState.Ended: EnterEnded(); break;
+            }
         }
 
         private ExcelManager _excelManager;
@@ -68,20 +88,27 @@ namespace EmergencyRoulette
         
         public GameObject gameOver;
 
-        public SlotBackGroundUIController slotBackGroundUIController;
+        //public SlotBackGroundUIController slotBackGroundUIController;
 
         public bool CanPlayerInteract { get; set; } // 기본 자원 사용
-
-        void Awake()
+        private void Awake()
         {
-            Init();
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
+
 
         private void Start()
         {
             gameOver.SetActive(false);
             notice.gameObject.SetActive(false);
-            StartTurn();
+            SetState(GameState.StartTurn);
         }
 
         private void Update()
@@ -89,7 +116,7 @@ namespace EmergencyRoulette
             if (Input.GetKeyDown(KeyCode.Escape))
             {
 #if UNITY_EDITOR
-                EditorApplication.isPlaying = false;
+                //EditorApplication.isPlaying = false;
 #else
         Application.Quit();
 #endif
@@ -97,21 +124,87 @@ namespace EmergencyRoulette
 
         }    
 
-        private static void Init()
+        private IEnumerator EnterStartTurn()
         {
-            if (Instance == null)
+            if (++CurrentTurn > 16)
             {
-                GameObject go = GameObject.Find("@Managers");
-                if (go == null)
-                {
-                    go = new GameObject { name = "@Managers" };
-                    go.AddComponent<GameManager>();
-                }
-                Instance = go.GetComponent<GameManager>();
-                DontDestroyOnLoad(Instance.gameObject);
+                SetState(GameState.Ended);
+                yield break;
             }
+            dayText.text = $"Day {CurrentTurn}";
+            Debug.Log($"[Turn] 턴 {CurrentTurn} 시작");
+
+            // 0. 재난 예보
+            if (CurrentTurn % 4 == 1)
+            {
+                SetDisaster();
+                Debug.Log($"Curren GameState: {CurrentState}, Current Turn: {CurrentTurn}");
+                Debug.Log($"Disaster: {CurrentDisaster.disaster}, Info: {CurrentDisaster.information}, {4 - (CurrentTurn % 4)} days left!");
+                yield return new WaitForSeconds(3f); // 메시지 보여줄 시간
+            }
+
+            announcementText.text = $"{4 - (CurrentTurn % 4)}일 후 재난 발생 예정입니다.";
+
+            SetState(GameState.Spin);
         }
-        
+
+
+        private void EnterSpin()
+        {
+            Debug.Log($"Curren GameState: {CurrentState}, Current Turn: {CurrentTurn}");
+        }
+
+        private IEnumerator EnterResolving()
+        {
+            _slotManager.HasSpunThisTurn = false;
+
+            // 2. 결과 처리 단계
+            // 콤보, 패널티, 기본 심볼 이펙트 처리
+            Debug.Log($"Curren GameState: {CurrentState}, Current Turn: {CurrentTurn}");
+            yield return new WaitForSeconds(4f);
+            SlotManager?.PlayAllSlotPendingEffects();
+            playerStateUI.RefreshUI();
+            yield return new WaitForSeconds(1f); // 애니메이션 등을 고려한 대기
+
+            SetState(GameState.Disaster);
+        }
+
+        private IEnumerator EnterDisaster()
+        {
+            if (CurrentTurn % 4 == 0)
+            {
+                Debug.Log($"Curren GameState: {CurrentState}, Current Turn: {CurrentTurn}");
+
+                notice.gameObject.SetActive(true);
+                noticeText.text = $"{CurrentDisaster.disaster}: {CurrentDisaster.information}";
+
+                yield return new WaitForSeconds(2.5f);
+                yield return StartCoroutine(HandleDisasterEvent());
+                notice.gameObject.SetActive(false);   
+            }
+            SetState(GameState.ResourceConsuming);
+        }
+
+        private IEnumerator EnterResourceConsuming()
+        {
+            Debug.Log($"Curren GameState: {CurrentState}, Current Turn: {CurrentTurn}");
+            ModuleManager.Instance.SetupShop();
+            //slotBackGroundUIController.UpdateRowUI();
+
+            yield return new WaitUntil(() => CurrentState == GameState.StartTurn);
+        }
+
+        private void EnterForecasting()
+        {
+
+        }
+
+        private void EnterEnded()
+        {
+
+        }
+
+        /*
         // Turn 관련 코드
         private void StartTurn()
         {
@@ -176,7 +269,7 @@ namespace EmergencyRoulette
 
             // 다음 턴으로
             StartTurn();
-        }
+        }*/
 
         private void SetDisaster()
         {
@@ -294,7 +387,7 @@ namespace EmergencyRoulette
             PlayerState.Technology += PlayerState.NextTurnTechBonus;
             PlayerState.NextTurnTechBonus = 0;
 
-            SetState(GameState.None);
+            SetState(GameState.StartTurn);
         }
 
         public void ToggleShopUI()
