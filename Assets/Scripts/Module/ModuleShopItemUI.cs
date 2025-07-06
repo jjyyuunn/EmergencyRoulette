@@ -7,16 +7,31 @@ namespace EmergencyRoulette
 {
     public class ModuleShopItemUI : MonoBehaviour
     {
-        [Header("UI 요소")]
-        public TextMeshProUGUI titleText;
-        public TextMeshProUGUI descriptionText;
-        public Image iconImage;
-        public TextMeshProUGUI priceText;
         public Image background;  // 배경색 변경용 (직접 연결)
 
         [SerializeField] private int moduleKey;
+        [SerializeField] private GameObject module_highlight;
         private ModuleDataItem currentData;
         private System.Action<int, ModuleShopItemUI> onClickCallback;
+
+        [Header("BG Sprites")]
+        [SerializeField] private Sprite bg_AddDataPerTurn;
+        [SerializeField] private Sprite bg_AddFoodPerTurn;
+        [SerializeField] private Sprite bg_AddTechPerTurn;
+        [SerializeField] private Sprite bg_AddEnergyPerTurn;
+        [SerializeField] private Sprite bg_IgnoreWarningWithEnergy;
+        [SerializeField] private Sprite bg_GainDataIfMultipleDanger;
+        [SerializeField] private Sprite bg_RepairBrokenSlot;
+        [SerializeField] private Sprite bg_ConvertFoodToEnergy;
+        [SerializeField] private Sprite bg_DoubleNextActiveModule;
+        [SerializeField] private Sprite bg_ReduceOverloadByTech;
+        [SerializeField] private Sprite bg_IncreaseDataByFood;
+        [SerializeField] private Sprite bg_AddCombo_WarningDischargeOutdated;
+        [SerializeField] private Sprite bg_AddCombo_EnergyDischargeDischarge;
+        [SerializeField] private Sprite bg_AddCombo_TechDecayDecay;
+        [SerializeField] private Sprite defaultBg;
+
+
 
         public int GetModuleKey() => moduleKey;
 
@@ -26,26 +41,56 @@ namespace EmergencyRoulette
             currentData = data;
             onClickCallback = callback;
 
-            titleText.text = data.moduleName;
-            descriptionText.text = data.description;
-            priceText.text = data.purchaseCost.ToString();
-
-            // 타입에 따라 아이콘 색상 변경
-            switch (data.useType)
+            switch (data.moduleName)
             {
-                case ModuleUseType.Active:
-                    iconImage.color = Color.red;
+                case "데이터 생산기":
+                    background.sprite = bg_AddDataPerTurn;
                     break;
-                case ModuleUseType.Passive:
-                    iconImage.color = Color.blue;
+                case "식량 공장":
+                    background.sprite = bg_AddFoodPerTurn;
                     break;
-                case ModuleUseType.Combo:
-                    iconImage.color = new Color(0.6f, 0f, 1f); // 보라색 (RGB 153,0,255)
+                case "연구소":
+                    background.sprite = bg_AddTechPerTurn;
+                    break;
+                case "발전소":
+                    background.sprite = bg_AddEnergyPerTurn;
+                    break;
+                case "경고 차단기":
+                    background.sprite = bg_IgnoreWarningWithEnergy;
+                    break;
+                case "불안정 수집기":
+                    background.sprite = bg_GainDataIfMultipleDanger;
+                    break;
+                case "피해 복구 로봇":
+                    background.sprite = bg_RepairBrokenSlot;
+                    break;
+                case "인력 발전":
+                    background.sprite = bg_ConvertFoodToEnergy;
+                    break;
+                case "모듈 오버클럭":
+                    background.sprite = bg_DoubleNextActiveModule;
+                    break;
+                case "과부하 통제 기술":
+                    background.sprite = bg_ReduceOverloadByTech;
+                    break;
+                case "브레인 스토밍":
+                    background.sprite = bg_IncreaseDataByFood;
+                    break;
+                case "위기 전환 프로토콜":
+                    background.sprite = bg_AddCombo_WarningDischargeOutdated;
+                    break;
+                case "응급 충전 유닛":
+                    background.sprite = bg_AddCombo_EnergyDischargeDischarge;
+                    break;
+                case "실패는 성공의 어머니":
+                    background.sprite = bg_AddCombo_TechDecayDecay;
                     break;
                 default:
-                    iconImage.color = Color.white;
+                    background.sprite = defaultBg;
                     break;
             }
+
+
 
             Highlight(false);
 
@@ -58,10 +103,10 @@ namespace EmergencyRoulette
 
         public void Highlight(bool on)
         {
-            if (background == null) return;
-
-            background.color = on ? Color.green : Color.white;
+            if (module_highlight != null)
+                module_highlight.SetActive(on);
         }
+
 
         public void PlayRemoveAnimation(System.Action onComplete)
         {
