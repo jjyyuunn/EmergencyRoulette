@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.EventSystems.EventTrigger;
 using System;
+using DG.Tweening;
 
 namespace EmergencyRoulette
 {
@@ -16,6 +17,11 @@ namespace EmergencyRoulette
         [SerializeField] private Transform foodAttractor;
         [SerializeField] private Transform technologyAttractor;
         [SerializeField] private Transform dataAttractor;
+
+        [SerializeField] private GameObject btnHandle;
+        [SerializeField] private GameObject btnBar;
+
+        private bool isBtnExpanded = false;
 
 
         private SlotColumnScroller[,] slotInstances;
@@ -95,6 +101,8 @@ namespace EmergencyRoulette
 
             _slotBoard.Spin();
             HasSpunThisTurn = true;
+
+            ToggleBtnAnimate();
             
             int pendingCount = 0;
 
@@ -179,6 +187,18 @@ namespace EmergencyRoulette
             }
         }
 
+        public void ToggleBtnAnimate()
+        {
+            isBtnExpanded = !isBtnExpanded;
+
+            // btnBar 위치 이동
+            Vector3 targetBarPos = isBtnExpanded ? new Vector3(0f, 84f, 0f) : new Vector3(0f, -56f, 0f);
+            btnBar.transform.DOLocalMove(targetBarPos, 0.5f).SetEase(Ease.OutCubic);
+
+            // btnHandle 크기 변경
+            Vector3 targetHandleScale = isBtnExpanded ? Vector3.one * 0.5f : Vector3.one;
+            btnHandle.transform.DOScale(targetHandleScale, 0.5f).SetEase(Ease.OutCubic);
+        }
 
         private void PrintBoard()
         {

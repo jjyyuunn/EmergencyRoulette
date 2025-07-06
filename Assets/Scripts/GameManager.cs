@@ -145,6 +145,8 @@ namespace EmergencyRoulette
 
             announcementText.text = $"{4 - (CurrentTurn % 4)}일 후 재난 발생 예정입니다.";
 
+            SlotManager.Instance.ToggleBtnAnimate();
+
             SetState(GameState.Spin);
         }
 
