@@ -1466,7 +1466,6 @@ MonoBehaviour:
   notice: {fileID: 917589430}
   noticeText: {fileID: 157912253}
   gameOver: {fileID: 1010655885}
-  slotBackGroundUIController: {fileID: 0}
 --- !u!114 &681550963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2067,7 +2066,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1010655886
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2299,7 +2298,6 @@ RectTransform:
   - {fileID: 1622500025}
   - {fileID: 1191521723}
   - {fileID: 2040958299}
-  - {fileID: 1407313536}
   - {fileID: 1917731833}
   - {fileID: 1193426020}
   - {fileID: 373084490}
@@ -2742,13 +2740,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1407313535}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 588526592}
-  m_Father: {fileID: 1135024361}
+  m_Father: {fileID: 1597214467}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -3301,6 +3299,7 @@ RectTransform:
   m_Children:
   - {fileID: 1472276085}
   - {fileID: 1650274690}
+  - {fileID: 1407313536}
   - {fileID: 223485206}
   - {fileID: 1625184450}
   - {fileID: 917589429}

@@ -1,10 +1,12 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using static EmergencyRoulette.GameManager;
 
 namespace EmergencyRoulette
 {
-    public class ModuleEquipPositionUI : MonoBehaviour
+    public class ModuleEquipPositionUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField] private GameObject backgroundImageChildObject;
         [SerializeField] private Image backgroundImageChild;
@@ -27,6 +29,11 @@ namespace EmergencyRoulette
         [SerializeField] private Sprite bg_AddCombo_WarningDischargeOutdated;
         [SerializeField] private Sprite bg_AddCombo_EnergyDischargeDischarge;
         [SerializeField] private Sprite bg_AddCombo_TechDecayDecay;
+
+        [SerializeField] private GameObject tooltipBox;
+        [SerializeField] private TextMeshProUGUI tooltipText;
+
+        private ModuleDataItem currentModule;
 
         public void Setup(int index, System.Action<int> onShopClick, System.Action<int> onOtherClick)
         {
@@ -52,9 +59,11 @@ namespace EmergencyRoulette
 
         public void UpdateLabelWithModuleName(ModuleDataItem module)
         {
+            currentModule = module;
+
             if (module != null)
             {
-                backgroundImageChildObject.SetActive(true); // 기본적으로 켜고 시작
+                backgroundImageChildObject.SetActive(true);
 
                 switch (module.moduleName)
                 {
@@ -105,12 +114,28 @@ namespace EmergencyRoulette
                         backgroundImageChildObject.SetActive(false);
                         break;
                 }
+
+                tooltipText.text = module.description;
+                tooltipBox.SetActive(false);
             }
             else
             {
                 backgroundImageChild.sprite = null;
                 backgroundImageChildObject.SetActive(false);
+                tooltipText.text = "";
+                tooltipBox.SetActive(false);
             }
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            if (currentModule != null)
+                tooltipBox.SetActive(true);
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            tooltipBox.SetActive(false);
         }
 
 
