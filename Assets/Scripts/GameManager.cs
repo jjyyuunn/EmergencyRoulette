@@ -290,6 +290,7 @@ namespace EmergencyRoulette
             }
             int randomIndex = UnityEngine.Random.Range(0, disasters.Count);
             CurrentDisaster = disasters[randomIndex];
+            SetDisasterSymbol(CurrentDisaster);
         }
 
         private void SetDisasterSymbol(DisasterEventItem disaster)
@@ -298,7 +299,16 @@ namespace EmergencyRoulette
             {
                 // 고치기
                 case "발전소 불안정":
-                    // announcementSymbol.sprite = Resources.Load<>();
+                    announcementSymbol.sprite = Resources.Load<Sprite>("Sprite/SlotImage/Symbol_Energy");
+                    break;
+                case "성난 군중":
+                    announcementSymbol.sprite = Resources.Load<Sprite>("Sprite/SlotImage/Symbol_Food");
+                    break;
+                case "제어 시스템 해킹":
+                    announcementSymbol.sprite = Resources.Load<Sprite>("Sprite/SlotImage/Symbol_Tech");
+                    break;
+                case "정기 업데이트":
+                    announcementSymbol.sprite = Resources.Load<Sprite>("Sprite/SlotImage/Symbol_Data");
                     break;
             }
         }

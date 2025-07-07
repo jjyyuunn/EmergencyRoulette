@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 87213547}
   - component: {fileID: 87213546}
   m_Layer: 5
-  m_Name: Image
+  m_Name: announceSymbol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1745,7 +1745,7 @@ MonoBehaviour:
   UI_Shop: {fileID: 223485205}
   dayText: {fileID: 1832913974}
   announcementText: {fileID: 1624924239}
-  announcementSymbol: {fileID: 0}
+  announcementSymbol: {fileID: 87213546}
   notice: {fileID: 917589430}
   noticeText: {fileID: 157912253}
   gameOver: {fileID: 1010655885}
