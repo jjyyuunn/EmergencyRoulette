@@ -7,7 +7,7 @@ namespace EmergencyRoulette
 {
     public class ModuleShopItemUI : MonoBehaviour
     {
-        public Image background;  // ¹è°æ»ö º¯°æ¿ë (Á÷Á¢ ¿¬°á)
+        public Image background;  // ë°°ê²½ìƒ‰ ë³€ê²½ìš© (ì§ì ‘ ì—°ê²°)
 
         [SerializeField] private int moduleKey;
         [SerializeField] private GameObject module_highlight;
@@ -43,46 +43,46 @@ namespace EmergencyRoulette
 
             switch (data.moduleName)
             {
-                case "µ¥ÀÌÅÍ »ı»ê±â":
+                case "ë°ì´í„° ìƒì‚°ê¸°":
                     background.sprite = bg_AddDataPerTurn;
                     break;
-                case "½Ä·® °øÀå":
+                case "ì‹ëŸ‰ ê³µì¥":
                     background.sprite = bg_AddFoodPerTurn;
                     break;
-                case "¿¬±¸¼Ò":
+                case "ì—°êµ¬ì†Œ":
                     background.sprite = bg_AddTechPerTurn;
                     break;
-                case "¹ßÀü¼Ò":
+                case "ë°œì „ì†Œ":
                     background.sprite = bg_AddEnergyPerTurn;
                     break;
-                case "°æ°í Â÷´Ü±â":
+                case "ê²½ê³  ì°¨ë‹¨ê¸°":
                     background.sprite = bg_IgnoreWarningWithEnergy;
                     break;
-                case "ºÒ¾ÈÁ¤ ¼öÁı±â":
+                case "ë¶ˆì•ˆì • ìˆ˜ì§‘ê¸°":
                     background.sprite = bg_GainDataIfMultipleDanger;
                     break;
-                case "ÇÇÇØ º¹±¸ ·Îº¿":
+                case "í”¼í•´ ë³µêµ¬ ë¡œë´‡":
                     background.sprite = bg_RepairBrokenSlot;
                     break;
-                case "ÀÎ·Â ¹ßÀü":
+                case "ì¸ë ¥ ë°œì „":
                     background.sprite = bg_ConvertFoodToEnergy;
                     break;
-                case "¸ğµâ ¿À¹öÅ¬·°":
+                case "ëª¨ë“ˆ ì˜¤ë²„í´ëŸ­":
                     background.sprite = bg_DoubleNextActiveModule;
                     break;
-                case "°úºÎÇÏ ÅëÁ¦ ±â¼ú":
+                case "ê³¼ë¶€í•˜ í†µì œ ê¸°ìˆ ":
                     background.sprite = bg_ReduceOverloadByTech;
                     break;
-                case "ºê·¹ÀÎ ½ºÅä¹Ö":
+                case "ë¸Œë ˆì¸ ìŠ¤í† ë°":
                     background.sprite = bg_IncreaseDataByFood;
                     break;
-                case "À§±â ÀüÈ¯ ÇÁ·ÎÅäÄİ":
+                case "ìœ„ê¸° ì „í™˜ í”„ë¡œí† ì½œ":
                     background.sprite = bg_AddCombo_WarningDischargeOutdated;
                     break;
-                case "ÀÀ±Ş ÃæÀü À¯´Ö":
+                case "ì‘ê¸‰ ì¶©ì „ ìœ ë‹›":
                     background.sprite = bg_AddCombo_EnergyDischargeDischarge;
                     break;
-                case "½ÇÆĞ´Â ¼º°øÀÇ ¾î¸Ó´Ï":
+                case "ì‹¤íŒ¨ëŠ” ì„±ê³µì˜ ì–´ë¨¸ë‹ˆ":
                     background.sprite = bg_AddCombo_TechDecayDecay;
                     break;
                 default:
