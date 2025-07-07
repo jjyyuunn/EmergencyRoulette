@@ -83,6 +83,7 @@ namespace EmergencyRoulette
         
         public TextMeshProUGUI dayText;
         public TextMeshProUGUI announcementText;
+        public Image announcementSymbol;
         public Image notice;
         public TextMeshProUGUI noticeText;
         
@@ -143,13 +144,19 @@ namespace EmergencyRoulette
                 yield return new WaitForSeconds(3f); // 메시지 보여줄 시간
             }
 
-            announcementText.text = $"{4 - (CurrentTurn % 4)}일 후 재난 발생 예정입니다.";
+            if (CurrentTurn % 4 == 0)
+            {
+                announcementText.text = "오늘 재난이 발생합니다. 대비하세요.";
+            }
+            else
+            {
+                announcementText.text = $"{4 - (CurrentTurn % 4)}일 후 재난 발생 예정입니다.";
+            }
 
             SlotManager.Instance.ToggleBtnAnimate();
 
             SetState(GameState.Spin);
         }
-
 
         private void EnterSpin()
         {
@@ -283,6 +290,17 @@ namespace EmergencyRoulette
             }
             int randomIndex = UnityEngine.Random.Range(0, disasters.Count);
             CurrentDisaster = disasters[randomIndex];
+        }
+
+        private void SetDisasterSymbol(DisasterEventItem disaster)
+        {
+            switch (disaster.disaster)
+            {
+                // 고치기
+                case "발전소 불안정":
+                    // announcementSymbol.sprite = Resources.Load<>();
+                    break;
+            }
         }
         
         private IEnumerator HandleDisasterEvent()
